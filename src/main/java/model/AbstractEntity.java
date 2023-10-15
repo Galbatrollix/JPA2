@@ -6,15 +6,19 @@ import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Version;
 
 @MappedSuperclass
-public class AbstractEntity {
+public abstract class AbstractEntity {
     @Id
     @GeneratedValue()
-    private long id;
+    protected long id;
 
     @Version
-    private long version;
+    protected long version;
 
     public long getVersion() {
         return version;
+    }
+
+    public long getId() {
+        return id;
     }
 }
