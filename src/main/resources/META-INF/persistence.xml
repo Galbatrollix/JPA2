@@ -7,6 +7,12 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>model.Book</class>
         <class>model.BookData</class>
+        <class>model.LibraryUser</class>
+        <class>model.BookEvent</class>
+        <class>model.Reservation</class>
+        <class>model.Lending</class>
+        <class>model.Catalog</class>
+        <class>model.Rating</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/nbddb"/>
