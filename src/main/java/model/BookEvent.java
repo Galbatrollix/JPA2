@@ -12,10 +12,11 @@ public class BookEvent {
     @GeneratedValue()
     private long id;
 
-    @Column(nullable = false)
-    private Date expectedEndDate;
+
     @Column(nullable = false)
     private Date beginDate;
+
+    private Date expectedEndDate;
 
     private Date closeDate;
 

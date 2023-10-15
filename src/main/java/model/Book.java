@@ -2,6 +2,8 @@ package model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Book {
     @Id
@@ -16,6 +18,9 @@ public class Book {
 
     @Column(nullable = false)
     private int quatityAvailable;
+
+    @OneToMany(mappedBy = "book")
+    private List<Rating> ratings;
 
 
     public BookData getData() {
@@ -41,4 +46,13 @@ public class Book {
     public void setQuatityAvailable(int quatityAvailable) {
         this.quatityAvailable = quatityAvailable;
     }
+
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Rating> ratings) {
+        this.ratings = ratings;
+    }
+
 }
