@@ -20,6 +20,16 @@ public class BookEvent {
 
     private Date closeDate;
 
+
+    @ManyToOne
+    @JoinColumn(name="book_id")
+    private Book book;
+
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private LibraryUser user;
+
+
     public Date getExpectedEndDate() {
         return expectedEndDate;
     }
@@ -42,6 +52,22 @@ public class BookEvent {
 
     public void setCloseDate(Date closeDate) {
         this.closeDate = closeDate;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public LibraryUser getUser() {
+        return user;
+    }
+
+    public void setUser(LibraryUser user) {
+        this.user = user;
     }
 
 }

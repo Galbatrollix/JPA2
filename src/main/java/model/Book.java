@@ -22,6 +22,9 @@ public class Book {
     @OneToMany(mappedBy = "book")
     private List<Rating> ratings;
 
+    @OneToMany(mappedBy = "book")
+    private List<BookEvent> bookEvents;
+
 
     public BookData getData() {
         return data;
@@ -54,5 +57,15 @@ public class Book {
     public void setRatings(List<Rating> ratings) {
         this.ratings = ratings;
     }
+
+    public List<BookEvent> getBookEvents() {
+        return bookEvents;
+    }
+
+    public void setBookEvents(List<BookEvent> bookEvents) {
+        this.bookEvents = bookEvents;
+    }
+
+
 
 }

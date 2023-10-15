@@ -19,6 +19,9 @@ public class LibraryUser {
     @OneToMany(mappedBy = "user")
     private List<Rating> ratings;
 
+    @OneToMany(mappedBy = "user")
+    private List<BookEvent> bookEvents;
+
 
     public String getEmail() {
         return email;
@@ -42,6 +45,14 @@ public class LibraryUser {
 
     public void setRatings(List<Rating> ratings) {
         this.ratings = ratings;
+    }
+
+    public List<BookEvent> getBookEvents() {
+        return bookEvents;
+    }
+
+    public void setBookEvents(List<BookEvent> bookEvents) {
+        this.bookEvents = bookEvents;
     }
 
 
