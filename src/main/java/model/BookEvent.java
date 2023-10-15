@@ -7,7 +7,7 @@ import java.util.Date;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="event_type", discriminatorType = DiscriminatorType.STRING)
-public class BookEvent {
+public abstract class BookEvent {
     @Id
     @GeneratedValue()
     private long id;

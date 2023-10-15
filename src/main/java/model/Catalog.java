@@ -1,8 +1,8 @@
 package model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Catalog {
@@ -11,6 +11,17 @@ public class Catalog {
     private long id;
 
     private String name;
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    private List<Book> books;
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
 
     public String getName() {
         return name;

@@ -25,6 +25,9 @@ public class Book {
     @OneToMany(mappedBy = "book")
     private List<BookEvent> bookEvents;
 
+    @ManyToMany(mappedBy = "books")
+    private List<Catalog> catalogs;
+
 
     public BookData getData() {
         return data;
@@ -67,5 +70,11 @@ public class Book {
     }
 
 
+    public List<Catalog> getCatalogs() {
+        return catalogs;
+    }
 
+    public void setCatalogs(List<Catalog> catalogs) {
+        this.catalogs = catalogs;
+    }
 }
