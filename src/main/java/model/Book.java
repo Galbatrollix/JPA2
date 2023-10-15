@@ -5,10 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-public class Book {
-    @Id
-    @GeneratedValue()
-    private long id;
+public class Book extends AbstractEntity{
 
     @Embedded
     private BookData data;

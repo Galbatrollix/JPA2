@@ -4,11 +4,7 @@ import jakarta.persistence.*;
 
 
 @Entity
-public class Rating {
-    @Id
-    @GeneratedValue()
-    private long id;
-
+public class Rating extends AbstractEntity{
     private int stars;
     private String comment;
 

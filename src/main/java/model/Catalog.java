@@ -5,11 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-public class Catalog {
-    @Id
-    @GeneratedValue()
-    private long id;
-
+public class Catalog extends AbstractEntity{
     private String name;
 
     @ManyToMany(cascade = CascadeType.PERSIST)

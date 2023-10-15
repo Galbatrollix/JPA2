@@ -5,10 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-public class LibraryUser {
-    @Id
-    @GeneratedValue()
-    private long id;
+public class LibraryUser extends AbstractEntity{
 
     @Column(nullable = false)
     private String email;
