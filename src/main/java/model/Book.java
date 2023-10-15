@@ -17,7 +17,7 @@ public class Book {
     private int quantityTotal;
 
     @Column(nullable = false)
-    private int quatityAvailable;
+    private int quantityAvailable;
 
     @OneToMany(mappedBy = "book")
     private List<Rating> ratings;
@@ -39,12 +39,12 @@ public class Book {
         this.quantityTotal = quantityTotal;
     }
 
-    public int getQuatityAvailable() {
-        return quatityAvailable;
+    public int getQuantityAvailable() {
+        return quantityAvailable;
     }
 
-    public void setQuatityAvailable(int quatityAvailable) {
-        this.quatityAvailable = quatityAvailable;
+    public void setQuantityAvailable(int quatityAvailable) {
+        this.quantityAvailable = quatityAvailable;
     }
 
     public List<Rating> getRatings() {
