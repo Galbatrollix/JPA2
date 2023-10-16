@@ -2,11 +2,13 @@ package pl.comp.prog;
 
 import controllers.BookController;
 import controllers.LibraryUserController;
+import controllers.RatingController;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import model.Book;
 import model.LibraryUser;
+import model.Rating;
 import model.Student;
 
 public class Main {
@@ -28,5 +30,11 @@ public class Main {
         LibraryUser user1 = LibraryUserController.addUserTransaction("bomba@email.com", "kapitan");
         LibraryUser user2 = LibraryUserController.addUserTransaction("abcd@email.com", "iwillbedeleted");
         LibraryUserController.deleteUserTransaction(user2);
+
+        Rating rating1 = RatingController.addRatingTransaction(5,"Comment",1,1);
+        Rating rating2 = RatingController.addRatingTransaction(4,"comment2",1,1);
+        Rating badrating1 = RatingController.addRatingTransaction(5,"Comment",99,99);
+        RatingController.deleteRatingByIdTransaction(rating1.getId());
+
     }
 }

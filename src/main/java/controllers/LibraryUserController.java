@@ -4,8 +4,6 @@ import model.LibraryUser;
 
 public class LibraryUserController extends AbstractController{
 
-    public LibraryUserController() { super(); }
-
     public static LibraryUser addUserTransaction(String email, String username) {
         LibraryUser user = new LibraryUser();
         user.setEmail(email);
@@ -16,6 +14,8 @@ public class LibraryUserController extends AbstractController{
         return user;
     }
 
+    //todo maybe add some cascading for case where we
+    // delete when there are existing events
     public static void deleteUserTransaction(LibraryUser user) {
         long userId = user.getId();
         em.getTransaction().begin();

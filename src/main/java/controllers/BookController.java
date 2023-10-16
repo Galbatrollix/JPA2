@@ -5,11 +5,6 @@ import model.BookData;
 
 public class BookController extends AbstractController {
 
-
-    public BookController() {
-        super();
-    }
-
     public static Book addBookTransaction(String title, String author, int quantity) {
         BookData bookData = new BookData();
         bookData.setAuthor(author);
@@ -24,6 +19,8 @@ public class BookController extends AbstractController {
         return book;
     }
 
+    //todo maybe add some cascading for case where we
+    // delete when there are existing events
     public static void deleteBookTransaction(Book book) {
         long bookId = book.getId();
         em.getTransaction().begin();
