@@ -5,12 +5,8 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
 public abstract class AbstractController {
+    public static EntityManager em = Persistence.createEntityManagerFactory(
+            "test").createEntityManager();
 
-    protected EntityManagerFactory entityManagerFactory;
-    protected EntityManager entityManager;
-
-    public AbstractController() {
-        this.entityManagerFactory = Persistence.createEntityManagerFactory("test");
-        this.entityManager = this.entityManagerFactory.createEntityManager();
-    }
 }
+

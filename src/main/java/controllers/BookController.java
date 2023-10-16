@@ -10,7 +10,7 @@ public class BookController extends AbstractController {
         super();
     }
 
-    public Book addBookTransaction(String title, String author, int quantity) {
+    public static Book addBookTransaction(String title, String author, int quantity) {
         BookData bookData = new BookData();
         bookData.setAuthor(author);
         bookData.setTitle(title);
@@ -18,18 +18,18 @@ public class BookController extends AbstractController {
         book.setData(bookData);
         book.setQuantityTotal(quantity);
         book.setQuantityAvailable(quantity);
-        this.entityManager.getTransaction().begin();
-        this.entityManager.persist(book);
-        this.entityManager.getTransaction().commit();
+        em.getTransaction().begin();
+        em.persist(book);
+        em.getTransaction().commit();
         return book;
     }
 
-    public void deleteBookTransaction(Book book) {
+    public static void deleteBookTransaction(Book book) {
         long bookId = book.getId();
-        this.entityManager.getTransaction().begin();
-        Book bookToDelete = this.entityManager.find(Book.class, bookId);
-        this.entityManager.remove(bookToDelete);
-        this.entityManager.getTransaction().commit();
+        em.getTransaction().begin();
+        Book bookToDelete = em.find(Book.class, bookId);
+        em.remove(bookToDelete);
+        em.getTransaction().commit();
     }
 
 

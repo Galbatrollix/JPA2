@@ -6,22 +6,22 @@ public class LibraryUserController extends AbstractController{
 
     public LibraryUserController() { super(); }
 
-    public LibraryUser addUserTransaction(String email, String username) {
+    public static LibraryUser addUserTransaction(String email, String username) {
         LibraryUser user = new LibraryUser();
         user.setEmail(email);
         user.setUsername(username);
-        this.entityManager.getTransaction().begin();
-        this.entityManager.persist(user);
-        this.entityManager.getTransaction().commit();
+        em.getTransaction().begin();
+        em.persist(user);
+        em.getTransaction().commit();
         return user;
     }
 
-    public void deleteUserTransaction(LibraryUser user) {
+    public static void deleteUserTransaction(LibraryUser user) {
         long userId = user.getId();
-        this.entityManager.getTransaction().begin();
-        LibraryUser userToDelete = this.entityManager.find(LibraryUser.class, userId);
-        this.entityManager.remove(userToDelete);
-        this.entityManager.getTransaction().commit();
+        em.getTransaction().begin();
+        LibraryUser userToDelete = em.find(LibraryUser.class, userId);
+        em.remove(userToDelete);
+        em.getTransaction().commit();
     }
 
 

@@ -21,14 +21,12 @@ public class Main {
         em.getTransaction().commit();
     }
     public static void main(String[] args) throws ClassNotFoundException {
-        BookController bookController = new BookController();
-        Book book1 = bookController.addBookTransaction("Pan Tadeusz", "A.Mickiewicz", 10);
-        Book book2 = bookController.addBookTransaction("This should be deleted", "Test", 2);
-        bookController.deleteBookTransaction(book2);
+        Book book1 = BookController.addBookTransaction("Pan Tadeusz", "A.Mickiewicz", 10);
+        Book book2 = BookController.addBookTransaction("This should be deleted", "Test", 2);
+        BookController.deleteBookTransaction(book2);
 
-        LibraryUserController libraryUserController = new LibraryUserController();
-        LibraryUser user1 = libraryUserController.addUserTransaction("bomba@email.com", "kapitan");
-        LibraryUser user2 = libraryUserController.addUserTransaction("abcd@email.com", "iwillbedeleted");
-        libraryUserController.deleteUserTransaction(user2);
+        LibraryUser user1 = LibraryUserController.addUserTransaction("bomba@email.com", "kapitan");
+        LibraryUser user2 = LibraryUserController.addUserTransaction("abcd@email.com", "iwillbedeleted");
+        LibraryUserController.deleteUserTransaction(user2);
     }
 }
