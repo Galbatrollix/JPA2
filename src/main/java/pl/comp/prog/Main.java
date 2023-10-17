@@ -27,8 +27,9 @@ public class Main {
 
         Rating rating1 = RatingController.addRatingTransaction(5,"Comment",1,1);
         Rating rating2 = RatingController.addRatingTransaction(4,"comment2",1,1);
+        Rating rating3 = RatingController.addRatingTransaction(4,"comment_to_be_deletd",1,3);
         Rating badrating1 = RatingController.addRatingTransaction(5,"Comment",99,99);
-        RatingController.deleteRatingByIdTransaction(rating1.getId());
+        RatingController.deleteRatingByIdTransaction(rating3.getId());
 
         List<Long> bookIds = new ArrayList<Long>() {{
             add(1L);
