@@ -44,5 +44,8 @@ public class Main {
 
         BookEventQueueController.addLendingTransaction(user4.getId(), book3.getId());
         BookEventQueueController.addLendingTransaction(user4.getId(), book3.getId());
+
+
+        Testing.testBookWriteskew();
     }
 }

@@ -1,6 +1,7 @@
 package controllers;
 
 
+import jakarta.persistence.LockModeType;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.From;
@@ -152,6 +153,9 @@ public class BookEventQueueController extends AbstractController {
             newLending.setBeginDate(new Date());
             newLending.setExpectedEndDate(daysFromNow(lendingDaysLimit));
             em.persist(newLending);
+
+            // forcing increment for book object
+            em.find(Book.class, activeReservation.getBook().getId(), LockModeType.OPTIMISTIC_FORCE_INCREMENT);
 
             em.getTransaction().commit();
             return newLending;
