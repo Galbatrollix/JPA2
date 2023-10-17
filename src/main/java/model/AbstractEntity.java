@@ -14,10 +14,6 @@ public abstract class AbstractEntity {
     @Version
     protected long version;
 
-    public long getVersion() {
-        return version;
-    }
-
     public long getId() {
         return id;
     }
