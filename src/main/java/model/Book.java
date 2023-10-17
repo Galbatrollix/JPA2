@@ -11,10 +11,10 @@ public class Book extends AbstractEntity{
     private BookData data;
 
     @Column(nullable = false)
-    private int quantityTotal;
+    private int quantity;
 
     @Column(nullable = false)
-    private int quantityAvailable;
+    private int eventCount;
 
     @OneToMany(mappedBy = "book")
     private List<Rating> ratings;
@@ -34,21 +34,22 @@ public class Book extends AbstractEntity{
         this.data = data;
     }
 
-    public int getQuantityTotal() {
-        return quantityTotal;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setQuantityTotal(int quantityTotal) {
-        this.quantityTotal = quantityTotal;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
-    public int getQuantityAvailable() {
-        return quantityAvailable;
+    public int getEventCount() {
+        return eventCount;
     }
 
-    public void setQuantityAvailable(int quatityAvailable) {
-        this.quantityAvailable = quatityAvailable;
+    public void setEventCount(int eventCount) {
+        this.eventCount = eventCount;
     }
+
 
     public List<Rating> getRatings() {
         return ratings;

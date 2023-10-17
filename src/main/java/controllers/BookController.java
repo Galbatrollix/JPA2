@@ -11,8 +11,8 @@ public class BookController extends AbstractController {
         bookData.setTitle(title);
         Book book = new Book();
         book.setData(bookData);
-        book.setQuantityTotal(quantity);
-        book.setQuantityAvailable(quantity);
+        book.setQuantity(quantity);
+        book.setEventCount(0);
         em.getTransaction().begin();
         em.persist(book);
         em.getTransaction().commit();
