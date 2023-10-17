@@ -1,4 +1,5 @@
 package controllers;
+
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -10,9 +11,9 @@ import model.Book;
 import model.LibraryUser;
 
 
-public class RatingController extends AbstractController{
+public class RatingController extends AbstractController {
 
-    public static Rating addRatingTransaction(int stars, String comment, long bookId, long userID){
+    public static Rating addRatingTransaction(int stars, String comment, long bookId, long userID) {
         Rating rating = new Rating();
         rating.setStars(stars);
         rating.setComment(comment);
@@ -20,9 +21,9 @@ public class RatingController extends AbstractController{
         em.getTransaction().begin();
 
         LibraryUser relevantUser = em.find(LibraryUser.class, userID, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
-        Book relevantBook = em.find(Book.class, bookId, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+        Book relevantBook = em.find(Book.class, bookId);
         //todo maybe some exception handling idk, for now I just return null on mistake
-        if (relevantBook == null || relevantUser == null){
+        if (relevantBook == null || relevantUser == null) {
             em.getTransaction().rollback();
             return null;
         }
@@ -36,9 +37,9 @@ public class RatingController extends AbstractController{
         predicates[1] = cb.equal(from.get("user").get("id"), userID);
 
         query.select(from).where(predicates);
-        try{
+        try {
             Rating ratingThatAlreadyExist = em.createQuery(query).getSingleResult();
-        }catch ( NoResultException e) {
+        } catch (NoResultException e) {
             rating.setBook(relevantBook);
             rating.setUser(relevantUser);
             em.persist(rating);
@@ -49,7 +50,7 @@ public class RatingController extends AbstractController{
         return null;
     }
 
-    public static void deleteRatingByIdTransaction(long ratingId){
+    public static void deleteRatingByIdTransaction(long ratingId) {
         em.getTransaction().begin();
 
         Rating ratingToDelete = em.find(Rating.class, ratingId);
