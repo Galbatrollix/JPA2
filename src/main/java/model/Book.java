@@ -16,10 +16,10 @@ public class Book extends AbstractEntity{
     @Column(nullable = false)
     private int eventCount;
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
     private List<Rating> ratings;
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
     private List<BookEvent> bookEvents;
 
     @ManyToMany(mappedBy = "books")

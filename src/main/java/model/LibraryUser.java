@@ -13,10 +13,10 @@ public class LibraryUser extends AbstractEntity{
     @Column(nullable = false)
     private String username;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Rating> ratings;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<BookEvent> bookEvents;
 
 

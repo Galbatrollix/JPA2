@@ -6,7 +6,7 @@ import jakarta.persistence.Persistence;
 
 public abstract class AbstractController {
     public static EntityManager em = Persistence.createEntityManagerFactory(
-            "test").createEntityManager();
+            "BaseController").createEntityManager();
 
 }
 
