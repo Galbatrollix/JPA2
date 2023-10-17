@@ -21,8 +21,7 @@ public class BookController extends AbstractController {
 
     //todo maybe add some cascading for case where we
     // delete when there are existing events
-    public static void deleteBookTransaction(Book book) {
-        long bookId = book.getId();
+    public static void deleteBookTransaction(long bookId) {
         em.getTransaction().begin();
         Book bookToDelete = em.find(Book.class, bookId);
         em.remove(bookToDelete);
