@@ -1,9 +1,6 @@
 package pl.comp.prog;
 
-import controllers.BookController;
-import controllers.CatalogController;
-import controllers.LibraryUserController;
-import controllers.RatingController;
+import controllers.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -15,7 +12,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws ClassNotFoundException {
-        Book book1 = BookController.addBookTransaction("Pan Tadeusz", "A.Mickiewicz", 10);
+        Book book1 = BookController.addBookTransaction("Pan Tadeusz", "A.Mickiewicz", 2);
         Book book2 = BookController.addBookTransaction("This should be deleted", "Test", 2);
         Book book3 = BookController.addBookTransaction("book 3", "h", 6);
         Book book4 = BookController.addBookTransaction("book 4", "h2", 4);
@@ -23,6 +20,9 @@ public class Main {
 
         LibraryUser user1 = LibraryUserController.addUserTransaction("bomba@email.com", "kapitan");
         LibraryUser user2 = LibraryUserController.addUserTransaction("abcd@email.com", "iwillbedeleted");
+        LibraryUser user3 = LibraryUserController.addUserTransaction("efgh@email.com", "gamer");
+        LibraryUser user4 = LibraryUserController.addUserTransaction("aaaaaa@email.com", "gamer2");
+
         LibraryUserController.deleteUserTransaction(user2);
 
         Rating rating1 = RatingController.addRatingTransaction(5,"Comment",1,1);
@@ -37,7 +37,10 @@ public class Main {
         }};
         CatalogController.addCatalogTransaction("Catalog1", bookIds);
 
-        Testing.testRatingRemoval();
-
+        //Testing.testRatingRemoval();
+        BookEventQueueController.addReservationTransaction(user1.getId(), book1.getId());
+        BookEventQueueController.addReservationTransaction(user3.getId(), book1.getId());
+        BookEventQueueController.addReservationTransaction(user3.getId(), book1.getId());
+        BookEventQueueController.addReservationTransaction(user4.getId(), book1.getId());
     }
 }
