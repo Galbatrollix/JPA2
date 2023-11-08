@@ -16,8 +16,7 @@ public class LibraryUserController extends AbstractController{
 
     //todo maybe add some cascading for case where we
     // delete when there are existing events
-    public static void deleteUserTransaction(LibraryUser user) {
-        long userId = user.getId();
+    public static void deleteUserTransaction(long userId) {
         em.getTransaction().begin();
         LibraryUser userToDelete = em.find(LibraryUser.class, userId);
         em.remove(userToDelete);
