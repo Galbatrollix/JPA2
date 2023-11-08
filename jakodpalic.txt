@@ -1,0 +1,4 @@
+Tę komendę w folderze projektu:
+
+docker build -t "mongo:dockerfile".
+
