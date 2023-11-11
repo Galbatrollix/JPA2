@@ -2,3 +2,15 @@ Tę komendę w folderze projektu:
 
 docker build -t "mongo:dockerfile".
 
+LUB
+
+1. Odpal dockerfile (klikajac przycisk na po lewo od peirwszej linijki)
+    WAŻNE by przed tym wejsc w Intellij w Run>Edit Configurations
+    Tam znalesc config do odpalenia tego dockerfile (prawdopodbnie nazywa sie docker/dockerfile)
+    Tam znlesć przycisk "Modify options" (w sekcji Build, po prawej tuz nad fieldem ze sciezka pliku)
+    I tam wybrac "Enable BuildKit (expermiental)"
+    Bez tego wywali nam blad przy odpalaniu dockerfile ze nie mozna odpalic komendy --chmod ((a przynajmniej mi wywalalo))
+    Poza tym w "Edit configuartiosn" w sekcji RUn mozna ustwaic Container name jaki ma byc wygenerowany (inaczaje nam wygeneruje losawi nazwe)
+2. Odpal services w docker-compose.yml
+
+
