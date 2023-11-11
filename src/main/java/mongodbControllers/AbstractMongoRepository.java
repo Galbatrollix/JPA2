@@ -16,7 +16,7 @@ import org.bson.codecs.pojo.PojoCodecProvider;
 import java.util.List;
 
 public abstract class AbstractMongoRepository implements  AutoCloseable {
-    private ConnectionString connsectionString = new ConnectionString("mongodb://localhost:27017");
+    private ConnectionString connsectionString = new ConnectionString("mongodb://localhost:27017,localhost:27018,localhost:27019/?replicaSet=replica_set_single");
     private MongoCredential credidential = MongoCredential.createCredential("admin", "admin", "adminpassword".toCharArray());
 
     private CodecRegistry pojoCodecregistery = CodecRegistries.fromProviders(PojoCodecProvider.builder()
