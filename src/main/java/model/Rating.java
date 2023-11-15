@@ -3,17 +3,14 @@ package model;
 import jakarta.persistence.*;
 
 
-@Entity
-public class Rating extends AbstractEntity{
+
+public class Rating{
     private int stars;
     private String comment;
 
-    @ManyToOne
-    @JoinColumn(name="book_id")
     private Book book;
 
-    @ManyToOne
-    @JoinColumn(name="user_id")
+
     private LibraryUser user;
 
     public int getStars() {

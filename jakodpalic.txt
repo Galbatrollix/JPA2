@@ -14,3 +14,11 @@ LUB
 2. Odpal services w docker-compose.yml
 
 
+
+### komendy
+docker ps
+docker exec -i mongodb1 /bin/bash
+
+mongosh -port 27017 --username admin --password adminpassword
+rs.status()
+

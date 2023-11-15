@@ -5,7 +5,9 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoCredential;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import model.Book;
 import org.bson.UuidRepresentation;
 import org.bson.codecs.UuidCodecProvider;
 import org.bson.codecs.configuration.CodecRegistries;
@@ -15,7 +17,7 @@ import org.bson.codecs.pojo.PojoCodecProvider;
 
 import java.util.List;
 
-public abstract class AbstractMongoRepository implements  AutoCloseable {
+public class MongoRepository {
     private ConnectionString connsectionString = new ConnectionString("mongodb://localhost:27017,localhost:27018,localhost:27019/?replicaSet=replica_set_single");
     private MongoCredential credidential = MongoCredential.createCredential("admin", "admin", "adminpassword".toCharArray());
 
@@ -26,7 +28,7 @@ public abstract class AbstractMongoRepository implements  AutoCloseable {
     private MongoClient mongoClient;
     private MongoDatabase bookDB; //TODO proper DB name
 
-    private void initDbConnection() {
+    public void initDbConnection(String dbName) {
         MongoClientSettings settings = MongoClientSettings.builder()
                 .credential(credidential)
                 .applyConnectionString(connsectionString)
@@ -38,6 +40,20 @@ public abstract class AbstractMongoRepository implements  AutoCloseable {
                 ))
                 .build();
         mongoClient = MongoClients.create(settings);
-        bookDB = mongoClient.getDatabase("bookDB");
+        bookDB = mongoClient.getDatabase(dbName);
+
+        mongoClient.listDatabaseNames().forEach(System.out::println);
+        System.out.println(bookDB);
     }
+
+    public void createBookCollection() {
+        bookDB.createCollection("books");
+    }
+
+
+    public void addBook(Book book) {
+        MongoCollection<Book> bookCollection = bookDB.getCollection("books", Book.class);
+        bookCollection.insertOne(book);
+    }
+
 }

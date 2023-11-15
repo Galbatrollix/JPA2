@@ -1,20 +1,21 @@
 package model;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Version;
 
-@MappedSuperclass
-public abstract class AbstractEntity {
-    @Id
-    @GeneratedValue()
+import org.bson.codecs.pojo.annotations.BsonCreator;
+import org.bson.codecs.pojo.annotations.BsonProperty;
+
+import java.io.Serializable;
+
+public abstract class AbstractEntity implements Serializable {
+
+    @BsonProperty("_id")
     protected long id;
-
-    @Version
-    protected long version;
 
     public long getId() {
         return id;
+    }
+
+    public AbstractEntity(long id) {
+        this.id = id;
     }
 }

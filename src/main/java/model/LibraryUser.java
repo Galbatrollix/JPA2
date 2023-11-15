@@ -4,19 +4,15 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
-@Entity
-public class LibraryUser extends AbstractEntity{
 
-    @Column(nullable = false)
+public class LibraryUser{
+
     private String email;
 
-    @Column(nullable = false)
     private String username;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Rating> ratings;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<BookEvent> bookEvents;
 
 

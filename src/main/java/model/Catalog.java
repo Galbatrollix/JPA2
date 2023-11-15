@@ -4,11 +4,10 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
-@Entity
-public class Catalog extends AbstractEntity{
+
+public class Catalog{
     private String name;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
     private List<Book> books;
 
     public List<Book> getBooks() {

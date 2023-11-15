@@ -1,29 +1,39 @@
 package model;
 
-import jakarta.persistence.*;
+
+import org.bson.codecs.pojo.annotations.BsonCreator;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import java.util.List;
 
-@Entity
 public class Book extends AbstractEntity{
 
-    @Embedded
+
     private BookData data;
 
-    @Column(nullable = false)
+    @BsonProperty("book_quantity")
     private int quantity;
 
-    @Column(nullable = false)
+    @BsonProperty("book_event_count")
     private int eventCount;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
     private List<Rating> ratings;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
     private List<BookEvent> bookEvents;
 
-    @ManyToMany(mappedBy = "books")
     private List<Catalog> catalogs;
+
+    @BsonCreator
+    public Book(@BsonProperty("_id") long id,
+                @BsonProperty("book_title") String bookTitle,
+                @BsonProperty("book_author") String bookAuthor,
+                @BsonProperty("event_count") int eventCount) {
+        super(id);
+        this.data = new BookData();
+        this.data.setTitle(bookTitle);
+        this.data.setAuthor(bookAuthor);
+        this.eventCount = eventCount;
+    }
 
 
     public BookData getData() {

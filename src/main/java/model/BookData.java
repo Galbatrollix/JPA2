@@ -3,11 +3,12 @@ package model;
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
 import jakarta.persistence.Embeddable;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
-@Embeddable
-@Access(AccessType.FIELD)
 public class BookData {
+    @BsonProperty("book_title")
     private String title;
+    @BsonProperty("book_author")
     private String author;
 
     public String getTitle() {
