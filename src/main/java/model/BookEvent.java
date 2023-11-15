@@ -4,12 +4,9 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 
-@Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="event_type", discriminatorType = DiscriminatorType.STRING)
-public class BookEvent extends AbstractEntity{
 
-    @Column(nullable = false)
+public class BookEvent{
+
     private Date beginDate;
 
     private Date expectedEndDate;
