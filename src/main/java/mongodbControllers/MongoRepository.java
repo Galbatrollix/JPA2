@@ -16,6 +16,7 @@ import org.bson.codecs.pojo.Conventions;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MongoRepository {
     private ConnectionString connsectionString = new ConnectionString("mongodb://localhost:27017,localhost:27018,localhost:27019/?replicaSet=replica_set_single");
@@ -38,9 +39,11 @@ public class MongoRepository {
                         MongoClientSettings.getDefaultCodecRegistry(),
                         pojoCodecregistery
                 ))
+                .applyToClusterSettings(builder ->
+                        builder.serverSelectionTimeout(10, TimeUnit.SECONDS))
                 .build();
         mongoClient = MongoClients.create(settings);
-        bookDB = mongoClient.getDatabase(dbName);
+        bookDB = this.mongoClient.getDatabase(dbName);
 
         mongoClient.listDatabaseNames().forEach(System.out::println);
         System.out.println(bookDB);
@@ -54,6 +57,10 @@ public class MongoRepository {
     public void addBook(Book book) {
         MongoCollection<Book> bookCollection = bookDB.getCollection("books", Book.class);
         bookCollection.insertOne(book);
+    }
+
+    public void close() {
+        mongoClient.close();
     }
 
 }

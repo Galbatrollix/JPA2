@@ -66,7 +66,9 @@ public class Main {
     public static void main(String[] args) throws ClassNotFoundException {
         MongoRepository mongoRepo = new MongoRepository();
         mongoRepo.initDbConnection("bookDB");
-//        mongoRepo.createBookCollection();
+        mongoRepo.createBookCollection();
+        mongoRepo.close();
+//
 //        Book book = new Book(0, "aaaa", "bbbb", 0);
 //        mongoRepo.addBook(book);
     }
