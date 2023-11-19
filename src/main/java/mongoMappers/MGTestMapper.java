@@ -2,6 +2,7 @@ package mongoMappers;
 
 import model.MGTestModel;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 
 public class MGTestMapper {
@@ -10,7 +11,7 @@ public class MGTestMapper {
     public static final String TEST_INT = "test_int";
 
     public static Document toMongoTest(MGTestModel testModel) {
-        Document testDocument = new Document(ID, testModel.getId()).
+        Document testDocument = new Document(ID, new ObjectId()).
                 append(TEST_STRING, testModel.getTest_string()).
                 append(TEST_INT, testModel.getTest_int());
 
@@ -19,7 +20,7 @@ public class MGTestMapper {
 
     public static MGTestModel fromMongoTest(Document testDocument) {
         MGTestModel testModel = new MGTestModel(
-                testDocument.get(ID, Long.class),
+                testDocument.get(ID, ObjectId.class),
                 testDocument.get(TEST_INT, Integer.class),
                 testDocument.get(TEST_STRING, String.class));
         return testModel;

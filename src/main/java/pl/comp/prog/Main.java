@@ -2,12 +2,14 @@ package pl.comp.prog;
 
 import com.mongodb.DocumentToDBRefTransformer;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.InsertOneResult;
 import controllers.*;
 import model.*;
 import mongoMappers.MGTestMapper;
 import mongodbControllers.MongoRepository;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,11 +76,13 @@ public class Main {
         //mongoRepo.createBookCollection();
         //mongoRepo.createTestCollection();
         MongoCollection<Document> collection  = mongoRepo.getTestCollection();
-        MGTestModel object1 = new MGTestModel(1,15,"test1");
+        MGTestModel object1 = new MGTestModel(new ObjectId(),15,"test1");
         InsertOneResult result = collection.insertOne(MGTestMapper.toMongoTest(object1));
         System.out.println(result.getInsertedId());
 
-
+        Document retreived_doc = collection.find(Filters.eq("_id", result.getInsertedId())).first();
+        MGTestModel retreived_class = MGTestMapper.fromMongoTest(retreived_doc);
+        System.out.println(retreived_class.test_int +" "+ retreived_class.test_string);
         mongoRepo.close();
 //
 //        Book book = new Book(0, "aaaa", "bbbb", 0);

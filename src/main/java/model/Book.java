@@ -3,6 +3,7 @@ package model;
 
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.bson.types.ObjectId;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class Book extends AbstractEntity{
     private List<Catalog> catalogs;
 
     @BsonCreator
-    public Book(@BsonProperty("_id") long id,
+    public Book(@BsonProperty("_id") ObjectId id,
                 @BsonProperty("book_title") String bookTitle,
                 @BsonProperty("book_author") String bookAuthor,
                 @BsonProperty("event_count") int eventCount) {

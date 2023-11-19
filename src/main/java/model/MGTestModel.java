@@ -2,18 +2,19 @@ package model;
 
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.bson.types.ObjectId;
 
 public class MGTestModel extends AbstractEntity {
     // These define automatic conversion to BSON
     @BsonProperty("test_int")
-    private int test_int;
+    public int test_int;
 
     @BsonProperty("test_string")
-    private String test_string;
+    public String test_string;
 
     // This creator defines automatic conversion FROM BSON
     @BsonCreator
-    public MGTestModel(@BsonProperty("_id") long id,
+    public MGTestModel(@BsonProperty("_id") ObjectId id,
                        @BsonProperty("test_int") int integer_param,
                        @BsonProperty("test_string") String string_param) {
         super(id);
