@@ -7,7 +7,10 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+
 import model.Book;
+import model.MGTestModel;
+import org.bson.Document;
 import org.bson.UuidRepresentation;
 import org.bson.codecs.UuidCodecProvider;
 import org.bson.codecs.configuration.CodecRegistries;
@@ -53,6 +56,13 @@ public class MongoRepository {
         bookDB.createCollection("books");
     }
 
+    public void createTestCollection(){
+        bookDB.createCollection("test");
+    }
+    public MongoCollection<Document> getTestCollection(){
+        return bookDB.getCollection("test", Document.class);
+
+    }
 
     public void addBook(Book book) {
         MongoCollection<Book> bookCollection = bookDB.getCollection("books", Book.class);

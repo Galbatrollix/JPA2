@@ -1,8 +1,13 @@
 package pl.comp.prog;
 
+import com.mongodb.DocumentToDBRefTransformer;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.result.InsertOneResult;
 import controllers.*;
 import model.*;
+import mongoMappers.MGTestMapper;
 import mongodbControllers.MongoRepository;
+import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +71,14 @@ public class Main {
     public static void main(String[] args) throws ClassNotFoundException {
         MongoRepository mongoRepo = new MongoRepository();
         mongoRepo.initDbConnection("bookDB");
-        mongoRepo.createBookCollection();
+        //mongoRepo.createBookCollection();
+        //mongoRepo.createTestCollection();
+        MongoCollection<Document> collection  = mongoRepo.getTestCollection();
+        MGTestModel object1 = new MGTestModel(1,15,"test1");
+        InsertOneResult result = collection.insertOne(MGTestMapper.toMongoTest(object1));
+        System.out.println(result.getInsertedId());
+
+
         mongoRepo.close();
 //
 //        Book book = new Book(0, "aaaa", "bbbb", 0);
