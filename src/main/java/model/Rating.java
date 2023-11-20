@@ -1,17 +1,28 @@
 package model;
 
-import jakarta.persistence.*;
 
-
+import org.bson.codecs.pojo.annotations.BsonIgnore;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
 public class Rating{
     private int stars;
+
     private String comment;
+
+    public LibraryUser getUser() {
+        return user;
+    }
+
+    public void setUser(LibraryUser user) {
+        this.user = user;
+    }
+
+    private LibraryUser user;
 
     private Book book;
 
 
-    private LibraryUser user;
+
 
     public int getStars() {
         return stars;
@@ -27,22 +38,6 @@ public class Rating{
 
     public void setComment(String comment) {
         this.comment = comment;
-    }
-
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
-    }
-
-    public LibraryUser getUser() {
-        return user;
-    }
-
-    public void setUser(LibraryUser user) {
-        this.user = user;
     }
 
 }

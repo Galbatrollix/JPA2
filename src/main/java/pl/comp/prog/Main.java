@@ -73,16 +73,16 @@ public class Main {
     public static void main(String[] args) throws ClassNotFoundException {
         MongoRepository mongoRepo = new MongoRepository();
         mongoRepo.initDbConnection("bookDB");
-        //mongoRepo.createBookCollection();
-        //mongoRepo.createTestCollection();
-        MongoCollection<Document> collection  = mongoRepo.getTestCollection();
-        MGTestModel object1 = new MGTestModel(new ObjectId(),15,"test1");
+        mongoRepo.createCollections();
+
+        MongoCollection<Document> collection = mongoRepo.getTestCollection();
+        MGTestModel object1 = new MGTestModel(new ObjectId(), 15, 14, "test1");
         InsertOneResult result = collection.insertOne(MGTestMapper.toMongoTest(object1));
         System.out.println(result.getInsertedId());
 
         Document retreived_doc = collection.find(Filters.eq("_id", result.getInsertedId())).first();
         MGTestModel retreived_class = MGTestMapper.fromMongoTest(retreived_doc);
-        System.out.println(retreived_class.test_int +" "+ retreived_class.test_string);
+        System.out.println(retreived_class.test_int + " " + retreived_class.smaller_int + " " + retreived_class.test_string);
         mongoRepo.close();
 //
 //        Book book = new Book(0, "aaaa", "bbbb", 0);

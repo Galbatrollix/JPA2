@@ -4,7 +4,7 @@ import model.Book;
 import model.BookData;
 
 public class BookController extends AbstractController {
-
+}
 //    public static Book addBookTransaction(String title, String author, int quantity) {
 //        BookData bookData = new BookData();
 //        bookData.setAuthor(author);
@@ -18,15 +18,15 @@ public class BookController extends AbstractController {
 //        em.getTransaction().commit();
 //        return book;
 //    }
-
-    //todo maybe add some cascading for case where we
-    // delete when there are existing events
-    public static void deleteBookTransaction(long bookId) {
-        em.getTransaction().begin();
-        Book bookToDelete = em.find(Book.class, bookId);
-        em.remove(bookToDelete);
-        em.getTransaction().commit();
-    }
-
-
-}
+//
+//    //todo maybe add some cascading for case where we
+//    // delete when there are existing events
+//    public static void deleteBookTransaction(long bookId) {
+//        em.getTransaction().begin();
+//        Book bookToDelete = em.find(Book.class, bookId);
+//        em.remove(bookToDelete);
+//        em.getTransaction().commit();
+//    }
+//
+//
+//}

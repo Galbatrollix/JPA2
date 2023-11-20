@@ -9,6 +9,9 @@ public class MGTestModel extends AbstractEntity {
     @BsonProperty("test_int")
     public int test_int;
 
+    @BsonProperty("smaller_int")
+    public int smaller_int;
+
     @BsonProperty("test_string")
     public String test_string;
 
@@ -16,9 +19,12 @@ public class MGTestModel extends AbstractEntity {
     @BsonCreator
     public MGTestModel(@BsonProperty("_id") ObjectId id,
                        @BsonProperty("test_int") int integer_param,
-                       @BsonProperty("test_string") String string_param) {
+                       @BsonProperty("smaller_int") int smaller_int_param,
+                       @BsonProperty("test_string") String string_param
+    ) {
         super(id);
         this.test_int = integer_param;
+        this.smaller_int = smaller_int_param;
         this.test_string = string_param;
     }
 
@@ -37,4 +43,13 @@ public class MGTestModel extends AbstractEntity {
     public void setTest_string(String test_string) {
         this.test_string = test_string;
     }
+
+    public int getSmaller_int() {
+        return smaller_int;
+    }
+
+    public void setSmaller_int(int smaller_int) {
+        this.smaller_int = smaller_int;
+    }
+
 }
