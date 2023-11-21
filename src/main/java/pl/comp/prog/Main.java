@@ -1,19 +1,8 @@
 package pl.comp.prog;
 
-import com.mongodb.DocumentToDBRefTransformer;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.result.InsertOneResult;
 import controllers.AbstractController;
 import controllers.BookController;
 import model.*;
-import mongoMappers.MGTestMapper;
-import mongodbControllers.MongoRepository;
-import org.bson.Document;
-import org.bson.types.ObjectId;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
     static Book book1;

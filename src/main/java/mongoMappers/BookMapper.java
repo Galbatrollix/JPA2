@@ -1,7 +1,6 @@
 package mongoMappers;
 
 import model.Book;
-import model.MGTestModel;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 

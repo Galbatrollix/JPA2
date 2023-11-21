@@ -10,8 +10,6 @@ import com.mongodb.client.MongoDatabase;
 
 import com.mongodb.client.model.CreateCollectionOptions;
 import com.mongodb.client.model.ValidationOptions;
-import model.Book;
-import model.MGTestModel;
 import org.bson.Document;
 import org.bson.UuidRepresentation;
 import org.bson.codecs.UuidCodecProvider;
@@ -57,8 +55,6 @@ public class MongoRepository {
     public void createCollections() {
         createBookCollection();
         createCatalogCollection();
-        // todo remove later
-        createTestCollection();
         createUserCollection();
 
     }
@@ -261,11 +257,6 @@ public class MongoRepository {
 
 
         bookDB.createCollection("test", createCollectionOptions);
-    }
-
-    public MongoCollection<Document> getTestCollection() {
-        return bookDB.getCollection("test", Document.class);
-
     }
 
     public MongoCollection<Document> getBookCollection() {

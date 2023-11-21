@@ -5,18 +5,13 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.InsertOneResult;
 import model.Book;
-import model.MGTestModel;
 import mongoMappers.BookMapper;
-import mongoMappers.MGTestMapper;
-import mongodbControllers.MongoRepository;
-import org.bson.BsonArray;
 import org.bson.BsonValue;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 public class BookController extends AbstractController {
     public static Book addNewBook(Book book) {
