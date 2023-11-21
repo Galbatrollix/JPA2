@@ -1,6 +1,7 @@
 package controllers;
 
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.InsertOneResult;
 import model.Book;
@@ -43,6 +44,17 @@ public class BookController extends AbstractController {
         MongoCollection<Document> collection = BookController.repo.getBookCollection();
         Document retreived_doc = collection.find(Filters.eq("_id", bookId)).first();
         return BookMapper.fromMongoBook(retreived_doc);
+    }
+
+    public static void DEBUGPrintAllBooks(){
+        MongoCollection<Document> collection = BookController.repo.getBookCollection();
+        MongoCursor< Document > cursor = collection.find().iterator();
+        // colors prinout cyan to find it easier
+        System.out.println("\u001B[36m");
+        while (cursor.hasNext()){
+            System.out.println(cursor.next());
+        }
+        System.out.println("\u001B[0m");
     }
 
 }
