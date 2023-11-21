@@ -110,7 +110,7 @@ public class MongoRepository {
                         {
                             $jsonSchema:{
                                 "bsonType": "object",
-                                "required": [ "title", "author", "reservation_queue", "events_active", "events_closed", "is_available_slots", "quantity", "catalog"],
+                                "required": [ "title", "author", "reservation_queue", "events_active", "events_closed", "is_available_slots", "quantity"],
                                 "properties": {
                                    "title" : {
                                        "bsonType": "string"

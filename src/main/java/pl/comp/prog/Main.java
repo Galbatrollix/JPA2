@@ -62,7 +62,7 @@ public class Main {
 
     public static void main(String[] args) throws ClassNotFoundException {
         AbstractController.attachMongoRepository();
-        //AbstractController.initMongoCollections();
+        AbstractController.initMongoCollections();
 
         Book book1 = new Book("Title5", "Author5", 5);
         Book created = BookController.addNewBook(book1);

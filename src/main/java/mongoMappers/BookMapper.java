@@ -15,6 +15,8 @@ public class BookMapper {
     public static final String EVENTS_ACTIVE = "events_active";
     public static final String SLOTS = "is_available_slots";
 
+    public static final String CATALOG = "catalog";
+
 
     public static Document toMongoBook(Book book) {
         Document bookDocument = new Document(ID, book.getId()).
