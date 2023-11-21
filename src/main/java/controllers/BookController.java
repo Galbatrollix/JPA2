@@ -44,7 +44,7 @@ public class BookController extends AbstractController {
     public static void DEBUGPrintAllBooks(){
         MongoCollection<Document> collection = BookController.repo.getBookCollection();
         MongoCursor< Document > cursor = collection.find().iterator();
-        // colors prinout cyan to find it easier
+        // colors printout cyan to find it easier
         System.out.println("\u001B[36m");
         while (cursor.hasNext()){
             System.out.println(cursor.next());

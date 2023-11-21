@@ -2,7 +2,10 @@ package pl.comp.prog;
 
 import controllers.AbstractController;
 import controllers.BookController;
+import controllers.LibraryUserController;
+import controllers.RatingController;
 import model.*;
+import org.bson.types.ObjectId;
 
 public class Main {
     static Book book1;
@@ -64,15 +67,42 @@ public class Main {
         AbstractController.attachMongoRepository();
         //AbstractController.initMongoCollections();
 
-        Book book1 = new Book("Title5", "Author5", 5);
-        Book created = BookController.addNewBook(book1);
-        System.out.println(created.getId());
+        Book book = new Book("Title5", "Author5", 5);
+        Book bookCreated = BookController.addNewBook(book);
+        System.out.println(bookCreated.getId());
 
-        Book retreived = BookController.getBook(created.getId());
-        System.out.println(created.getAuthor());
-        System.out.println(retreived.getAuthor());
+        Book bookRetrieved = BookController.getBook(bookCreated.getId());
+        System.out.println(bookCreated.getAuthor());
+        System.out.println(bookRetrieved.getAuthor());
 
         BookController.DEBUGPrintAllBooks();
+
+
+        LibraryUser user = new LibraryUser("user1", "email@email.com");
+        LibraryUser userCreated = LibraryUserController.addNewLibraryUser(user);
+        System.out.println(userCreated.getId());
+
+        LibraryUser userRetrieved = LibraryUserController.getLibraryUser(userCreated.getId());
+        System.out.println(userCreated.getUsername());
+        System.out.println(userRetrieved.getUsername());
+
+        LibraryUserController.DEBUGPrintAllUsers();
+
+
+        Rating rating = new Rating(5, "aaaa", bookCreated.getId(), userCreated.getId());
+        System.out.println(rating.getUserId());
+        Rating ratingCreated = RatingController.addNewRating(rating);
+        System.out.println(ratingCreated.getId());
+        System.out.println(ratingCreated.getUserId());
+
+        Rating ratingRetrieved = RatingController.getRating(ratingCreated.getId());
+        System.out.println(ratingRetrieved.getComment());
+        System.out.println(ratingRetrieved.getComment());
+
+        LibraryUserController.DEBUGPrintAllUsers();
+
+
+
 
 
         AbstractController.closeMongoRepository();
