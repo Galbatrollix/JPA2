@@ -16,15 +16,35 @@ public class Book extends AbstractEntity {
     private String title;
     private String author;
 
-    public Book(ObjectId id,
+    public Book(
                 String bookTitle,
                 String bookAuthor,
-                int quantity) {
+                int quantity,
+                ObjectId id) {
         super(id);
         this.title = bookTitle;
         this.author = bookAuthor;
         this.quantity = quantity;
 
+    }
+
+    public Book(
+            String bookTitle,
+            String bookAuthor,
+            int quantity) {
+        super(null);
+        this.title = bookTitle;
+        this.author = bookAuthor;
+        this.quantity = quantity;
+
+    }
+
+
+    public Book(Book book){
+        super(book.id);
+        this.title = book.title;
+        this.author = book.author;
+        this.quantity = book.quantity;
     }
 
 

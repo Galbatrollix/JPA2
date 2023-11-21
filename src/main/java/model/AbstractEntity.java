@@ -15,6 +15,10 @@ public abstract class AbstractEntity {
         return id;
     }
 
+    public void setId(ObjectId id){
+        this.id = id;
+    }
+
     public AbstractEntity(ObjectId id) {
         this.id = id;
     }

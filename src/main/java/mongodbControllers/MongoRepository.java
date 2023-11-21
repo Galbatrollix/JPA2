@@ -153,48 +153,60 @@ public class MongoRepository {
                                        "bsonType": "string"
                                    },
                                    "reservation_queue":{
-                                       "bsonType": "object",
-                                       "required": ["begin_date", "expected_end_date"],
-                                       "properties": {
-                                            "begin_date": {
-                                                "bsonType": "date"
-                                            },
-                                            "expected_end_date": {
-                                                "bsonType": "date"
-                                            }
-                                       }
+                                       "bsonType": "array",
+                                       "uniqueItems": true,
+                                       "items": {
+                                           "bsonType": "object",
+                                           "required": ["begin_date", "expected_end_date"],
+                                           "properties": {
+                                                "begin_date": {
+                                                    "bsonType": "date"
+                                                },
+                                                "expected_end_date": {
+                                                    "bsonType": "date"
+                                                }
+                                           }
+                                      }
                                    },
                                    "events_active":{
-                                       "bsonType": "object",
-                                       "required": ["begin_date", "expected_end_date", "_clazz"],
-                                       "properties": {
-                                            "begin_date": {
-                                                "bsonType": "date"
-                                            },
-                                            "expected_end_date": {
-                                                "bsonType": "date"
-                                            },
-                                            "_clazz": {
-                                                "bsonType": "string",
-                                                "enum": ["lending", "reservation"]
-                                            }
+                                       "bsonType": "array",
+                                       "uniqueItems": true,
+                                       "items": {
+                                           "bsonType": "object",
+                                           "required": ["begin_date", "expected_end_date", "_clazz"],
+                                           "properties": {
+                                                "begin_date": {
+                                                    "bsonType": "date"
+                                                },
+                                                "expected_end_date": {
+                                                    "bsonType": "date"
+                                                },
+                                                "_clazz": {
+                                                    "bsonType": "string",
+                                                    "enum": ["lending", "reservation"]
+                                                }
+                                           }
                                        }
                                    },
                                    
                                    "events_closed":{
-                                       "bsonType": "object",
-                                       "required": ["begin_date", "expected_end_date", "_clazz"],
-                                       "properties": {
-                                            "begin_date": {
-                                                "bsonType": "date"
-                                            },
-                                            "expected_end_date": {
-                                                "bsonType": "date"
-                                            },
-                                            "_clazz": {
-                                                "bsonType": "string",
-                                                "enum": ["lending", "reservation"]
-                                            }
+                                       "bsonType": "array",
+                                       "uniqueItems": true,
+                                       "items": {
+                                           "bsonType": "object",
+                                           "required": ["begin_date", "expected_end_date", "_clazz"],
+                                           "properties": {
+                                                "begin_date": {
+                                                    "bsonType": "date"
+                                                },
+                                                "expected_end_date": {
+                                                    "bsonType": "date"
+                                                },
+                                                "_clazz": {
+                                                    "bsonType": "string",
+                                                    "enum": ["lending", "reservation"]
+                                                }
+                                           }
                                        }
                                    },
                                    
@@ -215,6 +227,8 @@ public class MongoRepository {
                                 
                            }
                         }"""));
+
+
 
         CreateCollectionOptions createCollectionOptions = new CreateCollectionOptions()
                 .validationOptions(validationOptions);

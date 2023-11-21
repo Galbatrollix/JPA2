@@ -1,12 +1,30 @@
 package controllers;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
+
+import mongodbControllers.MongoRepository;
+
 
 public abstract class AbstractController {
-    public static EntityManager em = Persistence.createEntityManagerFactory(
-            "BaseController").createEntityManager();
+    protected static MongoRepository repo;
+
+
+    public static void attachMongoRepository(){
+        MongoRepository mongoRepo = new MongoRepository();
+        mongoRepo.initDbConnection("bookDB");
+
+        AbstractController.repo = mongoRepo;
+    }
+
+    public static  void initMongoCollections(){
+        repo.createCollections();
+    }
+
+    public static void closeMongoRepository(){
+        AbstractController.repo.close();
+
+    }
+
+
 
 }
 
