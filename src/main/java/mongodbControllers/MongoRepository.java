@@ -54,38 +54,8 @@ public class MongoRepository {
 
     public void createCollections() {
         createBookCollection();
-        createCatalogCollection();
         createUserCollection();
 
-    }
-
-    private void createCatalogCollection() {
-        ValidationOptions validationOptions = new ValidationOptions().validator(
-                Document.parse("""
-                        {
-                            $jsonSchema:{
-                                "bsonType": "object",
-                                "required": [ "name", "book_ids" ],
-                                "properties": {
-                                   "name" : {
-                                       "bsonType": "string"
-                                   },
-                                   "book_ids": {
-                                       "bsonType": "array",
-                                       "uniqueItems": true,
-                                       items: {
-                                            "bsonType": "objectId"
-                                       
-                                       }
-                                   
-                                   }
-                                }
-                            }
-                        }"""));
-        CreateCollectionOptions createCollectionOptions = new CreateCollectionOptions()
-                .validationOptions(validationOptions);
-
-        bookDB.createCollection("catalogs", createCollectionOptions);
     }
 
     private void createUserCollection() {
@@ -140,7 +110,7 @@ public class MongoRepository {
                         {
                             $jsonSchema:{
                                 "bsonType": "object",
-                                "required": [ "title", "author", "reservation_queue", "events_active", "events_closed", "is_available_slots", "quantity"],
+                                "required": [ "title", "author", "reservation_queue", "events_active", "events_closed", "is_available_slots", "quantity", "catalog"],
                                 "properties": {
                                    "title" : {
                                        "bsonType": "string"
@@ -217,8 +187,20 @@ public class MongoRepository {
                                    
                                    "quantity":{
                                       "bsonType": "int",
-                                            "minimum": 1
-                                  }
+                                      "minimum": 1
+                                   }
+                                  
+                                   "catalog":{
+                                       "bsonType": "object",
+                                       "required" : ["name"],
+                                       "properties":{
+                                            "name":{
+                                                "bsonType": "string"
+                                            }
+                                           
+                                       }
+                                   }
+                                  
                                 }
                                 
                            }
@@ -232,32 +214,6 @@ public class MongoRepository {
 
     }
 
-    private void createTestCollection() {
-        ValidationOptions validationOptions = new ValidationOptions().validator(
-                Document.parse("""
-                        {
-                            $jsonSchema:{
-                                "bsonType": "object",
-                                "required": [ "test_string", "test_int", "smaller_int" ],
-                                "properties": {
-                                   "test_string" : {
-                                       "bsonType": "string"
-                                   },
-                                   "test_int": {
-                                       "bsonType": "int"
-                                   },
-                                   "smaller_int": {
-                                       "bsonType": "int"
-                                   }
-                                }
-                            }
-                        }"""));
-        CreateCollectionOptions createCollectionOptions = new CreateCollectionOptions()
-                .validationOptions(validationOptions);
-
-
-        bookDB.createCollection("test", createCollectionOptions);
-    }
 
     public MongoCollection<Document> getBookCollection() {
         return bookDB.getCollection("books", Document.class);
