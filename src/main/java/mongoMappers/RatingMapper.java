@@ -9,7 +9,7 @@ public class RatingMapper {
     public static final String ID = "_id";
     public static final String RATING_STARS = "stars";
     public static final String RATING_COMMENT = "comment";
-    public static final String RATING_BOOK_ID = "bookId";
+    public static final String RATING_BOOK_ID = "book_id";
 
 
 
