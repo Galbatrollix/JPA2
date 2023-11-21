@@ -1,8 +1,5 @@
 package controllers;
 
-import model.Book;
-import model.BookData;
-
 public class BookController extends AbstractController {
 }
 //    public static Book addBookTransaction(String title, String author, int quantity) {

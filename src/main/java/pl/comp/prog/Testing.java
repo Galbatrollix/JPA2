@@ -1,14 +1,5 @@
 package pl.comp.prog;
 
-import controllers.BookController;
-import controllers.LibraryUserController;
-import jakarta.persistence.*;
-import model.Book;
-import model.BookData;
-import model.LibraryUser;
-import model.Rating;
-import org.hibernate.annotations.OptimisticLock;
-
 
 public class Testing {
 

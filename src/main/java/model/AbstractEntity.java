@@ -7,9 +7,8 @@ import org.bson.types.ObjectId;
 
 import java.io.Serializable;
 
-public abstract class AbstractEntity implements Serializable {
+public abstract class AbstractEntity {
 
-    @BsonProperty("_id")
     protected ObjectId id;
 
     public ObjectId getId() {

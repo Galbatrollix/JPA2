@@ -144,12 +144,12 @@ public class MongoRepository {
                         {
                             $jsonSchema:{
                                 "bsonType": "object",
-                                "required": [ "book_title", "book_author", "reservation_queue", "events_active", "events_closed", "is_available_slots", "quantity"],
+                                "required": [ "title", "author", "reservation_queue", "events_active", "events_closed", "is_available_slots", "quantity"],
                                 "properties": {
-                                   "book_title" : {
+                                   "title" : {
                                        "bsonType": "string"
                                    },
-                                   "book_author" : {
+                                   "author" : {
                                        "bsonType": "string"
                                    },
                                    "reservation_queue":{
@@ -252,6 +252,20 @@ public class MongoRepository {
     public MongoCollection<Document> getTestCollection() {
         return bookDB.getCollection("test", Document.class);
 
+    }
+
+    public MongoCollection<Document> getBookCollection() {
+        return bookDB.getCollection("books", Document.class);
+
+    }
+
+    public MongoCollection<Document> getCatalogCollection() {
+        return bookDB.getCollection("catalogs", Document.class);
+
+    }
+
+    public MongoCollection<Document> getUserCollection() {
+        return bookDB.getCollection("users", Document.class);
     }
 
     public void close() {
