@@ -30,14 +30,14 @@ public class BookController extends AbstractController {
 
 
         Book result_book = new Book(book);
-        result_book.setId(bookDoc.getObjectId("_id"));
+        result_book.setId(bookDoc.getObjectId(BookMapper.ID));
         return result_book;
 
     }
 
     public static Book getBook(ObjectId bookId){
         MongoCollection<Document> collection = BookController.repo.getBookCollection();
-        Document retreived_doc = collection.find(Filters.eq("_id", bookId)).first();
+        Document retreived_doc = collection.find(Filters.eq(BookMapper.ID, bookId)).first();
         return BookMapper.fromMongoBook(retreived_doc);
     }
 

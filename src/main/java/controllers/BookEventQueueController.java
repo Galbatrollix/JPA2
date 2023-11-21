@@ -1,32 +1,112 @@
 package controllers;
 
 
-import jakarta.persistence.LockModeType;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.From;
-import jakarta.persistence.criteria.Predicate;
-import model.*;
+import com.mongodb.ReadConcern;
+import com.mongodb.ReadPreference;
+import com.mongodb.TransactionOptions;
+import com.mongodb.WriteConcern;
+import com.mongodb.client.*;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import com.mongodb.client.model.Filters;
+import model.*;
+import mongoMappers.BookEventMapper;
+import mongoMappers.BookMapper;
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
+import java.util.*;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class BookEventQueueController extends AbstractController {
 
-
+    private static String uri = "mongodb://localhost:27017,localhost:27018,localhost:27019/?replicaSet=replica_set_single";
 
     private static final int reservationDaysLimit = 7;
     private static final int lendingDaysLimit = 14;
 
-//    private static Date daysFromNow(int days) {
-//        Date date = new Date();
-//        Calendar cal = Calendar.getInstance();
-//        cal.setTime(date);
-//        cal.add(Calendar.DATE, days);
-//        return cal.getTime();
-//
-//    }
+    private static Date daysFromNow(int days) {
+        Date date = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, days);
+        return cal.getTime();
+
+    }
+
+    public static BookEvent addReservationTransaction(ObjectId userId, ObjectId bookId){
+        MongoClient client  = MongoClients.create(uri);
+
+        ClientSession session = client.startSession();
+
+        TransactionOptions txnOptions = TransactionOptions.builder()
+                .readPreference(ReadPreference.primary())
+                .readConcern(ReadConcern.LOCAL)
+                .writeConcern(WriteConcern.MAJORITY)
+                .build();
+
+        TransactionBody<Document> txnBody = new TransactionBody<>() {
+            @Override
+            public Document execute() {
+                MongoCollection<Document> userCollection = repo.getUserCollection();
+                MongoCollection<Document> bookCollection = repo.getBookCollection();
+
+                // todo check if user of this id even exists if not, throw error
+                //Document doc = userCollection.find(session, Filters.eq());
+
+
+                Document bookDoc = bookCollection.find(session, Filters.eq(BookMapper.ID, bookId)).first();
+                if (bookDoc == null){
+                    throw new RuntimeException("Book doesn't exist");
+                }
+
+                ArrayList<Document> queue = (ArrayList<Document>)bookDoc.get(BookMapper.RESERVATION_QUEUE);
+                ArrayList<Document> activeEvents = (ArrayList<Document>)bookDoc.get(BookMapper.EVENTS_ACTIVE);
+
+                for (Document document:queue){
+                    if (document.get(BookEventMapper.USER_ID, ObjectId.class).equals(userId)){
+                        throw new RuntimeException("Pending reservation for this user for this book already exists.");
+                    }
+                }
+                for (Document document:activeEvents){
+                    if (document.get(BookEventMapper.USER_ID, ObjectId.class).equals(userId)){
+                        throw new RuntimeException("Active event for this user for this book already exists.");
+                    }
+                }
+
+
+                ArrayList<Integer> slots = (ArrayList<Integer>)bookDoc.get(BookMapper.SLOTS);
+                int available_count = slots.stream().reduce(0, Integer::sum);
+
+                if (available_count == 0) {
+                    // add a reservation in the queue
+                }else{
+                    // add a reservation to actives
+                    // find a 1 in the array and decrement it
+                }
+
+
+
+
+
+                return new Document();
+            }
+        };
+
+
+
+        try {
+            Document reservation = session.withTransaction(txnBody, txnOptions);
+            session.close();
+            return BookEventMapper.fromMongoBookEvent(reservation);
+
+        } catch (RuntimeException e) {
+            session.close();
+        }
+
+        return  null;
+    }
+
 //
 //
 //    public static Reservation addReservationTransaction(long userId, long bookId) {
@@ -34,7 +114,7 @@ public class BookEventQueueController extends AbstractController {
 //        CriteriaBuilder cb = em.getCriteriaBuilder();
 //        CriteriaQuery<Long> query = cb.createQuery(Long.class);
 //        From<BookEvent, BookEvent> from = query.from(BookEvent.class);
-//        // todo switch named attributs for metamodel implementation if u have time
+//
 //
 //        Predicate[] predicates = new Predicate[3];
 //        predicates[0] = cb.equal(from.get("book").get("id"), bookId);

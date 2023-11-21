@@ -1,6 +1,6 @@
 package model;
 
-import jakarta.persistence.*;
+import mongoMappers.BookEventMapper;
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
@@ -8,21 +8,21 @@ import org.bson.types.ObjectId;
 import java.util.Date;
 
 
-@BsonDiscriminator(key = "_clazz")
+@BsonDiscriminator(key = BookEventMapper.CLASS_DISCRIMINATOR)
 public class BookEvent extends AbstractEntity{
-    @BsonProperty("begin_date")
+    @BsonProperty(BookEventMapper.BEGIN)
     private Date beginDate;
 
-    @BsonProperty("expected_end_date")
+    @BsonProperty(BookEventMapper.EXPECTED_END)
     private Date expectedEndDate;
 
-    @BsonProperty("close_date")
+    @BsonProperty(BookEventMapper.CLOSE)
     private Date closeDate;
 
-    public BookEvent(@BsonProperty("_id") ObjectId id,
-                     @BsonProperty("begin_date") Date beginDate,
-                     @BsonProperty("expected_end_date") Date expectedEndDate,
-                     @BsonProperty("close_date") Date closeDate) {
+    public BookEvent(@BsonProperty(BookEventMapper.ID) ObjectId id,
+                     @BsonProperty(BookEventMapper.BEGIN) Date beginDate,
+                     @BsonProperty(BookEventMapper.EXPECTED_END) Date expectedEndDate,
+                     @BsonProperty(BookEventMapper.CLOSE) Date closeDate) {
         super(id);
         this.beginDate = beginDate;
         this.expectedEndDate = expectedEndDate;

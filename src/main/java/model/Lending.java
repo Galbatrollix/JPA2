@@ -1,6 +1,7 @@
 package model;
 
 
+import mongoMappers.BookEventMapper;
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
@@ -8,12 +9,12 @@ import org.bson.types.ObjectId;
 import java.util.Date;
 
 
-@BsonDiscriminator(key="_clazz", value = "lending")
+@BsonDiscriminator(key=BookEventMapper.CLASS_DISCRIMINATOR, value = BookEventMapper.LENDING_DISCRIMINATOR)
 public class Lending extends BookEvent {
-    public Lending(@BsonProperty("_id") ObjectId id,
-                       @BsonProperty("begin_date") Date beginDate,
-                       @BsonProperty("expected_end_date") Date expectedEndDate,
-                       @BsonProperty("close_date") Date closeDate) {
+    public Lending(@BsonProperty(BookEventMapper.ID) ObjectId id,
+                   @BsonProperty(BookEventMapper.BEGIN) Date beginDate,
+                   @BsonProperty(BookEventMapper.EXPECTED_END) Date expectedEndDate,
+                   @BsonProperty(BookEventMapper.CLOSE) Date closeDate) {
         super(id, beginDate, expectedEndDate, closeDate);
 
     }
