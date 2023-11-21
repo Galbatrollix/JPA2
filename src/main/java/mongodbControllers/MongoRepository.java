@@ -79,6 +79,7 @@ public class MongoRepository {
                                             "bsonType": "object",
                                             "required": [ "stars", "comment", "book_id" ],
                                             "properties": {
+                                                "_id": {  "bsonType": "objectId" },
                                                 "stars" : {
                                                     "bsonType": "int"
                                                 },

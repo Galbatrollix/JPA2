@@ -1,19 +1,41 @@
 package model;
 
 import jakarta.persistence.*;
+import org.bson.types.ObjectId;
 
 import java.util.List;
 
 
-public class LibraryUser{
+public class LibraryUser extends AbstractEntity{
 
     private String email;
 
     private String username;
 
-    private List<Rating> ratings;
 
-    private List<BookEvent> bookEvents;
+    public LibraryUser(
+                        String username,
+                        String email,
+                        ObjectId id) {
+        super(id);
+        this.username = username;
+        this.email = email;
+    }
+
+    public LibraryUser(
+            String username,
+            String email) {
+        super(null);
+        this.username = username;
+        this.email = email;
+    }
+
+    public LibraryUser(LibraryUser user){
+        super(user.id);
+        this.username = user.username;
+        this.email = user.email;
+    }
+
 
 
     public String getEmail() {
@@ -32,21 +54,6 @@ public class LibraryUser{
         this.username = username;
     }
 
-    public List<Rating> getRatings() {
-        return ratings;
-    }
-
-    public void setRatings(List<Rating> ratings) {
-        this.ratings = ratings;
-    }
-
-    public List<BookEvent> getBookEvents() {
-        return bookEvents;
-    }
-
-    public void setBookEvents(List<BookEvent> bookEvents) {
-        this.bookEvents = bookEvents;
-    }
 
 
 }
