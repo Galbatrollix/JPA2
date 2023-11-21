@@ -123,13 +123,20 @@ public class MongoRepository {
                                        "uniqueItems": true,
                                        "items": {
                                            "bsonType": "object",
-                                           "required": ["begin_date", "expected_end_date"],
+                                           "required": ["_clazz", "begin_date", "expected_end_date", "user_id"],
                                            "properties": {
                                                 "begin_date": {
                                                     "bsonType": "date"
                                                 },
                                                 "expected_end_date": {
                                                     "bsonType": "date"
+                                                },
+                                                "_clazz": {
+                                                    "bsonType": "string",
+                                                    "enum": ["reservation"]
+                                                },
+                                                "user_id":{
+                                                    "bsonType": "objectId"
                                                 }
                                            }
                                       }
@@ -139,7 +146,7 @@ public class MongoRepository {
                                        "uniqueItems": true,
                                        "items": {
                                            "bsonType": "object",
-                                           "required": ["begin_date", "expected_end_date", "_clazz"],
+                                           "required": ["_clazz", "begin_date", "expected_end_date", "user_id"],
                                            "properties": {
                                                 "begin_date": {
                                                     "bsonType": "date"
@@ -150,6 +157,9 @@ public class MongoRepository {
                                                 "_clazz": {
                                                     "bsonType": "string",
                                                     "enum": ["lending", "reservation"]
+                                                },
+                                                "user_id":{
+                                                    "bsonType": "objectId"
                                                 }
                                            }
                                        }
@@ -160,7 +170,7 @@ public class MongoRepository {
                                        "uniqueItems": true,
                                        "items": {
                                            "bsonType": "object",
-                                           "required": ["begin_date", "expected_end_date", "_clazz"],
+                                           "required": ["_clazz", "begin_date", "expected_end_date", "close_date", "user_id"],
                                            "properties": {
                                                 "begin_date": {
                                                     "bsonType": "date"
@@ -168,9 +178,17 @@ public class MongoRepository {
                                                 "expected_end_date": {
                                                     "bsonType": "date"
                                                 },
+                                                
+                                                "close_date":{
+                                                    "bsonType": "date"
+                                                },
+                                                
                                                 "_clazz": {
                                                     "bsonType": "string",
                                                     "enum": ["lending", "reservation"]
+                                                },
+                                                "user_id":{
+                                                    "bsonType": "objectId"
                                                 }
                                            }
                                        }
@@ -220,12 +238,8 @@ public class MongoRepository {
 
     }
 
-    public MongoCollection<Document> getCatalogCollection() {
-        return bookDB.getCollection("catalogs", Document.class);
-
-    }
-
     public MongoCollection<Document> getUserCollection() {
+
         return bookDB.getCollection("users", Document.class);
     }
 

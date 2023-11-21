@@ -4,6 +4,8 @@ import model.Book;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import java.util.Date;
+
 public class BookMapper {
     public static final String ID = "_id";
     public static final String BOOK_AUTHOR = "author";
@@ -27,12 +29,12 @@ public class BookMapper {
         return bookDocument;
     }
 
-    public static Book fromMongoBook(Document testDocument) {
+    public static Book fromMongoBook(Document bookDocument) {
         Book book = new Book(
-                testDocument.get(BOOK_TITLE, String.class),
-                testDocument.get(BOOK_AUTHOR, String.class),
-                testDocument.get(BOOK_QUANTITY, Integer.class),
-                testDocument.get(ID, ObjectId.class));
+                bookDocument.get(BOOK_TITLE, String.class),
+                bookDocument.get(BOOK_AUTHOR, String.class),
+                bookDocument.get(BOOK_QUANTITY, Integer.class),
+                bookDocument.get(ID, ObjectId.class));
         return book;
     }
 }
