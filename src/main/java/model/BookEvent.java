@@ -7,26 +7,51 @@ import org.bson.types.ObjectId;
 
 import java.util.Date;
 
-
-@BsonDiscriminator(key = BookEventMapper.CLASS_DISCRIMINATOR)
 public class BookEvent extends AbstractEntity{
-    @BsonProperty(BookEventMapper.BEGIN)
+
     private Date beginDate;
 
-    @BsonProperty(BookEventMapper.EXPECTED_END)
     private Date expectedEndDate;
 
-    @BsonProperty(BookEventMapper.CLOSE)
     private Date closeDate;
 
-    public BookEvent(@BsonProperty(BookEventMapper.ID) ObjectId id,
-                     @BsonProperty(BookEventMapper.BEGIN) Date beginDate,
-                     @BsonProperty(BookEventMapper.EXPECTED_END) Date expectedEndDate,
-                     @BsonProperty(BookEventMapper.CLOSE) Date closeDate) {
+    private ObjectId userId;
+    private ObjectId bookId;
+
+    public BookEvent(ObjectId id,
+                     Date beginDate,
+                     Date expectedEndDate,
+                     Date closeDate,
+                     ObjectId bookId,
+                     ObjectId userId) {
         super(id);
         this.beginDate = beginDate;
         this.expectedEndDate = expectedEndDate;
         this.closeDate = closeDate;
+        this.bookId = bookId;
+        this.userId = userId;
+    }
+
+    public BookEvent(Date beginDate,
+                     Date expectedEndDate,
+                     Date closeDate,
+                     ObjectId bookId,
+                     ObjectId userId) {
+        super(null);
+        this.beginDate = beginDate;
+        this.expectedEndDate = expectedEndDate;
+        this.closeDate = closeDate;
+        this.bookId = bookId;
+        this.userId = userId;
+    }
+
+    public BookEvent(BookEvent bookEvent) {
+        super(bookEvent.id);
+        this.beginDate = bookEvent.beginDate;
+        this.expectedEndDate = bookEvent.expectedEndDate;
+        this.closeDate = bookEvent.closeDate;
+        this.bookId = bookEvent.bookId;
+        this.userId = bookEvent.userId;
     }
 
 
@@ -55,4 +80,19 @@ public class BookEvent extends AbstractEntity{
     }
 
 
+    public ObjectId getUserId() {
+        return userId;
+    }
+
+    public void setUserId(ObjectId userId) {
+        this.userId = userId;
+    }
+
+    public ObjectId getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(ObjectId bookId) {
+        this.bookId = bookId;
+    }
 }
