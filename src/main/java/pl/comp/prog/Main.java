@@ -1,9 +1,6 @@
 package pl.comp.prog;
 
-import controllers.AbstractController;
-import controllers.BookController;
-import controllers.LibraryUserController;
-import controllers.RatingController;
+import controllers.*;
 import model.*;
 import org.bson.types.ObjectId;
 
@@ -51,14 +48,14 @@ public class Main {
 
     }
 
-//    public static void createExampleCatalog() {
-//        List<Long> bookIds = new ArrayList<Long>() {{
-//            add(1L);
-//            add(2L);
-//            add(3L);
-//        }};
-//        CatalogController.addCatalogTransaction("Catalog1", bookIds);
-//    }
+    public static void createExampleCatalog() {
+
+        Catalog catalog1 = CatalogController.addNewCatalog(new Catalog("Catalog1", book1.getId()));
+        Catalog catalogToDelete = CatalogController.addNewCatalog(new Catalog("Catalog to delete", book2.getId()));
+        BookController.DEBUGPrintAllBooks();
+        CatalogController.deleteCatalog(catalogToDelete.getId());
+        BookController.DEBUGPrintAllBooks();
+    }
 
     public static void createExampleBookEvents() {
 //        Reservation rv1 = BookEventQueueController.addReservationTransaction(user1.getId(), book1.getId());
@@ -80,6 +77,7 @@ public class Main {
         createExampleBooks();
         createExampleUsers();
         createExampleRatings();
+        createExampleCatalog();
 
 
         AbstractController.closeMongoRepository();

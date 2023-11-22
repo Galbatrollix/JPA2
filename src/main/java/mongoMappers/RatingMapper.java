@@ -1,6 +1,5 @@
 package mongoMappers;
 
-import model.LibraryUser;
 import model.Rating;
 import org.bson.Document;
 import org.bson.types.ObjectId;

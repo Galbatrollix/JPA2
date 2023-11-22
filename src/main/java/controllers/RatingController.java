@@ -14,11 +14,8 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.From;
 import jakarta.persistence.criteria.Predicate;
 import model.Rating;
-import model.Book;
-import model.LibraryUser;
 import mongoMappers.LibraryUserMapper;
 import mongoMappers.RatingMapper;
-import org.bson.BsonValue;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -33,9 +30,6 @@ public class RatingController extends AbstractController {
         Bson filterBookId = Filters.eq(RatingMapper.RATING_BOOK_ID, rating.getBookId());
         Bson filterUser = Filters.and(Filters.eq("_id", rating.getUserId()), Filters.elemMatch(LibraryUserMapper.RATINGS, filterBookId));
         Document userDoc = userCollection.find(filterUser).first();
-        System.out.println(rating.getComment());
-        System.out.println(rating.getUserId());
-        System.out.println(userDoc);
         return userDoc != null;
     }
     public static Rating addNewRating(Rating rating) {
@@ -46,7 +40,6 @@ public class RatingController extends AbstractController {
         }
         MongoCollection<Document> userCollection = RatingController.repo.getUserCollection();
 
-        //TODO add check if the rating for given book/user already exists
         Document ratingDoc = RatingMapper.toMongoRating(rating);
         ratingDoc.put(RatingMapper.ID, new ObjectId());
 
@@ -82,7 +75,6 @@ public class RatingController extends AbstractController {
     }
 
     public static void deleteRating(ObjectId ratingId) {
-        System.out.println("deleteRating");
         MongoCollection<Document> userCollection = RatingController.repo.getUserCollection();
         Bson filterRating = Filters.eq("_id", ratingId);
         Bson filter = Filters.elemMatch(LibraryUserMapper.RATINGS, filterRating);
