@@ -1,4 +1,4 @@
-package mongodbControllers;
+package mongodbRepo;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;

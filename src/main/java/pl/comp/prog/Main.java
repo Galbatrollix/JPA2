@@ -57,18 +57,6 @@ public class Main {
         BookController.DEBUGPrintAllBooks();
     }
 
-    public static void createExampleBookEvents() {
-//        Reservation rv1 = BookEventQueueController.addReservationTransaction(user1.getId(), book1.getId());
-//        Reservation rv2 = BookEventQueueController.addReservationTransaction(user2.getId(), book1.getId());
-//        Reservation rv3_ = BookEventQueueController.addReservationTransaction(user2.getId(), book1.getId());
-//        Reservation rv4 = BookEventQueueController.addReservationTransaction(user3.getId(), book1.getId());
-//        Reservation rv5 = BookEventQueueController.addReservationTransaction(user4.getId(), book1.getId());
-//        BookEventQueueController.deleteEventByIdTransaction(rv2.getId());
-//        BookEventQueueController.addLendingTransaction(user3.getId(), book1.getId());
-//
-//        BookEventQueueController.addLendingTransaction(user3.getId(), book3.getId());
-//        BookEventQueueController.addLendingTransaction(user3.getId(), book3.getId());
-    }
 
     public static void main(String[] args) throws ClassNotFoundException {
         AbstractController.attachMongoRepository();
