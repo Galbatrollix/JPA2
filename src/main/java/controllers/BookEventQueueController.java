@@ -8,15 +8,17 @@ import com.mongodb.WriteConcern;
 import com.mongodb.client.*;
 
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 import model.*;
 import mongoMappers.BookEventMapper;
 import mongoMappers.BookMapper;
+import mongoMappers.LibraryUserMapper;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import java.util.*;
 
-import static com.mongodb.client.model.Filters.eq;
 
 public class BookEventQueueController extends AbstractController {
 
@@ -34,78 +36,138 @@ public class BookEventQueueController extends AbstractController {
 
     }
 
-    public static BookEvent addReservationTransaction(ObjectId userId, ObjectId bookId){
-        MongoClient client  = MongoClients.create(uri);
+    public static Reservation addReservationTransaction(ObjectId userId, ObjectId bookId){
+        Reservation reservationToAdd = new Reservation(new Date(), null, null, bookId, userId);
+        MongoCollection<Document> bookCollection = BookEventQueueController.repo.getBookCollection();
+        MongoCollection<Document> userCollection = BookEventQueueController.repo.getUserCollection();
 
-        ClientSession session = client.startSession();
+        //check for book and user
+        Bson filterBook = Filters.eq("_id", bookId);
+        Bson filterUser = Filters.eq("_id", userId);
+        Document relevantBookDoc = bookCollection.find(filterBook).first();
+        Document relevantUserDoc = userCollection.find(filterUser).first();
 
-        TransactionOptions txnOptions = TransactionOptions.builder()
-                .readPreference(ReadPreference.primary())
-                .readConcern(ReadConcern.LOCAL)
-                .writeConcern(WriteConcern.MAJORITY)
-                .build();
-
-        TransactionBody<Document> txnBody = new TransactionBody<>() {
-            @Override
-            public Document execute() {
-                MongoCollection<Document> userCollection = repo.getUserCollection();
-                MongoCollection<Document> bookCollection = repo.getBookCollection();
-
-                // todo check if user of this id even exists if not, throw error
-                //Document doc = userCollection.find(session, Filters.eq());
-
-
-                Document bookDoc = bookCollection.find(session, Filters.eq(BookMapper.ID, bookId)).first();
-                if (bookDoc == null){
-                    throw new RuntimeException("Book doesn't exist");
-                }
-
-                ArrayList<Document> queue = (ArrayList<Document>)bookDoc.get(BookMapper.RESERVATION_QUEUE);
-                ArrayList<Document> activeEvents = (ArrayList<Document>)bookDoc.get(BookMapper.EVENTS_ACTIVE);
-
-                for (Document document:queue){
-                    if (document.get(BookEventMapper.USER_ID, ObjectId.class).equals(userId)){
-                        throw new RuntimeException("Pending reservation for this user for this book already exists.");
-                    }
-                }
-                for (Document document:activeEvents){
-                    if (document.get(BookEventMapper.USER_ID, ObjectId.class).equals(userId)){
-                        throw new RuntimeException("Active event for this user for this book already exists.");
-                    }
-                }
-
-
-                ArrayList<Integer> slots = (ArrayList<Integer>)bookDoc.get(BookMapper.SLOTS);
-                int available_count = slots.stream().reduce(0, Integer::sum);
-
-                if (available_count == 0) {
-                    // add a reservation in the queue
-                }else{
-                    // add a reservation to actives
-                    // find a 1 in the array and decrement it
-                }
-
-
-
-
-
-                return new Document();
-            }
-        };
-
-
-
-        try {
-            Document reservation = session.withTransaction(txnBody, txnOptions);
-            session.close();
-            return BookEventMapper.fromMongoBookEvent(reservation);
-
-        } catch (RuntimeException e) {
-            session.close();
+        if (relevantUserDoc == null || relevantBookDoc == null) {
+            System.out.println("Could not find user/book with given id");
+            return null;
         }
 
-        return  null;
+        //check if reservation already exists
+        Bson filterReservation = Filters.and(Filters.eq(BookEventMapper.USER_ID, userId), Filters.eq(BookEventMapper.CLOSE, null));
+        Bson filterAlreadyExisting = Filters.and(filterBook, Filters.elemMatch(BookMapper.EVENTS_ACTIVE, filterReservation));
+        Document bookWithAlreadyExistingReservation = bookCollection.find(filterAlreadyExisting).first();
+
+        if (bookWithAlreadyExistingReservation != null) {
+            System.out.println("Given user already has reservation for this book");
+            return null;
+        }
+
+
+        //if book quantity is bigger than eventNum ( length of activeEvent) set expectedEndDate of reservation
+        ArrayList<Document> eventsActive = (ArrayList<Document>)relevantBookDoc.get(BookMapper.EVENTS_ACTIVE);
+        ArrayList<Document> reservationQueue = (ArrayList<Document>)relevantBookDoc.get(BookMapper.RESERVATION_QUEUE);
+
+
+        Book relevantBook = BookMapper.fromMongoBook(relevantBookDoc);
+        int eventNum = eventsActive.size() + reservationQueue.size();
+        boolean activeReservation = relevantBook.getQuantity() > eventNum;
+        if (activeReservation) {
+            reservationToAdd.setExpectedEndDate(daysFromNow(reservationDaysLimit));
+        }
+
+
+        Document reservationDoc = BookEventMapper.toMongoBookEvent(reservationToAdd);
+        reservationDoc.put("_id", new ObjectId());
+
+
+        System.out.println(String.format("%s.%d", BookMapper.SLOTS, eventNum));
+        System.out.println(relevantBookDoc);
+        ArrayList<Integer> slots = (ArrayList<Integer>) relevantBookDoc.get(BookMapper.SLOTS);
+
+        slots.set(eventNum, slots.get(eventNum) == 0 ? slots.get(eventNum) + 1 : slots.get(eventNum) - 1);
+        Bson updateEvents = Updates.push(activeReservation ? BookMapper.EVENTS_ACTIVE : BookMapper.RESERVATION_QUEUE, reservationDoc);
+
+        Bson updateSlot = Updates.set(BookMapper.SLOTS, slots);
+        bookCollection.updateOne(filterBook, updateSlot);
+        bookCollection.updateOne(filterBook, updateEvents);
+
+        System.out.println(reservationToAdd.getBookId() + " " + reservationToAdd.getUserId());
+        return reservationToAdd;
+
     }
+
+//    public static BookEvent addReservationTransaction(ObjectId userId, ObjectId bookId){
+//        MongoClient client  = MongoClients.create(uri);
+//
+//        ClientSession session = client.startSession();
+//
+//        TransactionOptions txnOptions = TransactionOptions.builder()
+//                .readPreference(ReadPreference.primary())
+//                .readConcern(ReadConcern.LOCAL)
+//                .writeConcern(WriteConcern.MAJORITY)
+//                .build();
+//
+//        TransactionBody<Document> txnBody = new TransactionBody<>() {
+//            @Override
+//            public Document execute() {
+//                MongoCollection<Document> userCollection = repo.getUserCollection();
+//                MongoCollection<Document> bookCollection = repo.getBookCollection();
+//
+//                // todo check if user of this id even exists if not, throw error
+//                //Document doc = userCollection.find(session, Filters.eq());
+//
+//
+//                Document bookDoc = bookCollection.find(session, Filters.eq(BookMapper.ID, bookId)).first();
+//                if (bookDoc == null){
+//                    throw new RuntimeException("Book doesn't exist");
+//                }
+//
+//                ArrayList<Document> queue = (ArrayList<Document>)bookDoc.get(BookMapper.RESERVATION_QUEUE);
+//                ArrayList<Document> activeEvents = (ArrayList<Document>)bookDoc.get(BookMapper.EVENTS_ACTIVE);
+//
+//                for (Document document:queue){
+//                    if (document.get(BookEventMapper.USER_ID, ObjectId.class).equals(userId)){
+//                        throw new RuntimeException("Pending reservation for this user for this book already exists.");
+//                    }
+//                }
+//                for (Document document:activeEvents){
+//                    if (document.get(BookEventMapper.USER_ID, ObjectId.class).equals(userId)){
+//                        throw new RuntimeException("Active event for this user for this book already exists.");
+//                    }
+//                }
+//
+//
+//                ArrayList<Integer> slots = (ArrayList<Integer>)bookDoc.get(BookMapper.SLOTS);
+//                int available_count = slots.stream().reduce(0, Integer::sum);
+//
+//                if (available_count == 0) {
+//                    // add a reservation in the queue
+//                }else{
+//                    // add a reservation to actives
+//                    // find a 1 in the array and decrement it
+//                }
+//
+//
+//
+//
+//
+//                return new Document();
+//            }
+//        };
+//
+//
+//
+//        try {
+//            Document reservation = session.withTransaction(txnBody, txnOptions);
+//            session.close();
+//            return BookEventMapper.fromMongoBookEvent(reservation);
+//
+//        } catch (RuntimeException e) {
+//            session.close();
+//        }
+//
+//        return  null;
+//    }
 
 //
 //

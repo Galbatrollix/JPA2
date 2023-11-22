@@ -147,7 +147,7 @@ public class MongoRepository {
                                        "uniqueItems": true,
                                        "items": {
                                            "bsonType": "object",
-                                           "required": ["_clazz", "begin_date", "expected_end_date", "user_id"],
+                                           "required": ["_class", "begin_date", "expected_end_date", "user_id"],
                                            "properties": {
                                                 "begin_date": {
                                                     "bsonType": "date"
@@ -155,7 +155,7 @@ public class MongoRepository {
                                                 "expected_end_date": {
                                                     "bsonType": "date"
                                                 },
-                                                "_clazz": {
+                                                "_class": {
                                                     "bsonType": "string",
                                                     "enum": ["lending", "reservation"]
                                                 },
@@ -171,7 +171,7 @@ public class MongoRepository {
                                        "uniqueItems": true,
                                        "items": {
                                            "bsonType": "object",
-                                           "required": ["_clazz", "begin_date", "expected_end_date", "close_date", "user_id"],
+                                           "required": ["_class", "begin_date", "expected_end_date", "close_date", "user_id"],
                                            "properties": {
                                                 "begin_date": {
                                                     "bsonType": "date"
@@ -184,7 +184,7 @@ public class MongoRepository {
                                                     "bsonType": "date"
                                                 },
                                                 
-                                                "_clazz": {
+                                                "_class": {
                                                     "bsonType": "string",
                                                     "enum": ["lending", "reservation"]
                                                 },

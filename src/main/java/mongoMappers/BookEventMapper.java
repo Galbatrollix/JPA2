@@ -7,6 +7,7 @@ import model.Reservation;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import javax.print.Doc;
 import java.util.Date;
 
 public class BookEventMapper {
@@ -27,6 +28,7 @@ public class BookEventMapper {
 
         eventDocument.append(BEGIN, event.getBeginDate());
         eventDocument.append(EXPECTED_END, event.getExpectedEndDate());
+        eventDocument.append(USER_ID, event.getUserId());
         if (event.getCloseDate() != null){
             eventDocument.append(CLOSE, event.getCloseDate());
         }
@@ -41,20 +43,24 @@ public class BookEventMapper {
         return eventDocument;
     }
 
-    public static BookEvent fromMongoBookEvent(Document eventDocument) {
+    public static BookEvent fromMongoBookEvent(Document eventDocument, Document bookDocument) {
         if (eventDocument.get(CLASS_DISCRIMINATOR, String.class).equals(LENDING_DISCRIMINATOR)){
             return new Lending(
                     eventDocument.get(ID, ObjectId.class),
                     eventDocument.get(BEGIN, Date.class),
                     eventDocument.get(EXPECTED_END, Date.class),
-                    eventDocument.get(CLOSE, Date.class)
+                    eventDocument.get(CLOSE, Date.class),
+                    bookDocument.get(ID, ObjectId.class),
+                    eventDocument.get(USER_ID, ObjectId.class)
                     );
         }else{
             return new Reservation(
                     eventDocument.get(ID, ObjectId.class),
                     eventDocument.get(BEGIN, Date.class),
                     eventDocument.get(EXPECTED_END, Date.class),
-                    eventDocument.get(CLOSE, Date.class)
+                    eventDocument.get(CLOSE, Date.class),
+                    bookDocument.get(ID, ObjectId.class),
+                    eventDocument.get(USER_ID, ObjectId.class)
             );
         }
 

@@ -57,15 +57,21 @@ public class Main {
         BookController.DEBUGPrintAllBooks();
     }
 
+    public static void createExampleEvents() {
+        Reservation reservation = BookEventQueueController.addReservationTransaction(user1.getId(), book1.getId());
+        BookController.DEBUGPrintAllBooks();
+    }
+
 
     public static void main(String[] args) throws ClassNotFoundException {
         AbstractController.attachMongoRepository();
-        //AbstractController.initMongoCollections();
+        AbstractController.initMongoCollections();
 
         createExampleBooks();
         createExampleUsers();
         createExampleRatings();
         createExampleCatalog();
+        createExampleEvents();
 
 
         AbstractController.closeMongoRepository();
