@@ -10,6 +10,7 @@ import mongoMappers.BookMapper;
 import mongoMappers.LibraryUserMapper;
 import org.bson.BsonValue;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -39,6 +40,13 @@ public class LibraryUserController extends AbstractController{
         Document retreived_doc = collection.find(Filters.eq("_id", userId)).first();
         return LibraryUserMapper.fromMongoLibraryUser(retreived_doc);
     }
+
+    public static void deleteUser(ObjectId userId) {
+        MongoCollection<Document> collection = LibraryUserController.repo.getUserCollection();
+        Bson userDelete = Filters.eq("_id", userId);
+        collection.deleteOne(userDelete);
+    }
+
 
     public static void DEBUGPrintAllUsers(){
         MongoCollection<Document> collection = LibraryUserController.repo.getUserCollection();

@@ -23,10 +23,8 @@ public class Main {
         Book bookToDelete = BookController.addNewBook(new Book("This should be deleted", "Author", 2));
         BookController.DEBUGPrintAllBooks();
 
-        Book bookRetrieved = BookController.getBook(book1.getId());
-        System.out.println(book1.getAuthor());
-        System.out.println(bookRetrieved.getAuthor());
-        //BookController.deleteBookTransaction(bookToDelete.getId());
+        BookController.deleteBook(bookToDelete.getId());
+        BookController.DEBUGPrintAllBooks();
     }
 
     public static void createExampleUsers() {
@@ -35,15 +33,10 @@ public class Main {
         user3 = LibraryUserController.addNewLibraryUser(new LibraryUser("multiplier@email.com", "mark"));
         user4 = LibraryUserController.addNewLibraryUser(new LibraryUser("kowalski@gmanil.pl", "kowalski"));
         LibraryUser userToDelete = LibraryUserController.addNewLibraryUser(new LibraryUser("abcd@email.com", "iwillbedeleted"));
-
         LibraryUserController.DEBUGPrintAllUsers();
 
-        LibraryUser userRetrieved = LibraryUserController.getLibraryUser(user1.getId());
-        System.out.println(user1.getUsername());
-        System.out.println(userRetrieved.getUsername());
-
-
-      //  LibraryUserController.deleteUserTransaction(userToDelete.getId());
+        LibraryUserController.deleteUser(userToDelete.getId());
+        LibraryUserController.DEBUGPrintAllUsers();
     }
 
     public static void createExampleRatings() {
@@ -52,12 +45,10 @@ public class Main {
         Rating ratingThatWillNotBeCreated1 = RatingController.addNewRating(new Rating(4, "I will not be added", book1.getId(), user1.getId()));
         Rating ratingThatWillNotBeCreated2 = RatingController.addNewRating(new Rating(5, "I will not be added", new ObjectId(), new ObjectId()));
 
-        Rating ratingRetrieved = RatingController.getRating(rating1.getId());
-        System.out.println(rating1.getComment());
-        System.out.println(ratingRetrieved.getComment());
-
         LibraryUserController.DEBUGPrintAllUsers();
-        //RatingController.deleteRatingByIdTransaction(ratingToBeDeleted.getId());
+        RatingController.deleteRating(ratingToBeDeleted.getId());
+        LibraryUserController.DEBUGPrintAllUsers();
+
     }
 
 //    public static void createExampleCatalog() {

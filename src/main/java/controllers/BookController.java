@@ -8,6 +8,7 @@ import model.Book;
 import mongoMappers.BookMapper;
 import org.bson.BsonValue;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -39,6 +40,12 @@ public class BookController extends AbstractController {
         MongoCollection<Document> collection = BookController.repo.getBookCollection();
         Document retreived_doc = collection.find(Filters.eq(BookMapper.ID, bookId)).first();
         return BookMapper.fromMongoBook(retreived_doc);
+    }
+
+    public static void deleteBook(ObjectId bookId) {
+        MongoCollection<Document> collection = BookController.repo.getBookCollection();
+        Bson bookDelete = Filters.eq(BookMapper.ID, bookId);
+        collection.deleteOne(bookDelete);
     }
 
     public static void DEBUGPrintAllBooks(){
