@@ -1,7 +1,7 @@
 package controllers;
 
 
-import mongodbControllers.MongoRepository;
+import mongodbRepo.MongoRepository;
 
 
 public abstract class AbstractController {
