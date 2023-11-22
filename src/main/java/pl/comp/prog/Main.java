@@ -58,8 +58,13 @@ public class Main {
     }
 
     public static void createExampleEvents() {
-        Reservation reservation = BookEventQueueController.addReservationTransaction(user1.getId(), book1.getId());
+        Reservation reservation = BookEventQueueController.addNewReservation(user1.getId(), book1.getId());
         BookController.DEBUGPrintAllBooks();
+        Reservation shouldNotBeAdded = BookEventQueueController.addNewReservation(user1.getId(), book1.getId());
+        Lending lending = BookEventQueueController.addNewLending(user2.getId(), book2.getId());
+        BookController.DEBUGPrintAllBooks();
+        Lending shouldNotBeAdded2 = BookEventQueueController.addNewLending(user1.getId(), book1.getId());
+
     }
 
 

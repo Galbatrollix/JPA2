@@ -20,4 +20,14 @@ public class Lending extends BookEvent {
 
     }
 
+    public Lending(
+                   Date beginDate,
+                   Date expectedEndDate,
+                   Date closeDate,
+                   ObjectId bookId,
+                   ObjectId userId) {
+        super(null, beginDate, expectedEndDate, closeDate, bookId, userId);
+
+    }
+
 }
