@@ -75,6 +75,7 @@ public class Main {
 
 
     public static void main(String[] args) throws ClassNotFoundException {
+        // to see Redis database, go to localhost:8001
         RedisRepository redisRepo = new RedisRepository();
         redisRepo.initConnection();
         redisRepo.addBookTes();
