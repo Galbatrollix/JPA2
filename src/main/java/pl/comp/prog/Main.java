@@ -3,6 +3,12 @@ package pl.comp.prog;
 import controllers.*;
 import model.*;
 import org.bson.types.ObjectId;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redisRepo.RedisRepository;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main {
     static Book book1;
@@ -69,17 +75,10 @@ public class Main {
 
 
     public static void main(String[] args) throws ClassNotFoundException {
-        AbstractController.attachMongoRepository();
-        AbstractController.initMongoCollections();
-
-        createExampleBooks();
-        createExampleUsers();
-        createExampleRatings();
-        createExampleCatalog();
-        createExampleEvents();
-
-
-        AbstractController.closeMongoRepository();
+        RedisRepository redisRepo = new RedisRepository();
+        redisRepo.initConnection();
+        redisRepo.addBookTes();
+        redisRepo.closeConnection();
 
     }
 }

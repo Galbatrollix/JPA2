@@ -1,9 +1,6 @@
 package model;
 
 
-import mongoMappers.BookEventMapper;
-import org.bson.codecs.pojo.annotations.BsonDiscriminator;
-import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
 import java.util.Date;

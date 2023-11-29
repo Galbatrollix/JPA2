@@ -5,9 +5,6 @@ import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Book extends AbstractEntity {
 
 

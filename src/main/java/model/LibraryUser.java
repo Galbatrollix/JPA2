@@ -1,9 +1,7 @@
 package model;
 
-import jakarta.persistence.*;
 import org.bson.types.ObjectId;
 
-import java.util.List;
 
 
 public class LibraryUser extends AbstractEntity{
