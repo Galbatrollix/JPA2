@@ -2,10 +2,7 @@ package pl.comp.prog;
 
 
 import controllers.*;
-import model.Book;
-import model.Catalog;
-import model.LibraryUser;
-import model.Rating;
+import model.*;
 import org.bson.types.ObjectId;
 
 import org.junit.jupiter.api.AfterAll;
@@ -149,5 +146,16 @@ public class TestingMongo {
         CatalogController.deleteCatalog(catalogToDelete.getId());
         BookController.DEBUGPrintAllBooks();
     }
+
+    public static void createExampleEvents() {
+        Reservation reservation = BookEventQueueController.addNewReservation(user1.getId(), book1.getId());
+        BookController.DEBUGPrintAllBooks();
+        Reservation shouldNotBeAdded = BookEventQueueController.addNewReservation(user1.getId(), book1.getId());
+        Lending lending = BookEventQueueController.addNewLending(user2.getId(), book2.getId());
+        BookController.DEBUGPrintAllBooks();
+        Lending shouldNotBeAdded2 = BookEventQueueController.addNewLending(user1.getId(), book1.getId());
+
+    }
+
 
 }
