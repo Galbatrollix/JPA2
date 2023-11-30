@@ -13,6 +13,7 @@ import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class RatingController extends AbstractController {
@@ -64,6 +65,20 @@ public class RatingController extends AbstractController {
             }
         }
         return null;
+    }
+
+    public static List<Rating> getAllRatingsOfUser(ObjectId userID){
+        MongoCollection<Document> userCollection = RatingController.repo.getUserCollection();
+        Bson filter = Filters.eq("_id", userID);
+        Document userDoc = userCollection.find(filter).first();
+
+        ArrayList<Document> retrievedRatings = (ArrayList<Document>)userDoc.get(LibraryUserMapper.RATINGS);
+
+        List<Rating> ratings = new ArrayList<Rating>();
+        for (Document ratingDoc : retrievedRatings) {
+            ratings.add(RatingMapper.fromMongoRating(ratingDoc, userDoc));
+        }
+        return ratings;
     }
 
     public static void deleteRating(ObjectId ratingId) {

@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   redis-stack:
-    image: redis/redis-stack:latest
+    image: redis/redis-stack:7.2.0-v5
     volumes:
       - redis-stack-data:/bitnami/redis/data
     ports:

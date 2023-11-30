@@ -15,6 +15,7 @@ import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class LibraryUserController extends AbstractController{
 
@@ -57,6 +58,17 @@ public class LibraryUserController extends AbstractController{
             System.out.println(cursor.next());
         }
         System.out.println("\u001B[0m");
+    }
+
+    public static List<LibraryUser> getAllUsers() {
+        MongoCollection<Document> collection = LibraryUserController.repo.getUserCollection();
+        MongoCursor< Document > cursor = collection.find().iterator();
+        List<LibraryUser> users = new ArrayList<LibraryUser>();
+
+        while (cursor.hasNext()){
+            users.add(LibraryUserMapper.fromMongoLibraryUser(cursor.next()));
+        }
+        return users;
     }
 
 

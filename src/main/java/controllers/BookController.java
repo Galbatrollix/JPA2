@@ -11,8 +11,10 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
+import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class BookController extends AbstractController {
     public static Book addNewBook(Book book) {
@@ -57,6 +59,17 @@ public class BookController extends AbstractController {
             System.out.println(cursor.next());
         }
         System.out.println("\u001B[0m");
+    }
+
+    public static List<Book> getAllBooks() {
+        MongoCollection<Document> collection = BookController.repo.getBookCollection();
+        MongoCursor< Document > cursor = collection.find().iterator();
+        List<Book> books = new ArrayList<Book>();
+
+        while (cursor.hasNext()){
+            books.add(BookMapper.fromMongoBook(cursor.next()));
+        }
+        return books;
     }
 
 }
