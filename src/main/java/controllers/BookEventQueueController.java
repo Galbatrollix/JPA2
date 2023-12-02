@@ -1,10 +1,6 @@
 package controllers;
 
 
-import com.mongodb.ReadConcern;
-import com.mongodb.ReadPreference;
-import com.mongodb.TransactionOptions;
-import com.mongodb.WriteConcern;
 import com.mongodb.client.*;
 
 import com.mongodb.client.model.Filters;
@@ -12,8 +8,6 @@ import com.mongodb.client.model.Updates;
 import model.*;
 import mongoMappers.BookEventMapper;
 import mongoMappers.BookMapper;
-import mongoMappers.LibraryUserMapper;
-import mongoMappers.RatingMapper;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -38,8 +32,8 @@ public class BookEventQueueController extends AbstractController {
     }
 
     private static boolean userAndBookExists(ObjectId userId, ObjectId bookId) {
-        MongoCollection<Document> bookCollection = BookEventQueueController.repo.getBookCollection();
-        MongoCollection<Document> userCollection = BookEventQueueController.repo.getUserCollection();
+        MongoCollection<Document> bookCollection = BookEventQueueController.mongoRepo.getBookCollection();
+        MongoCollection<Document> userCollection = BookEventQueueController.mongoRepo.getUserCollection();
 
         //check for book and user
         Bson filterBook = Filters.eq("_id", bookId);
@@ -56,7 +50,7 @@ public class BookEventQueueController extends AbstractController {
             System.out.println("Could not find user/book with given id");
             return null;
         }
-        MongoCollection<Document> bookCollection = BookEventQueueController.repo.getBookCollection();
+        MongoCollection<Document> bookCollection = BookEventQueueController.mongoRepo.getBookCollection();
         Bson filterBook = Filters.eq("_id", bookId);
         Document relevantBookDoc = bookCollection.find(filterBook).first();
 
@@ -106,7 +100,7 @@ public class BookEventQueueController extends AbstractController {
             System.out.println("Could not find user/book with given id");
             return null;
         }
-        MongoCollection<Document> bookCollection = BookEventQueueController.repo.getBookCollection();
+        MongoCollection<Document> bookCollection = BookEventQueueController.mongoRepo.getBookCollection();
         Bson filterBook = Filters.eq("_id", bookId);
         Document relevantBookDoc = bookCollection.find(filterBook).first();
 
@@ -147,7 +141,7 @@ public class BookEventQueueController extends AbstractController {
 
     public static BookEvent getBookEvent(ObjectId bookEventId) {
         //TODO fix
-        MongoCollection<Document> bookCollection = CatalogController.repo.getBookCollection();
+        MongoCollection<Document> bookCollection = CatalogController.mongoRepo.getBookCollection();
         Bson filterQueue = Filters.eq("reservation_queue._id", bookEventId);
         Bson filterEvent = Filters.eq("events_active._id", bookEventId);
         Bson filterBookQueue = Filters.elemMatch(BookMapper.RESERVATION_QUEUE, filterQueue);

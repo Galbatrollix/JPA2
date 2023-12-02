@@ -16,7 +16,7 @@ services:
     healthcheck:
       test: [ "CMD", "mongosh", "--port", "27017", "--eval", "db.adminCommand('ping')" ]
       interval: 10s
-      timeout: 10s
+      timeout: 15s
       retries: 5
 
   mongo_2:
@@ -35,7 +35,7 @@ services:
     healthcheck:
       test: [ "CMD", "mongosh", "--port", "27018", "--eval", "db.adminCommand('ping')" ]
       interval: 10s
-      timeout: 10s
+      timeout: 15s
       retries: 5
 
   mongo_3:
@@ -54,7 +54,7 @@ services:
     healthcheck:
       test: [ "CMD", "mongosh", "--port", "27019", "--eval", "db.adminCommand('ping')" ]
       interval: 10s
-      timeout: 10s
+      timeout: 15s
       retries: 5
 
   mongoinit:

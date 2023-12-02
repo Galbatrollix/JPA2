@@ -4,30 +4,28 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.InsertOneResult;
-import model.Book;
 import model.LibraryUser;
-import mongoMappers.BookMapper;
 import mongoMappers.LibraryUserMapper;
 import org.bson.BsonValue;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+import redisRepo.RedisRepository;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class LibraryUserController extends AbstractController{
 
     public static LibraryUser addNewLibraryUser(LibraryUser user) {
-        MongoCollection<Document> collection = LibraryUserController.repo.getUserCollection();
+        MongoCollection<Document> collection = LibraryUserController.mongoRepo.getUserCollection();
         Document userDoc = LibraryUserMapper.toMongoLibraryUser(user);
         // creating new ID because we are adding new object
         userDoc.put(LibraryUserMapper.ID, new ObjectId());
         userDoc.append(LibraryUserMapper.RATINGS, new ArrayList<Document>());
 
-        InsertOneResult result = collection.insertOne(userDoc);
-        BsonValue insertedId = result.getInsertedId();
+        collection.insertOne(userDoc);
+        LibraryUserController.addToCash(userDoc, RedisRepository.userHashPrefix, 300);
 
 
         LibraryUser result_user = new LibraryUser(user);
@@ -37,20 +35,20 @@ public class LibraryUserController extends AbstractController{
     }
 
     public static LibraryUser getLibraryUser(ObjectId userId){
-        MongoCollection<Document> collection = LibraryUserController.repo.getUserCollection();
+        MongoCollection<Document> collection = LibraryUserController.mongoRepo.getUserCollection();
         Document retreived_doc = collection.find(Filters.eq("_id", userId)).first();
         return LibraryUserMapper.fromMongoLibraryUser(retreived_doc);
     }
 
     public static void deleteUser(ObjectId userId) {
-        MongoCollection<Document> collection = LibraryUserController.repo.getUserCollection();
+        MongoCollection<Document> collection = LibraryUserController.mongoRepo.getUserCollection();
         Bson userDelete = Filters.eq("_id", userId);
         collection.deleteOne(userDelete);
     }
 
 
     public static void DEBUGPrintAllUsers(){
-        MongoCollection<Document> collection = LibraryUserController.repo.getUserCollection();
+        MongoCollection<Document> collection = LibraryUserController.mongoRepo.getUserCollection();
         MongoCursor< Document > cursor = collection.find().iterator();
         // colors printout cyan to find it easier
         System.out.println("\u001B[36m");
@@ -61,7 +59,7 @@ public class LibraryUserController extends AbstractController{
     }
 
     public static List<LibraryUser> getAllUsers() {
-        MongoCollection<Document> collection = LibraryUserController.repo.getUserCollection();
+        MongoCollection<Document> collection = LibraryUserController.mongoRepo.getUserCollection();
         MongoCursor< Document > cursor = collection.find().iterator();
         List<LibraryUser> users = new ArrayList<LibraryUser>();
 

@@ -9,19 +9,19 @@ public class Main {
 
     public static void main(String[] args) throws ClassNotFoundException {
         AbstractController.attachMongoRepository();
-        //AbstractController.initMongoCollections();
+      //  AbstractController.initMongoCollections();
 
         // to see Redis database, go to localhost:8001
-        RedisRepository redisRepo = new RedisRepository();
-        redisRepo.initConnection();
 
 
-        Book book = BookController.addNewBook(new Book("Book Mongo", "BookAuthor", 10));
+        Book book = BookController.addNewBook(new Book("Book Redis", "BookAuthor", 10));
+        LibraryUser user = LibraryUserController.addNewLibraryUser(new LibraryUser("bomba@email.com", "kapitan"));
+        Catalog catalog = CatalogController.addNewCatalog(new Catalog("Catalog1", book.getId()));
+        BookController.DEBUGPrintAllBooks();
+        Book bookTestGet = BookController.getBook(book.getId());
 
         // TODO move redis add func to proper Mongo Controllers
         // TODO and decide about when add/modify stuff to redis cashe (and with what expiration)
-        redisRepo.addBook(book);
-        redisRepo.closeConnection();
         AbstractController.closeMongoRepository();
 
     }

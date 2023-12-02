@@ -19,7 +19,7 @@ import java.util.List;
 public class RatingController extends AbstractController {
 
     private static boolean ratingAlreadyExist(Rating rating) {
-        MongoCollection<Document> userCollection = RatingController.repo.getUserCollection();
+        MongoCollection<Document> userCollection = RatingController.mongoRepo.getUserCollection();
         Bson filterBookId = Filters.eq(RatingMapper.RATING_BOOK_ID, rating.getBookId());
         Bson filterUser = Filters.and(Filters.eq("_id", rating.getUserId()), Filters.elemMatch(LibraryUserMapper.RATINGS, filterBookId));
         Document userDoc = userCollection.find(filterUser).first();
@@ -31,7 +31,7 @@ public class RatingController extends AbstractController {
             System.out.println("Could not add rating " + rating.getStars() + "-" + rating.getComment() + " : rating for this user/book pair already exists");
             return null;
         }
-        MongoCollection<Document> userCollection = RatingController.repo.getUserCollection();
+        MongoCollection<Document> userCollection = RatingController.mongoRepo.getUserCollection();
 
         Document ratingDoc = RatingMapper.toMongoRating(rating);
         ratingDoc.put(RatingMapper.ID, new ObjectId());
@@ -52,7 +52,7 @@ public class RatingController extends AbstractController {
     }
 
     public static Rating getRating(ObjectId ratingId){
-        MongoCollection<Document> userCollection = RatingController.repo.getUserCollection();
+        MongoCollection<Document> userCollection = RatingController.mongoRepo.getUserCollection();
         Bson filterRating = Filters.eq("_id", ratingId);
         Bson filter = Filters.elemMatch(LibraryUserMapper.RATINGS, filterRating);
         Document userDoc = userCollection.find(filter).first();
@@ -68,7 +68,7 @@ public class RatingController extends AbstractController {
     }
 
     public static List<Rating> getAllRatingsOfUser(ObjectId userID){
-        MongoCollection<Document> userCollection = RatingController.repo.getUserCollection();
+        MongoCollection<Document> userCollection = RatingController.mongoRepo.getUserCollection();
         Bson filter = Filters.eq("_id", userID);
         Document userDoc = userCollection.find(filter).first();
 
@@ -82,7 +82,7 @@ public class RatingController extends AbstractController {
     }
 
     public static void deleteRating(ObjectId ratingId) {
-        MongoCollection<Document> userCollection = RatingController.repo.getUserCollection();
+        MongoCollection<Document> userCollection = RatingController.mongoRepo.getUserCollection();
         Bson filterRating = Filters.eq("_id", ratingId);
         Bson filter = Filters.elemMatch(LibraryUserMapper.RATINGS, filterRating);
         Document userDoc = userCollection.find(filter).first();
