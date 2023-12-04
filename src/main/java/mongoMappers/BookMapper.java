@@ -33,8 +33,18 @@ public class BookMapper {
         Book book = new Book(
                 bookDocument.get(BOOK_TITLE, String.class),
                 bookDocument.get(BOOK_AUTHOR, String.class),
-                bookDocument.get(BOOK_QUANTITY, Integer.class),
+                bookDocument.get(BOOK_QUANTITY, Double.class),
                 bookDocument.get(ID, ObjectId.class));
         return book;
     }
+
+    public static Book fromRedisBook(Document bookDocument) {
+        Book book = new Book(
+                bookDocument.get(BOOK_TITLE, String.class),
+                bookDocument.get(BOOK_AUTHOR, String.class),
+                bookDocument.get(BOOK_QUANTITY, Double.class),
+                bookDocument.get(ID, String.class));
+        return book;
+    }
+
 }

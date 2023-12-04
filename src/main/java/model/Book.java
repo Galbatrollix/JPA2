@@ -8,21 +8,31 @@ import org.bson.types.ObjectId;
 public class Book extends AbstractEntity {
 
 
-    private int quantity;
+    private double quantity;
 
     private String title;
     private String author;
 
     public Book(
-                String bookTitle,
-                String bookAuthor,
-                int quantity,
-                ObjectId id) {
+            String bookTitle,
+            String bookAuthor,
+            double quantity,
+            String id) {
+        super(new ObjectId(id));
+        this.title = bookTitle;
+        this.author = bookAuthor;
+        this.quantity = quantity;
+    }
+
+    public Book(
+            String bookTitle,
+            String bookAuthor,
+            double quantity,
+            ObjectId id) {
         super(id);
         this.title = bookTitle;
         this.author = bookAuthor;
         this.quantity = quantity;
-
     }
 
     public Book(
@@ -33,7 +43,6 @@ public class Book extends AbstractEntity {
         this.title = bookTitle;
         this.author = bookAuthor;
         this.quantity = quantity;
-
     }
 
 
@@ -45,7 +54,7 @@ public class Book extends AbstractEntity {
     }
 
 
-    public int getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 

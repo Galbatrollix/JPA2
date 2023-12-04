@@ -23,7 +23,8 @@ public class BookController extends AbstractController {
         bookDoc.append(BookMapper.RESERVATION_QUEUE, new ArrayList<Document>());
         bookDoc.append(BookMapper.EVENTS_CLOSED, new ArrayList<Document>());
         bookDoc.append(BookMapper.EVENTS_ACTIVE, new ArrayList<Document>());
-        bookDoc.append(BookMapper.SLOTS, Collections.nCopies(book.getQuantity(), 1));
+        Double q = book.getQuantity();
+        bookDoc.append(BookMapper.SLOTS, Collections.nCopies(q.intValue(), 1));
 
         collection.insertOne(bookDoc);
         BookController.addToCash(bookDoc, RedisRepository.bookHashPrefix, 300);
@@ -39,7 +40,7 @@ public class BookController extends AbstractController {
 
         if (bookFromCasheDoc != null) {
             System.out.println("got book from cashe");
-            return  BookMapper.fromMongoBook(bookFromCasheDoc);
+            return  BookMapper.fromRedisBook(bookFromCasheDoc);
         }
         MongoCollection<Document> collection = BookController.mongoRepo.getBookCollection();
         Document retreived_doc = collection.find(Filters.eq(BookMapper.ID, bookId)).first();

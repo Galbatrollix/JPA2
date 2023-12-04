@@ -16,7 +16,8 @@ public class Main {
 
         Book book = BookController.addNewBook(new Book("Book Redis", "BookAuthor", 10));
         LibraryUser user = LibraryUserController.addNewLibraryUser(new LibraryUser("bomba@email.com", "kapitan"));
-       // Catalog catalog = CatalogController.addNewCatalog(new Catalog("Catalog1", book.getId()));
+        //TODO ogarnac book w add catalog
+        //Catalog catalog = CatalogController.addNewCatalog(new Catalog("Catalog1", book.getId()));
         BookController.DEBUGPrintAllBooks();
 
         Book bookTestGet = BookController.getBook(book.getId());

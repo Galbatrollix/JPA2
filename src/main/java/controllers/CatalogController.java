@@ -27,6 +27,8 @@ public class CatalogController extends AbstractController{
         CatalogController.addToCash(catalogDoc, RedisRepository.catalogHashPrefix, 300);
 
         Document relevantBookDoc = bookCollection.find(filterBook).first();
+        System.out.println("relevant book " + relevantBookDoc);
+        //TODO for some reason the book is overwritten by catalog
         CatalogController.addToCash(relevantBookDoc, RedisRepository.bookHashPrefix, 300);
 
 

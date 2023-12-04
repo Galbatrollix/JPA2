@@ -81,7 +81,7 @@ public class MongoRepository {
                                             "properties": {
                                                 "_id": {  "bsonType": "objectId" },
                                                 "stars" : {
-                                                    "bsonType": "int"
+                                                    "bsonType": "double"
                                                 },
                                                 "comment": {
                                                     "bsonType": "string"
@@ -198,15 +198,15 @@ public class MongoRepository {
                                    "is_available_slots":{
                                         "bsonType": "array",
                                         "items": {
-                                            "bsonType": "int",
-                                            "maximum": 1,
-                                            "minimum": 0
+                                            "bsonType": "double",
+                                            "maximum": 1.0,
+                                            "minimum": 0.0
                                         }
                                    },
                                    
                                    "quantity":{
-                                      "bsonType": "int",
-                                      "minimum": 1
+                                      "bsonType": "double",
+                                      "minimum": 1.0
                                    }
                                   
                                    "catalog":{

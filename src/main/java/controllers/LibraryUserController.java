@@ -25,6 +25,7 @@ public class LibraryUserController extends AbstractController{
         userDoc.append(LibraryUserMapper.RATINGS, new ArrayList<Document>());
 
         collection.insertOne(userDoc);
+
         LibraryUserController.addToCash(userDoc, RedisRepository.userHashPrefix, 300);
 
 

@@ -1,6 +1,7 @@
 package controllers;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import mongodbRepo.MongoRepository;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -44,7 +45,11 @@ public abstract class AbstractController {
         if (AbstractController.redisRepo == null) {
             AbstractController.initRedisRepo();
         }
-        AbstractController.redisRepo.addDocumentToCashe(document, hash, expiration);
+        try {
+            AbstractController.redisRepo.addDocumentToCashe(document, hash, expiration);
+        } catch (JsonProcessingException e) {
+            System.out.println("Could not add document "+ document + " to cashe" + e );
+        }
     }
 
 
