@@ -9,6 +9,7 @@ public class Main {
 
     public static void main(String[] args) throws ClassNotFoundException {
         AbstractController.attachMongoRepository();
+        AbstractController.initRedisRepo();
         // to see Redis database, go to localhost:8001
 
         Book book = BookController.addNewBook(new Book("Explosions", "Totlay Sane Person", 10));
@@ -29,6 +30,7 @@ public class Main {
         LibraryUserController.DEBUGPrintAllUsers();
 
         AbstractController.closeMongoRepository();
+        AbstractController.closeRedis();
 
     }
 }

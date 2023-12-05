@@ -42,6 +42,7 @@ public class BookController extends AbstractController {
             System.out.println("got book from cashe");
             return  BookMapper.fromRedisBook(bookFromCasheDoc);
         }
+        System.out.println("got book from DB");
         MongoCollection<Document> collection = BookController.mongoRepo.getBookCollection();
         Document retreived_doc = collection.find(Filters.eq(BookMapper.ID, bookId)).first();
         return BookMapper.fromMongoBook(retreived_doc);

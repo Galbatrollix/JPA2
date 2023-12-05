@@ -35,76 +35,79 @@ public abstract class AbstractController {
 
     }
 
-    private static void initRedisRepo() {
+    public static void initRedisRepo() {
         AbstractController.redisRepo = new RedisRepository();
         AbstractController.redisRepo.initConnection();
     }
 
-    private static void closeRedis() {
-        AbstractController.redisRepo.closeConnection();
+    public static void closeRedis() {
+        if (AbstractController.redisRepo != null) {
+            AbstractController.redisRepo.closeConnection();
+            AbstractController.redisRepo = null;
+        }
     }
 
     public static void addToCashe(Document document, String hash, Integer expiration) {
-        if (AbstractController.redisRepo == null) {
-            AbstractController.initRedisRepo();
-        }
-        try {
-            AbstractController.redisRepo.addDocumentToCashe(document, hash, expiration);
-        } catch (JsonProcessingException e) {
-            System.out.println("Could not add document "+ document + " to cashe" + e );
+        if (AbstractController.redisRepo != null) {
+            try {
+                AbstractController.redisRepo.addDocumentToCashe(document, hash, expiration);
+            } catch (JsonProcessingException e) {
+                System.out.println("Could not add document " + document + " to cashe" + e);
+            }
         }
     }
 
     public static void addBookWithCatalogToCashe(Document book, Document catalog, Integer expiration) {
-        if (AbstractController.redisRepo == null) {
-            AbstractController.initRedisRepo();
-        }
-        try {
-            AbstractController.redisRepo.addBookWithCatalogToCashe(book, catalog, expiration);
-        } catch (JsonProcessingException e) {
-            System.out.println("Could not add book with catalog "+ book + " to cashe" + e );
+        if (AbstractController.redisRepo != null) {
+            try {
+                AbstractController.redisRepo.addBookWithCatalogToCashe(book, catalog, expiration);
+            } catch (JsonProcessingException e) {
+                System.out.println("Could not add book with catalog "+ book + " to cashe" + e );
+            }
         }
     }
 
     public static void addCatalogToCashe(Document catalog, ObjectId bookId, Integer expiration) {
-        if (AbstractController.redisRepo == null) {
-            AbstractController.initRedisRepo();
-        }
-        try {
-            AbstractController.redisRepo.addCatalogToCashe(catalog, bookId, expiration);
-        } catch (JsonProcessingException e) {
-            System.out.println("Could not add catalog "+ catalog + " to cashe" + e );
+        if (AbstractController.redisRepo != null) {
+            try {
+                AbstractController.redisRepo.addCatalogToCashe(catalog, bookId, expiration);
+            } catch (JsonProcessingException e) {
+                System.out.println("Could not add catalog " + catalog + " to cashe" + e);
+            }
         }
     }
 
     public static void addRatingToCashe(Document rating, ObjectId userId, Integer expiration) {
-        if (AbstractController.redisRepo == null) {
-            AbstractController.initRedisRepo();
-        }
-        try {
-            AbstractController.redisRepo.addRatingToCashe(rating, userId, expiration);
-        } catch (JsonProcessingException e) {
-            System.out.println("Could not add rating "+ rating + " to cashe" + e );
+        if (AbstractController.redisRepo != null) {
+            try {
+                AbstractController.redisRepo.addRatingToCashe(rating, userId, expiration);
+            } catch (JsonProcessingException e) {
+                System.out.println("Could not add rating " + rating + " to cashe" + e);
+            }
         }
     }
 
     public static void addUserWithRatingsToCashe(Document user, ArrayList<Document> ratings, Integer expiration) {
-        if (AbstractController.redisRepo == null) {
-            AbstractController.initRedisRepo();
-        }
-        try {
-            AbstractController.redisRepo.addUserWithRatingsToCashe(user, ratings, expiration);
-        } catch (JsonProcessingException e) {
-            System.out.println("Could not add user with ratings "+ user + " to cashe" + e );
+        if (AbstractController.redisRepo != null) {
+            try {
+                AbstractController.redisRepo.addUserWithRatingsToCashe(user, ratings, expiration);
+            } catch (JsonProcessingException e) {
+                System.out.println("Could not add user with ratings " + user + " to cashe" + e);
+            }
         }
     }
 
     public static Document getFromCashe(String hash, ObjectId id) {
+        if (AbstractController.redisRepo == null) {
+            return null;
+        }
         return AbstractController.redisRepo.getDocumentFromCashe(hash, id);
     }
 
     public static void clearCashe() {
-        AbstractController.redisRepo.clear();
+        if (AbstractController.redisRepo != null) {
+            AbstractController.redisRepo.clear();
+        }
     }
 
 

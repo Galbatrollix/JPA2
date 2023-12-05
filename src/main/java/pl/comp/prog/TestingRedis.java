@@ -27,6 +27,7 @@ public class TestingRedis {
     @BeforeAll
     static void initDBAndCashe() {
         AbstractController.attachMongoRepository();
+        AbstractController.initRedisRepo();
     }
 
     @BeforeEach
@@ -37,6 +38,7 @@ public class TestingRedis {
     @AfterAll
     static void closeMongo() {
         AbstractController.closeMongoRepository();
+        AbstractController.closeRedis();
     }
 
 
@@ -119,13 +121,29 @@ public class TestingRedis {
     }
 
     @Test
-    void clearCashe() {
+    void testClearCashe() {
         Book book = BookController.addNewBook(new Book("Percy Jackson", "R.Riordan", 10));
         assertNotNull(book);
         BookController.clearCashe();
         Document bookDovGet = BookController.getFromCashe(RedisRepository.bookHashPrefix, book.getId());
         assertNull(bookDovGet);
 
+    }
+
+    @Test
+    void testDisconnect() {
+        Book book = BookController.addNewBook(new Book("Percy Jackson", "R.Riordan", 10));
+        Book bookGet1 = BookController.getBook(book.getId());
+        assertNotNull(bookGet1);
+        assertEquals(book.getId(), bookGet1.getId());
+        assertTrue(outputStreamCaptor.toString()
+                .contains("got book from cashe"));
+        AbstractController.closeRedis();
+        Book bookGet2 = BookController.getBook(book.getId());
+        assertNotNull(bookGet2);
+        assertTrue(outputStreamCaptor.toString()
+                .contains("got book from DB"));
+        AbstractController.initRedisRepo();
     }
 
 
