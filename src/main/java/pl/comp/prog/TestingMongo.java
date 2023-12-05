@@ -3,31 +3,23 @@ package pl.comp.prog;
 
 import controllers.*;
 import model.*;
-import org.bson.types.ObjectId;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestingMongo {
 
-    static Book book1;
-    static Book book2;
-    static Book book3;
-    static LibraryUser user1;
-    static LibraryUser user2;
-    static LibraryUser user3;
-    static LibraryUser user4;
-
 
     @BeforeAll
     static void initMongo() {
         AbstractController.attachMongoRepository();
-        //AbstractController.initMongoCollections();
     }
 
     @AfterAll
@@ -61,25 +53,6 @@ public class TestingMongo {
         return containsUser;
     }
 
-    private boolean checkIfRatingInDB(Rating ratingToCheck) {
-        List<LibraryUser> users = LibraryUserController.getAllUsers();
-        boolean containsRating = false;
-
-        for (LibraryUser user: users) {
-            List<Rating> ratings = RatingController.getAllRatingsOfUser(user.getId());
-            for (Rating rating: ratings) {
-                if (rating.getId().equals(ratingToCheck.getId())) {
-                    containsRating = true;
-                    break;
-                }
-                if (containsRating) {
-                    break;
-                }
-            }
-        }
-
-        return containsRating;
-    }
     @Test
     void testBookCreation() {
         Book book = BookController.addNewBook(new Book("Pan Tadeusz", "A.Mickiewicz", 2));
@@ -122,39 +95,6 @@ public class TestingMongo {
         boolean containsBook = checkIfUserInDB(userToDelete);
 
         assertFalse(containsBook);
-    }
-
-
-    //TODO
-    public void testRatingCreation() {
-        Rating rating1 = RatingController.addNewRating(new Rating(5, "Awesome", book1.getId(), user1.getId()));
-        Rating ratingToBeDeleted = RatingController.addNewRating(new Rating(2, "I will be deleted", book3.getId(), user2.getId()));
-        Rating ratingThatWillNotBeCreated1 = RatingController.addNewRating(new Rating(4, "I will not be added", book1.getId(), user1.getId()));
-        Rating ratingThatWillNotBeCreated2 = RatingController.addNewRating(new Rating(5, "I will not be added", new ObjectId(), new ObjectId()));
-
-        LibraryUserController.DEBUGPrintAllUsers();
-        RatingController.deleteRating(ratingToBeDeleted.getId());
-        LibraryUserController.DEBUGPrintAllUsers();
-
-    }
-
-    public void testCatalogCreation() {
-
-        Catalog catalog1 = CatalogController.addNewCatalog(new Catalog("Catalog1", book1.getId()));
-        Catalog catalogToDelete = CatalogController.addNewCatalog(new Catalog("Catalog to delete", book2.getId()));
-        BookController.DEBUGPrintAllBooks();
-        CatalogController.deleteCatalog(catalogToDelete.getId());
-        BookController.DEBUGPrintAllBooks();
-    }
-
-    public static void createExampleEvents() {
-        Reservation reservation = BookEventQueueController.addNewReservation(user1.getId(), book1.getId());
-        BookController.DEBUGPrintAllBooks();
-        Reservation shouldNotBeAdded = BookEventQueueController.addNewReservation(user1.getId(), book1.getId());
-        Lending lending = BookEventQueueController.addNewLending(user2.getId(), book2.getId());
-        BookController.DEBUGPrintAllBooks();
-        Lending shouldNotBeAdded2 = BookEventQueueController.addNewLending(user1.getId(), book1.getId());
-
     }
 
 

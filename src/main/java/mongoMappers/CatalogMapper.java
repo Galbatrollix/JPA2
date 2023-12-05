@@ -23,4 +23,12 @@ public class CatalogMapper {
         return catalog;
     }
 
+    public static Catalog fromRedisCatalog(Document catalogDocument) {
+        Catalog catalog = new Catalog(
+                catalogDocument.get(CATALOG_NAME, String.class),
+                catalogDocument.get("bookId", String.class),
+                catalogDocument.get(ID, String.class));
+        return catalog;
+    }
+
 }

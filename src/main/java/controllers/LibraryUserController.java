@@ -3,10 +3,9 @@ package controllers;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.result.InsertOneResult;
 import model.LibraryUser;
+import mongoMappers.BookMapper;
 import mongoMappers.LibraryUserMapper;
-import org.bson.BsonValue;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -26,7 +25,7 @@ public class LibraryUserController extends AbstractController{
 
         collection.insertOne(userDoc);
 
-        LibraryUserController.addToCash(userDoc, RedisRepository.userHashPrefix, 300);
+        LibraryUserController.addToCashe(userDoc, RedisRepository.userHashPrefix, EXPIRATION);
 
 
         LibraryUser result_user = new LibraryUser(user);
@@ -36,6 +35,12 @@ public class LibraryUserController extends AbstractController{
     }
 
     public static LibraryUser getLibraryUser(ObjectId userId){
+        Document userFromCasheDoc = LibraryUserController.getFromCashe(RedisRepository.userHashPrefix, userId);
+
+        if (userFromCasheDoc != null) {
+            System.out.println("got user from cashe");
+            return LibraryUserMapper.fromRedisLibraryUser(userFromCasheDoc);
+        }
         MongoCollection<Document> collection = LibraryUserController.mongoRepo.getUserCollection();
         Document retreived_doc = collection.find(Filters.eq("_id", userId)).first();
         return LibraryUserMapper.fromMongoLibraryUser(retreived_doc);

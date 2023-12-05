@@ -36,4 +36,12 @@ public class LibraryUserMapper {
                 document.get(ID, ObjectId.class));
         return user;
     }
+
+    public static LibraryUser fromRedisLibraryUser(Document document) {
+        LibraryUser user = new LibraryUser(
+                document.get(LIBRARY_USER_USERNAME, String.class),
+                document.get(LIBRARY_USER_EMAIL, String.class),
+                document.get(ID, String.class));
+        return user;
+    }
 }

@@ -30,4 +30,14 @@ public class RatingMapper {
                 ratingDocument.get(ID, ObjectId.class));
         return rating;
     }
+
+    public static Rating fromRedisRating(Document ratingDocument) {
+        Rating rating = new Rating(
+                ratingDocument.get(RATING_STARS, Integer.class),
+                ratingDocument.get(RATING_COMMENT, String.class),
+                ratingDocument.get(RATING_BOOK_ID, String.class),
+                ratingDocument.get("userId", String.class),
+                ratingDocument.get(ID, String.class));
+        return rating;
+    }
 }

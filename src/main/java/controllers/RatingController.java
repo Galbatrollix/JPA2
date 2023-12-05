@@ -6,11 +6,13 @@ import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
 import com.mongodb.client.model.Updates;
 import model.Rating;
+import mongoMappers.CatalogMapper;
 import mongoMappers.LibraryUserMapper;
 import mongoMappers.RatingMapper;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+import redisRepo.RedisRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,11 @@ public class RatingController extends AbstractController {
 
         userCollection.findOneAndUpdate(filter, update, options);
 
+        RatingController.addRatingToCashe(ratingDoc, rating.getUserId(), EXPIRATION);
+        Document relevantUserDoc = userCollection.find(filter).first();
+        RatingController.addUserWithRatingsToCashe(relevantUserDoc, (ArrayList<Document>)relevantUserDoc.get("ratings"), EXPIRATION);
+
+
         Rating resultRating = new Rating(rating);
         resultRating.setId(ratingDoc.getObjectId("_id"));
 
@@ -52,6 +59,12 @@ public class RatingController extends AbstractController {
     }
 
     public static Rating getRating(ObjectId ratingId){
+        Document ratingFromCasheDoc = RatingController.getFromCashe(RedisRepository.ratingHashPrefix, ratingId);
+
+        if (ratingFromCasheDoc != null) {
+            System.out.println("got rating from cashe");
+            return RatingMapper.fromRedisRating(ratingFromCasheDoc);
+        }
         MongoCollection<Document> userCollection = RatingController.mongoRepo.getUserCollection();
         Bson filterRating = Filters.eq("_id", ratingId);
         Bson filter = Filters.elemMatch(LibraryUserMapper.RATINGS, filterRating);

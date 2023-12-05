@@ -27,7 +27,7 @@ public class BookController extends AbstractController {
         bookDoc.append(BookMapper.SLOTS, Collections.nCopies(q.intValue(), 1));
 
         collection.insertOne(bookDoc);
-        BookController.addToCash(bookDoc, RedisRepository.bookHashPrefix, 300);
+        BookController.addToCashe(bookDoc, RedisRepository.bookHashPrefix, EXPIRATION);
 
         Book result_book = new Book(book);
         result_book.setId(bookDoc.getObjectId(BookMapper.ID));
@@ -36,7 +36,7 @@ public class BookController extends AbstractController {
     }
 
     public static Book getBook(ObjectId bookId){
-        Document bookFromCasheDoc = BookController.redisRepo.getDocumentFromCashe(RedisRepository.bookHashPrefix, bookId);
+        Document bookFromCasheDoc = BookController.getFromCashe(RedisRepository.bookHashPrefix, bookId);
 
         if (bookFromCasheDoc != null) {
             System.out.println("got book from cashe");

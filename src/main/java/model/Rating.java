@@ -28,6 +28,19 @@ public class Rating extends AbstractEntity{
     public Rating(
             int stars,
             String comment,
+            String bookId,
+            String userId,
+            String id) {
+        super(new ObjectId(id));
+        this.stars = stars;
+        this.comment = comment;
+        this.bookId = new ObjectId(bookId);
+        this.userId  = new ObjectId(userId);
+    }
+
+    public Rating(
+            int stars,
+            String comment,
             ObjectId bookId,
             ObjectId userId) {
         super(null);

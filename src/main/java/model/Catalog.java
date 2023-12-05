@@ -18,6 +18,15 @@ public class Catalog extends AbstractEntity{
 
     public Catalog(
             String name,
+            String bookId,
+            String id) {
+        super(new ObjectId(id));
+        this.name = name;
+        this.bookId = new ObjectId(bookId);
+    }
+
+    public Catalog(
+            String name,
             ObjectId bookId) {
         super(null);
         this.name = name;

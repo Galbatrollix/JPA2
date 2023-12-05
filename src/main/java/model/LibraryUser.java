@@ -22,6 +22,15 @@ public class LibraryUser extends AbstractEntity{
 
     public LibraryUser(
             String username,
+            String email,
+            String id) {
+        super(new ObjectId(id));
+        this.username = username;
+        this.email = email;
+    }
+
+    public LibraryUser(
+            String username,
             String email) {
         super(null);
         this.username = username;
