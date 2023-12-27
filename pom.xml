@@ -14,17 +14,39 @@
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.datastax.oss</groupId>
+                <artifactId>java-driver-bom</artifactId>
+                <version>4.15.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
 
         <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>5.0.2</version>
+            <groupId>com.datastax.oss</groupId>
+            <artifactId>java-driver-core</artifactId>
         </dependency>
+
         <dependency>
-            <groupId>org.eclipse</groupId>
-            <artifactId>yasson</artifactId>
-            <version>3.0.1</version>
+            <groupId>com.datastax.oss</groupId>
+            <artifactId>java-driver-query-builder</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.datastax.oss</groupId>
+            <artifactId>java-driver-mapper-runtime</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.datastax.oss</groupId>
+            <artifactId>java-driver-mapper-processor</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -34,26 +56,17 @@
         </dependency>
 
         <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-xml</artifactId>
-            <version>2.13.2</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-sync</artifactId>
             <version>4.10.2</version>
         </dependency>
+
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-crypt</artifactId>
             <version>1.8.0</version>
         </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.2.11</version>
-        </dependency>
+
     </dependencies>
 
     <build>

@@ -1,4 +1,3 @@
-
 1. Odpal dockerfile (klikajac przycisk na po lewo od peirwszej linijki)
     WAŻNE by przed tym wejsc w Intellij w Run>Edit Configurations
     Tam znalesc config do odpalenia tego dockerfile (prawdopodbnie nazywa sie docker/dockerfile)
@@ -9,7 +8,7 @@
 2. Odpal services w docker-compose.yml
 
 
-EDYTUJ PLIK HOSTS
+!!EDYTUJ PLIK HOSTS
 1. Odpal Notatnik jako administrator.
 2. Z notatnika wybierz Plik > Otworz
 3 Wejdz w C:\Windows\System32\drivers\etc
@@ -17,6 +16,11 @@ EDYTUJ PLIK HOSTS
 5. wybierz plik hosts
 6 W tym pliku dodaj poniższe:
 
+#dla cassandry:
+
+
+
+#dla mongo:
 127.0.0.1 mongodb1
 127.0.0.1 mongodb2
 127.0.0.1 mongodb3
