@@ -19,7 +19,8 @@ public class CassandraRepo {
     public void initSession() {
         session = CqlSession.builder()
                 .addContactPoint(new InetSocketAddress("cassandra1", 9042))
-                .addContactPoint(new InetSocketAddress("cassandra2", 9043))
+                //in case of problems with docker running more 2 nodes (memory issues), comment line below and run only 1 node
+               // .addContactPoint(new InetSocketAddress("cassandra2", 9043))
                 .withLocalDatacenter("dc1")
                 .withAuthCredentials("cassandra", "cassandrapassword")
                 .withKeyspace(CqlIdentifier.fromCql(KEYSPACE_NAME))
@@ -29,7 +30,8 @@ public class CassandraRepo {
     public void initKeyspace() {
         CqlSession sessionWithoutKeyspace = CqlSession.builder()
                 .addContactPoint(new InetSocketAddress("cassandra1", 9042))
-                .addContactPoint(new InetSocketAddress("cassandra2", 9043))
+                //in case of problems with docker running more 2 nodes (memory issues), comment line below and run only 1 node
+                //.addContactPoint(new InetSocketAddress("cassandra2", 9043))
                 .withLocalDatacenter("dc1")
                 .withAuthCredentials("cassandra", "cassandrapassword")
                 .build();

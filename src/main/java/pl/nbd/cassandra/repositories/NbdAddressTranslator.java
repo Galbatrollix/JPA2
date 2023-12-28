@@ -9,6 +9,7 @@ public class NbdAddressTranslator implements AddressTranslator {
 
     public NbdAddressTranslator(DriverContext dctx) {}
 
+    @Override
     public InetSocketAddress translate(InetSocketAddress address) {
         String hostAddress = address.getAddress().getHostAddress();
         String hostName = address.getHostName();
