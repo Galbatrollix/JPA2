@@ -1,4 +1,4 @@
-package repositories;
+package pl.nbd.cassandra.repositories;
 
 import com.datastax.oss.driver.api.core.addresstranslation.AddressTranslator;
 import com.datastax.oss.driver.api.core.context.DriverContext;
@@ -12,6 +12,7 @@ public class NbdAddressTranslator implements AddressTranslator {
     public InetSocketAddress translate(InetSocketAddress address) {
         String hostAddress = address.getAddress().getHostAddress();
         String hostName = address.getHostName();
+        System.out.println("AAAA");
         return switch (hostAddress) {
             case "172.24.0.101" -> new InetSocketAddress("cassandra1", 9042);
             case "172.24.0.102" -> new InetSocketAddress("cassandra2", 9043);

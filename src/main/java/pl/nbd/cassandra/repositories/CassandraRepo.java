@@ -1,19 +1,18 @@
-package repositories;
+package pl.nbd.cassandra.repositories;
 
 import com.datastax.oss.driver.api.core.CqlIdentifier;
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.querybuilder.SchemaBuilder;
-import jnr.ffi.annotations.In;
 
 import java.net.InetSocketAddress;
 
 public class CassandraRepo {
 
-    private static CqlSession session;
+    private CqlSession session;
 
-    private final String KEYSPACE_NAME = "books";
+    public static final String KEYSPACE_NAME = "library_books_system";
 
-    public static CqlSession getSession() {
+    public CqlSession getSession() {
         return session;
     }
 
