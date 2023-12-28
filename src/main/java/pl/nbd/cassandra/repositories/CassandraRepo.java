@@ -2,7 +2,11 @@ package pl.nbd.cassandra.repositories;
 
 import com.datastax.oss.driver.api.core.CqlIdentifier;
 import com.datastax.oss.driver.api.core.CqlSession;
+import com.datastax.oss.driver.api.core.cql.SimpleStatement;
+import com.datastax.oss.driver.api.core.metadata.schema.ClusteringOrder;
+import com.datastax.oss.driver.api.core.type.DataTypes;
 import com.datastax.oss.driver.api.querybuilder.SchemaBuilder;
+import com.datastax.oss.protocol.internal.ProtocolConstants;
 
 import java.net.InetSocketAddress;
 
@@ -42,5 +46,23 @@ public class CassandraRepo {
                 .withDurableWrites(true)
                 .build());
         sessionWithoutKeyspace.close();
+    }
+
+    public void addBooksTable() {
+        SimpleStatement createBooksTable =
+                SchemaBuilder.createTable(CqlIdentifier.fromCql("books"))
+                        .ifNotExists()
+                        .withPartitionKey(CqlIdentifier.fromCql("id"), DataTypes.UUID)
+                        .withClusteringColumn(CqlIdentifier.fromCql("title"), DataTypes.TEXT)
+                        .withColumn(CqlIdentifier.fromCql("author"), DataTypes.TEXT)
+                        .withColumn(CqlIdentifier.fromCql("quantity"), DataTypes.INT)
+                        .withClusteringOrder(CqlIdentifier.fromCql("title"), ClusteringOrder.ASC)
+                        .build();
+        session.execute(createBooksTable);
+        System.out.println("Added books table");
+    }
+
+    public void closeSession() {
+        session.close();
     }
 }
