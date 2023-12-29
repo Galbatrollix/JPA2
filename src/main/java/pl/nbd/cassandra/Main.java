@@ -1,5 +1,6 @@
 package pl.nbd.cassandra;
 
+import com.datastax.oss.driver.api.core.PagingIterable;
 import pl.nbd.cassandra.dao.BookDao;
 import pl.nbd.cassandra.dao.LibraryUserDao;
 import pl.nbd.cassandra.mappers.BookMapper;
@@ -28,13 +29,24 @@ public class Main {
         // i potem Maven > Reload Project
         BookMapper bookMapper = new BookMapperBuilder(repo.getSession()).build();
         BookDao bookDao = bookMapper.bookDao();
-        Book book = new Book( "Percy Jackson 2",10, "R.Riordan");
-        bookDao.addBook(book);
+//        Book book = new Book( "Harry Potter",10, "J.K.Rowling");
+//        bookDao.addBook(book);
+//        book.setQuantity(2);
+//        bookDao.updateBook(book);
+        Book bookToGet1 = bookDao.getBookById(UUID.fromString("4452a616-aebf-4978-a194-14e5c021febd"));
+        bookToGet1.debugPrint();
+
+
+
+//        PagingIterable<Book> allBook = bookDao.getAllBooks();
+//        allBook.forEach(book -> {
+//            System.out.println(book.getAuthor() + " " + book.getTitle());
+//        });
 
         LibraryUserMapper libraryUserMapper = new LibraryUserMapperBuilder(repo.getSession()).build();
         LibraryUserDao libraryUserDao = libraryUserMapper.libraryUserDao();
-        LibraryUser libraryUser = new LibraryUser("KapitanBomba", "bomba@kapitan.com");
-        libraryUserDao.addLibraryUser(libraryUser);
+//        LibraryUser libraryUser = new LibraryUser("Mateo", "mateo@mail.com");
+//        libraryUserDao.addLibraryUser(libraryUser);
 
 
         repo.closeSession();

@@ -15,5 +15,5 @@ public interface LibraryUserDao {
 //    ArrayList<LibraryUser> getAllBooks();
 //
 //    void deleteLibraryUser(UUID id);
-//    void editLibraryUser(LibraryUser updatedLibraryUser);
+//    void updateLibraryUser(LibraryUser updatedLibraryUser);
 }

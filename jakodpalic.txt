@@ -17,7 +17,8 @@
 6 W tym pliku dodaj poniższe:
 
 #dla cassandry:
-
+127.0.0.1 cassandra1
+127.0.0.1 cassandra2
 
 
 #dla mongo:
@@ -32,4 +33,9 @@ docker exec -i mongodb1 /bin/bash
 
 mongosh -port 27017 --username admin --password adminpassword
 rs.status()
+
+#dla cassandry (w terminalu konkretnego noda)
+ cqlsh --username=cassandra --password=cassandrapassword
+ ^ to pozwoli na wywolywanie queries
+
 

@@ -10,7 +10,6 @@ import java.util.UUID;
 @CqlName(CassandraRepo.TABLE_BOOKS)
 public class Book {
 
-
     private String author;
     @PartitionKey
     private UUID id;
@@ -41,6 +40,10 @@ public class Book {
         this.title = title;
         this.author = author;
         this.quantity = quantity;
+    }
+
+    public void debugPrint() {
+        System.out.println(this.author + " " + this.title);
     }
 
 
