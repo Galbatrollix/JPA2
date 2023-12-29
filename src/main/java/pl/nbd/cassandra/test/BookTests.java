@@ -31,10 +31,12 @@ public class BookTests {
 
     @Test
     void testAddAndGetBook() {
-        Book book = new Book( "Dziady",11, "A.Mickiewicz");
+        Book book = new Book( "A.Mickiewicz", 11, "Dziady" );
         assertNotNull(book);
         bookDao.addBook(book);
         Book bookToGet = bookDao.getBookById(book.getId());
+        book.debugPrint();
+        bookToGet.debugPrint();
         assertNotNull(bookToGet);
         assertEquals(book.getId(), bookToGet.getId());
         assertEquals(book.getTitle(), bookToGet.getTitle());
@@ -44,7 +46,7 @@ public class BookTests {
 
     @Test
     void testDeleteBook() {
-        Book book = new Book( "Dziady",11, "A.Mickiewicz");
+        Book book = new Book( "A.Mickiewicz", 11, "Dziady");
         assertNotNull(book);
         bookDao.addBook(book);
         bookDao.deleteBook(book);
@@ -54,8 +56,8 @@ public class BookTests {
 
     @Test
     void testGetAllBooks() {
-        bookDao.addBook(new Book("Harry Potter 1", 9, "J.K.Rowling"));
-        bookDao.addBook(new Book("Harry Potter 2", 1, "J.K.Rowling"));
+        bookDao.addBook(new Book("J.K.Rowling", 9, "Harry Potter 1"));
+        bookDao.addBook(new Book("J.K.Rowling", 1, "Harry Potter 2"));
         PagingIterable<Book> allBooks = bookDao.getAllBooks();
         assertNotNull(allBooks);
         assertTrue(allBooks.all().size() >= 2);
@@ -63,11 +65,11 @@ public class BookTests {
 
     @Test
     void testUpdateBook() {
-        Book book = new Book("Programming in Java", 2, "A.Programmer");
+        Book book = new Book("A.Programmer", 2, "Programming in Java");
         bookDao.addBook(book);
         Book bookGet1 = bookDao.getBookById(book.getId());
         assertEquals(bookGet1.getTitle(), "Programming in Java");
-        book.setTitle("Programming in JavaScript");
+        //book.setTitle("Programming in JavaScript");
         //curently fails - update add new book with same id and diffrent title, intstead of updating
         //propably need custom update with queryporvider
 //        bookDao.updateBook(book);

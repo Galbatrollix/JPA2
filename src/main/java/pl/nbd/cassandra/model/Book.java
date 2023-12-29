@@ -10,21 +10,24 @@ import java.util.UUID;
 @CqlName(CassandraRepo.TABLE_BOOKS)
 public class Book {
 
-    private String author;
+
     @PartitionKey
     private UUID id;
     private int quantity;
-
     @ClusteringColumn
+    private String author;
+
+
     private String title;
 
 
 
     public Book(
             UUID id,
-            String title,
+
+            String author,
             int quantity,
-            String author
+            String title
             ) {
         this.id = id;
         this.title = title;
@@ -32,9 +35,10 @@ public class Book {
         this.quantity = quantity;
     }
     public Book(
-            String title,
+            String author,
             int quantity,
-            String author
+            String title
+
     ) {
         this.id = UUID.randomUUID();
         this.title = title;
@@ -53,26 +57,14 @@ public class Book {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public String getAuthor() {
         return author;
     }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
 
     public UUID getId() {
         return id;

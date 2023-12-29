@@ -56,10 +56,10 @@ public class CassandraRepo {
                 SchemaBuilder.createTable(CqlIdentifier.fromCql(CassandraRepo.TABLE_BOOKS))
                         .ifNotExists()
                         .withPartitionKey(CqlIdentifier.fromCql("id"), DataTypes.UUID)
-                        .withClusteringColumn(CqlIdentifier.fromCql("title"), DataTypes.TEXT)
-                        .withColumn(CqlIdentifier.fromCql("author"), DataTypes.TEXT)
+                        .withClusteringColumn(CqlIdentifier.fromCql("author"), DataTypes.TEXT)
+                        .withColumn(CqlIdentifier.fromCql("title"), DataTypes.TEXT)
                         .withColumn(CqlIdentifier.fromCql("quantity"), DataTypes.INT)
-                        .withClusteringOrder(CqlIdentifier.fromCql("title"), ClusteringOrder.ASC)
+                        .withClusteringOrder(CqlIdentifier.fromCql("author"), ClusteringOrder.ASC)
                         .build();
         session.execute(createBooksTable);
         System.out.println("Added books table");
