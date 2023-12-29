@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Entity(defaultKeyspace = CassandraRepo.KEYSPACE_NAME)
 @PropertyStrategy(mutable = false)
-@CqlName("books")
+@CqlName(CassandraRepo.TABLE_BOOKS)
 public class Book {
 
 
@@ -28,6 +28,16 @@ public class Book {
             String author
             ) {
         this.id = id;
+        this.title = title;
+        this.author = author;
+        this.quantity = quantity;
+    }
+    public Book(
+            String title,
+            int quantity,
+            String author
+    ) {
+        this.id = UUID.randomUUID();
         this.title = title;
         this.author = author;
         this.quantity = quantity;

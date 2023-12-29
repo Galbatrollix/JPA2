@@ -4,6 +4,8 @@ import com.datastax.oss.driver.api.mapper.annotations.Dao;
 import com.datastax.oss.driver.api.mapper.annotations.Insert;
 import pl.nbd.cassandra.model.Book;
 
+import java.util.ArrayList;
+
 @Dao
 public interface BookDao {
 
@@ -11,6 +13,11 @@ public interface BookDao {
     void addBook(Book book);
 
     //todo
-    //Book findBook(long id);
+//    Book getBook(UUID id);
+//    ArrayList<Book> getAllBooks();
+//
+//    void deleteBook(UUID id);
+//    void editBook(Book updatedBook);
+
 
 }

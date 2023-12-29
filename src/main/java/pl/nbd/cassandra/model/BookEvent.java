@@ -5,6 +5,7 @@ import org.bson.types.ObjectId;
 import java.util.Date;
 
 public class BookEvent{
+    //wont use, since wont do reservations
 
     private Date beginDate;
 

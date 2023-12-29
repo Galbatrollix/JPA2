@@ -1,44 +1,43 @@
 package pl.nbd.cassandra.model;
 
 
+import com.datastax.oss.driver.api.mapper.annotations.*;
+import pl.nbd.cassandra.repositories.CassandraRepo;
+
+import java.util.UUID;
+
+@Entity(defaultKeyspace = CassandraRepo.KEYSPACE_NAME)
+@PropertyStrategy(mutable = false)
+@CqlName(CassandraRepo.TABLE_LIBRARY_USERS)
 public class LibraryUser{
 
+    @PartitionKey
+    private UUID id;
     private String email;
 
+    @ClusteringColumn
     private String username;
 
 
-//    public LibraryUser(
-//                        String username,
-//                        String email,
-//                        ObjectId id) {
-//        super(id);
-//        this.username = username;
-//        this.email = email;
-//    }
-//
-//    public LibraryUser(
-//            String username,
-//            String email,
-//            String id) {
-//        super(new ObjectId(id));
-//        this.username = username;
-//        this.email = email;
-//    }
-//
-//    public LibraryUser(
-//            String username,
-//            String email) {
-//        super(null);
-//        this.username = username;
-//        this.email = email;
-//    }
-//
-//    public LibraryUser(LibraryUser user){
-//        super(user.id);
-//        this.username = user.username;
-//        this.email = user.email;
-//    }
+    public LibraryUser(
+            UUID id,
+            String username,
+            String email
+            ) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+    }
+
+    public LibraryUser(
+            String username,
+            String email
+    ) {
+        this.id = UUID.randomUUID();
+        this.username = username;
+        this.email = email;
+    }
+
 
 
 
@@ -59,5 +58,11 @@ public class LibraryUser{
     }
 
 
+    public UUID getId() {
+        return id;
+    }
 
+    public void setId(UUID id) {
+        this.id = id;
+    }
 }

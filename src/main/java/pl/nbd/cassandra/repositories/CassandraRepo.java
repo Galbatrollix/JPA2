@@ -16,6 +16,9 @@ public class CassandraRepo {
 
     public static final String KEYSPACE_NAME = "library_books_system";
 
+    public static final String TABLE_BOOKS = "books";
+    public static final String TABLE_LIBRARY_USERS = "libraryUsers";
+
     public CqlSession getSession() {
         return session;
     }
@@ -50,7 +53,7 @@ public class CassandraRepo {
 
     public void addBooksTable() {
         SimpleStatement createBooksTable =
-                SchemaBuilder.createTable(CqlIdentifier.fromCql("books"))
+                SchemaBuilder.createTable(CqlIdentifier.fromCql(CassandraRepo.TABLE_BOOKS))
                         .ifNotExists()
                         .withPartitionKey(CqlIdentifier.fromCql("id"), DataTypes.UUID)
                         .withClusteringColumn(CqlIdentifier.fromCql("title"), DataTypes.TEXT)
@@ -60,6 +63,19 @@ public class CassandraRepo {
                         .build();
         session.execute(createBooksTable);
         System.out.println("Added books table");
+    }
+
+    public void addLibraryUsersTable() {
+        SimpleStatement createLibraryUsersTable =
+                SchemaBuilder.createTable(CqlIdentifier.fromCql(CassandraRepo.TABLE_LIBRARY_USERS))
+                        .ifNotExists()
+                        .withPartitionKey(CqlIdentifier.fromCql("id"), DataTypes.UUID)
+                        .withClusteringColumn(CqlIdentifier.fromCql("username"), DataTypes.TEXT)
+                        .withColumn(CqlIdentifier.fromCql("email"), DataTypes.TEXT)
+                        .withClusteringOrder(CqlIdentifier.fromCql("username"), ClusteringOrder.ASC)
+                        .build();
+        session.execute(createLibraryUsersTable);
+        System.out.println("Added library users table");
     }
 
     public void closeSession() {
