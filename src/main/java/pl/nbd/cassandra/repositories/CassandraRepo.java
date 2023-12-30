@@ -18,6 +18,10 @@ public class CassandraRepo {
 
     public static final String TABLE_BOOKS = "books";
     public static final String TABLE_LIBRARY_USERS = "libraryUsers";
+    public static final String TABLE_LENDING_BY_USER  = "lending_by_user";
+    public static final String TABLE_RATING_BY_USER  = "rating_by_user";
+    public static final String TABLE_LENDING_BY_BOOK = "lending_by_book";
+    public static final String TABLE_RATING_BY_BOOK = "rating_by_book";
 
     public CqlSession getSession() {
         return session;
@@ -76,6 +80,63 @@ public class CassandraRepo {
                         .build();
         session.execute(createLibraryUsersTable);
         System.out.println("Added library users table");
+    }
+
+
+    public  void addLendingByUserTable(){
+        SimpleStatement createLendingByUserTable =
+                SchemaBuilder.createTable(CqlIdentifier.fromCql(CassandraRepo.TABLE_LENDING_BY_USER))
+                        .ifNotExists()
+                        .withPartitionKey(CqlIdentifier.fromCql("user_id"), DataTypes.UUID)
+                        .withColumn(CqlIdentifier.fromCql("book_id"), DataTypes.UUID)
+                        .withColumn(CqlIdentifier.fromCql("id"), DataTypes.UUID)
+                        .withColumn(CqlIdentifier.fromCql("begin_date"), DataTypes.DATE)
+                        .withColumn(CqlIdentifier.fromCql("expected_end_date"), DataTypes.DATE)
+                        .withColumn(CqlIdentifier.fromCql("close_date"), DataTypes.DATE)
+                        .build();
+        session.execute(createLendingByUserTable);
+        System.out.println("Added lending by user table");
+    }
+    public  void addLendingByBookTable(){
+        SimpleStatement createLendingByBookTable =
+                SchemaBuilder.createTable(CqlIdentifier.fromCql(CassandraRepo.TABLE_LENDING_BY_BOOK))
+                        .ifNotExists()
+                        .withPartitionKey(CqlIdentifier.fromCql("book_id"), DataTypes.UUID)
+                        .withColumn(CqlIdentifier.fromCql("user_id"), DataTypes.UUID)
+                        .withColumn(CqlIdentifier.fromCql("id"), DataTypes.UUID)
+                        .withColumn(CqlIdentifier.fromCql("begin_date"), DataTypes.DATE)
+                        .withColumn(CqlIdentifier.fromCql("expected_end_date"), DataTypes.DATE)
+                        .withColumn(CqlIdentifier.fromCql("close_date"), DataTypes.DATE)
+                        .build();
+        session.execute(createLendingByBookTable);
+        System.out.println("Added lending by book table");
+
+    }
+    public  void addRatingByUserTable(){
+        SimpleStatement createRatingByUserTable =
+                SchemaBuilder.createTable(CqlIdentifier.fromCql(CassandraRepo.TABLE_RATING_BY_USER))
+                        .ifNotExists()
+                        .withPartitionKey(CqlIdentifier.fromCql("user_id"), DataTypes.UUID)
+                        .withColumn(CqlIdentifier.fromCql("book_id"), DataTypes.UUID)
+                        .withColumn(CqlIdentifier.fromCql("id"), DataTypes.UUID)
+                        .withColumn(CqlIdentifier.fromCql("stars"), DataTypes.INT)
+                        .withColumn(CqlIdentifier.fromCql("comment"), DataTypes.TEXT)
+                        .build();
+        session.execute(createRatingByUserTable);
+        System.out.println("Added rating by user table");
+    }
+    public  void addRatingByBookTable(){
+        SimpleStatement createRatingByBookTable =
+                SchemaBuilder.createTable(CqlIdentifier.fromCql(CassandraRepo.TABLE_RATING_BY_BOOK))
+                        .ifNotExists()
+                        .withPartitionKey(CqlIdentifier.fromCql("book_id"), DataTypes.UUID)
+                        .withColumn(CqlIdentifier.fromCql("user_id"), DataTypes.UUID)
+                        .withColumn(CqlIdentifier.fromCql("id"), DataTypes.UUID)
+                        .withColumn(CqlIdentifier.fromCql("stars"), DataTypes.INT)
+                        .withColumn(CqlIdentifier.fromCql("comment"), DataTypes.TEXT)
+                        .build();
+        session.execute(createRatingByBookTable);
+        System.out.println("Added rating by book table");
     }
 
     public void closeSession() {

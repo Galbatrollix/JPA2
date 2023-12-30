@@ -24,6 +24,12 @@ public class Main {
         repo.addBooksTable();
         repo.addLibraryUsersTable();
 
+        repo.addLendingByBookTable();
+        repo.addLendingByUserTable();
+        repo.addRatingByBookTable();
+        repo.addRatingByUserTable();
+
+
         // WAZNE - zeby generated code byl tu dostepny trzeba kliknac
         // PPM na project folder (JPA [FirstJPaApp]) > Maven > Generate Sources and Upgrade Folders
         // i potem Maven > Reload Project
