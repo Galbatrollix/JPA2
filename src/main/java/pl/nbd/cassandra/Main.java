@@ -34,7 +34,7 @@ public class Main {
         // PPM na project folder (JPA [FirstJPaApp]) > Maven > Generate Sources and Upgrade Folders
         // i potem Maven > Reload Project
          BookMapper bookMapper = new BookMapperBuilder(repo.getSession()).build();
-       // BookDao bookDao = bookMapper.bookDao();
+        BookDao bookDao = bookMapper.bookDao();
 //        Book book = new Book( "Harry Potter",10, "J.K.Rowling");
 //        bookDao.addBook(book);
 //        book.setQuantity(2);
@@ -44,7 +44,7 @@ public class Main {
 
 
 
-//        PagingIterable<Book> allBook = bookDao.getAllBooks();
+//        PagingIterable<Book> allBook = bookDao.getBooksByTitle("Dziady");
 //        allBook.forEach(book -> {
 //            System.out.println(book.getAuthor() + " " + book.getTitle());
 //        });

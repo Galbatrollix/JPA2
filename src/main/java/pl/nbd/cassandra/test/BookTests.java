@@ -69,12 +69,10 @@ public class BookTests {
         bookDao.addBook(book);
         Book bookGet1 = bookDao.getBookById(book.getId());
         assertEquals(bookGet1.getTitle(), "Programming in Java");
-        //book.setTitle("Programming in JavaScript");
-        //curently fails - update add new book with same id and diffrent title, intstead of updating
-        //propably need custom update with queryporvider
-//        bookDao.updateBook(book);
-//        Book bookGet2 = bookDao.getBookById(book.getId());
-//        assertEquals(bookGet2.getTitle(), "Programming in JavaScript");
+        Book updatedBook = new Book(book.getId(), "A.Programmer", 3, "Programming in JavaScript");
+        bookDao.updateBook(updatedBook);
+        Book bookGet2 = bookDao.getBookById(book.getId());
+        assertEquals(bookGet2.getTitle(), "Programming in JavaScript");
     }
 
 

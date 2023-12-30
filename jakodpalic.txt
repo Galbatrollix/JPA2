@@ -37,5 +37,7 @@ rs.status()
 #dla cassandry (w terminalu konkretnego noda)
  cqlsh --username=cassandra --password=cassandrapassword
  ^ to pozwoli na wywolywanie queries
-
+TRUNCATE library_books_system.books;
+^usuwa all rows z tabeli
+DROP TABLE / KEYSPACE //self explonatory
 
