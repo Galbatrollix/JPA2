@@ -6,6 +6,7 @@ import java.util.UUID;
 
 public class Lending {
 
+
     private UUID id;
     private Date beginDate;
 
@@ -16,6 +17,13 @@ public class Lending {
     private UUID userId;
     private UUID bookId;
 
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
     public Date getBeginDate() {
         return beginDate;
