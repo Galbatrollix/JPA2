@@ -13,6 +13,7 @@ public class Book {
 
     @PartitionKey
     private UUID id;
+
     private int quantity;
     @ClusteringColumn
     private String author;

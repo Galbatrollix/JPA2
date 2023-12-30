@@ -3,61 +3,29 @@ package pl.nbd.cassandra.model;
 
 import org.bson.types.ObjectId;
 
+import java.util.UUID;
+
 public class Rating {
+
+
+    private UUID id;
+
     private int stars;
 
     private String comment;
 
-    private ObjectId bookId;
+    private UUID bookId;
 
-    private ObjectId userId;
+    private UUID userId;
 
-//    public Rating(
-//            int stars,
-//            String comment,
-//            ObjectId bookId,
-//            ObjectId userId,
-//            ObjectId id) {
-//        super(id);
-//        this.stars = stars;
-//        this.comment = comment;
-//        this.bookId = bookId;
-//        this.userId  = userId;
-//    }
-//
-//    public Rating(
-//            int stars,
-//            String comment,
-//            String bookId,
-//            String userId,
-//            String id) {
-//        super(new ObjectId(id));
-//        this.stars = stars;
-//        this.comment = comment;
-//        this.bookId = new ObjectId(bookId);
-//        this.userId  = new ObjectId(userId);
-//    }
-//
-//    public Rating(
-//            int stars,
-//            String comment,
-//            ObjectId bookId,
-//            ObjectId userId) {
-//        super(null);
-//        this.stars = stars;
-//        this.comment = comment;
-//        this.bookId = bookId;
-//        this.userId  = userId;
-//    }
-//
-//
-//    public Rating(Rating rating) {
-//        super(rating.id);
-//        this.stars = rating.stars;
-//        this.comment = rating.comment;
-//        this.bookId = rating.bookId;
-//        this.userId = rating.userId;
-//    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
     public int getStars() {
         return stars;
@@ -75,19 +43,21 @@ public class Rating {
         this.comment = comment;
     }
 
-    public ObjectId getBookId() {
+    public UUID getBookId() {
         return bookId;
     }
 
-    public void setBookId(ObjectId bookId) {
+    public void setBookId(UUID bookId) {
         this.bookId = bookId;
     }
 
-    public ObjectId getUserId() {
+    public UUID getUserId() {
         return userId;
     }
 
-    public void setUserId(ObjectId userId) {
+    public void setUserId(UUID userId) {
         this.userId = userId;
     }
+
+
 }

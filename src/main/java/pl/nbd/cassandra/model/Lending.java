@@ -1,29 +1,60 @@
 package pl.nbd.cassandra.model;
 
 
-import org.bson.types.ObjectId;
-
 import java.util.Date;
+import java.util.UUID;
 
 public class Lending {
 
+    private UUID id;
     private Date beginDate;
 
     private Date expectedEndDate;
 
     private Date closeDate;
 
-    private ObjectId userId;
-    private ObjectId bookId;
-//    public Lending(ObjectId id,
-//                   Date beginDate,
-//                   Date expectedEndDate,
-//                   Date closeDate,
-//                   ObjectId bookId,
-//                   ObjectId userId) {
-//        super(id, beginDate, expectedEndDate, closeDate, bookId, userId);
-//
-//    }
+    private UUID userId;
+    private UUID bookId;
 
+
+    public Date getBeginDate() {
+        return beginDate;
+    }
+
+    public void setBeginDate(Date beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    public Date getExpectedEndDate() {
+        return expectedEndDate;
+    }
+
+    public void setExpectedEndDate(Date expectedEndDate) {
+        this.expectedEndDate = expectedEndDate;
+    }
+
+    public Date getCloseDate() {
+        return closeDate;
+    }
+
+    public void setCloseDate(Date closeDate) {
+        this.closeDate = closeDate;
+    }
+
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
+
+    public UUID getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(UUID bookId) {
+        this.bookId = bookId;
+    }
 
 }
