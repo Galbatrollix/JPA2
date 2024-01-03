@@ -24,4 +24,7 @@ public interface RatingDao {
 
     @QueryProvider(providerClass= RatingQueryProvider.class, entityHelpers = {Rating.class})
     List<Rating> getRatingsByBookId(UUID bookId);
+
+    @QueryProvider(providerClass= RatingQueryProvider.class, entityHelpers = {Rating.class})
+    Rating getRating(UUID bookId, UUID userId);
 }

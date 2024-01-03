@@ -45,6 +45,11 @@ public class Rating {
         this.userId = userId;
     }
 
+
+    public void debugPrint() {
+        System.out.println(this.id + " book: " + this.bookId + " user: " + this.userId + " " + this.comment + " " + this.stars);
+    }
+
     public UUID getId() {
         return id;
     }

@@ -69,20 +69,12 @@ public class RatingQueryProvider {
     }
 
     public Rating getRating(UUID bookId, UUID userId) {
-        SimpleStatement statement;
-//        if(Math.random() < 0.5){
-//            statement = QueryBuilder.selectFrom(CassandraRepo.TABLE_RATING_BY_BOOK)
-//                    .all()
-//                    .where(Relation.column("book_id").isEqualTo(literal(bookId)))
-//                    .where(Relation.column("user_id").isEqualTo(literal(userId)))
-//                    .build();
-//        }else{
-            statement = QueryBuilder.selectFrom(CassandraRepo.TABLE_RATING_BY_USER)
-                    .all()
-                    .where(Relation.column("user_id").isEqualTo(literal(userId)))
-                    .where(Relation.column("book_id").isEqualTo(literal(bookId)))
-                    .build();
-//      }
+        String table = Math.random() < 0.5 ? CassandraRepo.TABLE_RATING_BY_USER : CassandraRepo.TABLE_RATING_BY_BOOK;
+        Statement statement = QueryBuilder.selectFrom(table)
+                .all()
+                .where(Relation.column("book_id").isEqualTo(literal(bookId)))
+                .where(Relation.column("user_id").isEqualTo(literal(userId)))
+                .build();
 
         Row result_row = session.execute(statement).one();
         return ratingFromRow(result_row);
