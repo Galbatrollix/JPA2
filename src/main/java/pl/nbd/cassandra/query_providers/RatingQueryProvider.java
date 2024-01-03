@@ -54,6 +54,11 @@ public class RatingQueryProvider {
     }
 
     private Rating ratingFromRow(Row row) {
+        if (row == null){
+            return null;
+        }
+
+
         return new Rating(
                 row.getUuid("id"),
                 row.getInt("stars"),
@@ -63,9 +68,26 @@ public class RatingQueryProvider {
         );
     }
 
-//    public Rating getRating(UUID bookId, UUID userId) {
-//
-//    }
+    public Rating getRating(UUID bookId, UUID userId) {
+        SimpleStatement statement;
+//        if(Math.random() < 0.5){
+//            statement = QueryBuilder.selectFrom(CassandraRepo.TABLE_RATING_BY_BOOK)
+//                    .all()
+//                    .where(Relation.column("book_id").isEqualTo(literal(bookId)))
+//                    .where(Relation.column("user_id").isEqualTo(literal(userId)))
+//                    .build();
+//        }else{
+            statement = QueryBuilder.selectFrom(CassandraRepo.TABLE_RATING_BY_USER)
+                    .all()
+                    .where(Relation.column("user_id").isEqualTo(literal(userId)))
+                    .where(Relation.column("book_id").isEqualTo(literal(bookId)))
+                    .build();
+//      }
+
+        Row result_row = session.execute(statement).one();
+        return ratingFromRow(result_row);
+
+    }
     public List<Rating> getRatingsByBookId(UUID bookId) {
         SimpleStatement statement = QueryBuilder.selectFrom(CassandraRepo.TABLE_RATING_BY_BOOK)
                 .all()
