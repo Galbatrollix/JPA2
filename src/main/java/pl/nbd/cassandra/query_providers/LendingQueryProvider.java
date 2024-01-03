@@ -33,7 +33,7 @@ public class LendingQueryProvider {
         this.ratingEntityHelper = ratingEntityHelper;
     }
 
-    private String parseDate(Date date) {
+    public static String parseDate(Date date) {
        SimpleDateFormat x = new SimpleDateFormat("yyyy-MM-dd");
        return x.format(date);
     }
@@ -76,32 +76,28 @@ public class LendingQueryProvider {
                 java.util.Date.from(row.getLocalDate("begin_date").atStartOfDay()
                         .atZone(ZoneId.systemDefault())
                         .toInstant()),
-
-                java.util.Date.from(row.getLocalDate("close_date").atStartOfDay()
-                        .atZone(ZoneId.systemDefault())
-                        .toInstant()),
                 java.util.Date.from(row.getLocalDate("expected_end_date").atStartOfDay()
                         .atZone(ZoneId.systemDefault())
                         .toInstant()),
+                java.util.Date.from(row.getLocalDate("close_date").atStartOfDay()
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant()),
 
-                row.getUuid("book_id"),
-                row.getUuid("user_id")
+
+                row.getUuid("user_id"),
+                row.getUuid("book_id")
+
         );
     }
 
     public Lending getLending(UUID bookId, UUID userId) {
-        System.out.println(bookId);
-        System.out.println(userId);
-        //String table = Math.random() < 0.5 ? CassandraRepo.TABLE_LENDING_BY_USER : CassandraRepo.TABLE_LENDING_BY_BOOK;
         SimpleStatement statement = QueryBuilder.selectFrom(CassandraRepo.TABLE_LENDING_BY_USER)
                 .all()
                 .where(Relation.column("user_id").isEqualTo(literal(userId)))
                 .where(Relation.column("book_id").isEqualTo(literal(bookId)))
                 .build();
-        System.out.println(statement.getQuery());
 
         Row result_row = session.execute(statement).one();
-        System.out.println(result_row);
         return ratingFromRow(result_row);
     }
     public List<Lending> getLendingsByBookId(UUID bookId) {

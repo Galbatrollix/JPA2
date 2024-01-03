@@ -12,6 +12,7 @@ import pl.nbd.cassandra.model.Book;
 import pl.nbd.cassandra.model.Lending;
 import pl.nbd.cassandra.model.LibraryUser;
 import pl.nbd.cassandra.model.Rating;
+import pl.nbd.cassandra.query_providers.LendingQueryProvider;
 import pl.nbd.cassandra.repositories.CassandraRepo;
 
 import java.util.Date;
@@ -49,10 +50,8 @@ public class LendingTests {
     @Test
     void testAddAndGetLending() {
         Book book = new Book( "A.Mickiewicz", "Dziady" );
-        System.out.println(book.getId());
         LibraryUser user = new LibraryUser("driller", "driller@drg.com");
-        System.out.println(user.getId());
-        Lending lending = new Lending(user.getId(), book.getId());
+        Lending lending = new Lending(book.getId(), user.getId());
         assertNotNull(lending);
         bookDao.addBook(book);
         libraryUserDao.addLibraryUser(user);
@@ -60,11 +59,11 @@ public class LendingTests {
         Lending lendingToGet = lendingDao.getLending(book.getId(), user.getId());
         assertNotNull(lendingToGet);
         assertEquals(lending.getId(), lendingToGet.getId());
-        assertEquals(lending.getBeginDate(), lendingToGet.getBeginDate());
-        assertEquals(lending.getExpectedEndDate(), lendingToGet.getExpectedEndDate());
-        assertEquals(lending.getCloseDate(), lendingToGet.getCloseDate());
         assertEquals(lending.getBookId(), lendingToGet.getBookId());
         assertEquals(lending.getUserId(), lendingToGet.getUserId());
+        assertEquals(LendingQueryProvider.parseDate(lending.getBeginDate()), LendingQueryProvider.parseDate(lendingToGet.getBeginDate()));
+        assertEquals(LendingQueryProvider.parseDate(lending.getExpectedEndDate()), LendingQueryProvider.parseDate(lendingToGet.getExpectedEndDate()));
+        assertEquals(LendingQueryProvider.parseDate(lending.getCloseDate()), LendingQueryProvider.parseDate(lendingToGet.getCloseDate()));
     }
 
     @AfterAll
