@@ -26,15 +26,15 @@ public class RatingQueryProvider {
     }
     public void addRating(Rating rating){
         RegularInsert insert = QueryBuilder.insertInto(CassandraRepo.TABLE_RATING_BY_BOOK)
-                .value(CqlIdentifier.fromCql("id"), literal(rating.getId()))
                 .value(CqlIdentifier.fromCql("book_id"), literal(rating.getBookId()))
+                .value(CqlIdentifier.fromCql("id"), literal(rating.getId()))
                 .value(CqlIdentifier.fromCql("user_id"), literal(rating.getUserId()))
                 .value(CqlIdentifier.fromCql("stars"), literal(rating.getStars()))
                 .value(CqlIdentifier.fromCql("comment"), literal(rating.getComment()));
 
         RegularInsert insert2 = QueryBuilder.insertInto(CassandraRepo.TABLE_RATING_BY_USER)
-                .value(CqlIdentifier.fromCql("id"), literal(rating.getId()))
                 .value(CqlIdentifier.fromCql("user_id"), literal(rating.getUserId()))
+                .value(CqlIdentifier.fromCql("id"), literal(rating.getId()))
                 .value(CqlIdentifier.fromCql("book_id"), literal(rating.getBookId()))
                 .value(CqlIdentifier.fromCql("stars"), literal(rating.getStars()))
                 .value(CqlIdentifier.fromCql("comment"), literal(rating.getComment()));

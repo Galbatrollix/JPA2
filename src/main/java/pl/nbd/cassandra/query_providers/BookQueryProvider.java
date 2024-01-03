@@ -36,7 +36,6 @@ public class BookQueryProvider {
                 .value("id", QueryBuilder.literal(book.getId()))
                 .value("author", QueryBuilder.literal(book.getAuthor()))
                 .value("title", QueryBuilder.literal(book.getTitle()))
-                .value("quantity", QueryBuilder.literal(book.getQuantity()))
                 .build();
 
 //        //Alternative:

@@ -31,22 +31,19 @@ public class BookTests {
 
     @Test
     void testAddAndGetBook() {
-        Book book = new Book( "A.Mickiewicz", 11, "Dziady" );
+        Book book = new Book( "A.Mickiewicz", "Dziady" );
         assertNotNull(book);
         bookDao.addBook(book);
         Book bookToGet = bookDao.getBookById(book.getId());
-        book.debugPrint();
-        bookToGet.debugPrint();
         assertNotNull(bookToGet);
         assertEquals(book.getId(), bookToGet.getId());
         assertEquals(book.getTitle(), bookToGet.getTitle());
-        assertEquals(book.getQuantity(), bookToGet.getQuantity());
         assertEquals(book.getAuthor(), bookToGet.getAuthor());
     }
 
     @Test
     void testDeleteBook() {
-        Book book = new Book( "A.Mickiewicz", 11, "Dziady");
+        Book book = new Book( "A.Mickiewicz", "Dziady");
         assertNotNull(book);
         bookDao.addBook(book);
         bookDao.deleteBook(book);
@@ -56,8 +53,8 @@ public class BookTests {
 
     @Test
     void testGetAllBooks() {
-        bookDao.addBook(new Book("J.K.Rowling", 9, "Harry Potter 1"));
-        bookDao.addBook(new Book("J.K.Rowling", 1, "Harry Potter 2"));
+        bookDao.addBook(new Book("J.K.Rowling", "Harry Potter 1"));
+        bookDao.addBook(new Book("J.K.Rowling", "Harry Potter 2"));
         PagingIterable<Book> allBooks = bookDao.getAllBooks();
         assertNotNull(allBooks);
         assertTrue(allBooks.all().size() >= 2);
@@ -65,11 +62,11 @@ public class BookTests {
 
     @Test
     void testUpdateBook() {
-        Book book = new Book("A.Programmer", 2, "Programming in Java");
+        Book book = new Book("A.Programmer",  "Programming in Java");
         bookDao.addBook(book);
         Book bookGet1 = bookDao.getBookById(book.getId());
         assertEquals(bookGet1.getTitle(), "Programming in Java");
-        Book updatedBook = new Book(book.getId(), "A.Programmer", 3, "Programming in JavaScript");
+        Book updatedBook = new Book(book.getId(), "A.Programmer",  "Programming in JavaScript");
         bookDao.updateBook(updatedBook);
         Book bookGet2 = bookDao.getBookById(book.getId());
         assertEquals(bookGet2.getTitle(), "Programming in JavaScript");

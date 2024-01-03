@@ -3,10 +3,7 @@ package pl.nbd.cassandra;
 import com.datastax.oss.driver.api.core.PagingIterable;
 import pl.nbd.cassandra.dao.BookDao;
 import pl.nbd.cassandra.dao.LibraryUserDao;
-import pl.nbd.cassandra.mappers.BookMapper;
-import pl.nbd.cassandra.mappers.BookMapperBuilder;
-import pl.nbd.cassandra.mappers.LibraryUserMapper;
-import pl.nbd.cassandra.mappers.LibraryUserMapperBuilder;
+import pl.nbd.cassandra.mappers.*;
 import pl.nbd.cassandra.model.Book;
 import pl.nbd.cassandra.model.LibraryUser;
 import pl.nbd.cassandra.repositories.CassandraRepo;
@@ -34,7 +31,8 @@ public class Main {
         // PPM na project folder (JPA [FirstJPaApp]) > Maven > Generate Sources and Upgrade Folders
         // i potem Maven > Reload Project
          BookMapper bookMapper = new BookMapperBuilder(repo.getSession()).build();
-        BookDao bookDao = bookMapper.bookDao();
+         BookDao bookDao = bookMapper.bookDao();
+        RatingMapper ratingMapper = new RatingMapperBuilder(repo.getSession()).build();
 //        Book book = new Book( "Harry Potter",10, "J.K.Rowling");
 //        bookDao.addBook(book);
 //        book.setQuantity(2);

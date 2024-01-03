@@ -17,7 +17,7 @@ public class CassandraRepo {
     public static final String KEYSPACE_NAME = "library_books_system";
 
     public static final String TABLE_BOOKS = "books";
-    public static final String TABLE_LIBRARY_USERS = "libraryUsers";
+    public static final String TABLE_LIBRARY_USERS = "library_users";
     public static final String TABLE_LENDING_BY_USER  = "lending_by_user";
     public static final String TABLE_RATING_BY_USER  = "rating_by_user";
     public static final String TABLE_LENDING_BY_BOOK = "lending_by_book";
@@ -62,7 +62,6 @@ public class CassandraRepo {
                         .withPartitionKey(CqlIdentifier.fromCql("id"), DataTypes.UUID)
                         .withClusteringColumn(CqlIdentifier.fromCql("author"), DataTypes.TEXT)
                         .withColumn(CqlIdentifier.fromCql("title"), DataTypes.TEXT)
-                        .withColumn(CqlIdentifier.fromCql("quantity"), DataTypes.INT)
                         .withClusteringOrder(CqlIdentifier.fromCql("author"), ClusteringOrder.ASC)
                         .build();
         session.execute(createBooksTable);
@@ -116,8 +115,8 @@ public class CassandraRepo {
         SimpleStatement createRatingByUserTable =
                 SchemaBuilder.createTable(CqlIdentifier.fromCql(CassandraRepo.TABLE_RATING_BY_USER))
                         .ifNotExists()
-                        .withPartitionKey(CqlIdentifier.fromCql("id"), DataTypes.UUID)
-                        .withClusteringColumn(CqlIdentifier.fromCql("user_id"), DataTypes.UUID)
+                        .withPartitionKey(CqlIdentifier.fromCql("user_id"), DataTypes.UUID)
+                        .withColumn(CqlIdentifier.fromCql("id"), DataTypes.UUID)
                         .withColumn(CqlIdentifier.fromCql("book_id"), DataTypes.UUID)
                         .withColumn(CqlIdentifier.fromCql("stars"), DataTypes.INT)
                         .withColumn(CqlIdentifier.fromCql("comment"), DataTypes.TEXT)
@@ -129,8 +128,8 @@ public class CassandraRepo {
         SimpleStatement createRatingByBookTable =
                 SchemaBuilder.createTable(CqlIdentifier.fromCql(CassandraRepo.TABLE_RATING_BY_BOOK))
                         .ifNotExists()
-                        .withPartitionKey(CqlIdentifier.fromCql("id"), DataTypes.UUID)
-                        .withClusteringColumn(CqlIdentifier.fromCql("book_id"), DataTypes.UUID)
+                        .withPartitionKey(CqlIdentifier.fromCql("book_id"), DataTypes.UUID)
+                        .withColumn(CqlIdentifier.fromCql("id"), DataTypes.UUID)
                         .withColumn(CqlIdentifier.fromCql("user_id"), DataTypes.UUID)
                         .withColumn(CqlIdentifier.fromCql("stars"), DataTypes.INT)
                         .withColumn(CqlIdentifier.fromCql("comment"), DataTypes.TEXT)
