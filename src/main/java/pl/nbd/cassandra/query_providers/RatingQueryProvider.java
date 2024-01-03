@@ -4,6 +4,7 @@ import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.PagingIterable;
 import com.datastax.oss.driver.api.core.cql.*;
 import com.datastax.oss.driver.api.mapper.MapperContext;
+import com.datastax.oss.driver.api.mapper.annotations.Delete;
 import com.datastax.oss.driver.api.mapper.entity.EntityHelper;
 import com.datastax.oss.driver.api.querybuilder.relation.Relation;
 import pl.nbd.cassandra.model.Book;
@@ -89,5 +90,34 @@ public class RatingQueryProvider {
         List<Rating> results = new ArrayList<Rating>();
         resultRows.forEach(row -> results.add(ratingFromRow(row)));
         return results;
+    }
+
+    public List<Rating> getRatingsByUserId(UUID userId) {
+        SimpleStatement statement = QueryBuilder.selectFrom(CassandraRepo.TABLE_RATING_BY_USER)
+                .all()
+                .where(Relation.column("user_id").isEqualTo(literal(userId)))
+                .build();
+        List<Row> resultRows = session.execute(statement).all();
+        List<Rating> results = new ArrayList<Rating>();
+        resultRows.forEach(row -> results.add(ratingFromRow(row)));
+        return results;
+    }
+
+
+    public void deleteRating(UUID bookId, UUID userId) {
+        SimpleStatement deleteStatement1 = QueryBuilder.deleteFrom(CassandraRepo.TABLE_RATING_BY_BOOK)
+                .where(Relation.column("book_id").isEqualTo(literal(bookId)))
+                .where(Relation.column("user_id").isEqualTo(literal(userId)))
+                .build();
+        SimpleStatement deleteStatement2 = QueryBuilder.deleteFrom(CassandraRepo.TABLE_RATING_BY_USER)
+                .where(Relation.column("book_id").isEqualTo(literal(bookId)))
+                .where(Relation.column("user_id").isEqualTo(literal(userId)))
+                .build();
+
+        BatchStatement batchStatement = BatchStatement.builder(BatchType.LOGGED).
+                addStatement(deleteStatement1).addStatement(deleteStatement2)
+                .build();
+
+        session.execute(batchStatement);
     }
 }

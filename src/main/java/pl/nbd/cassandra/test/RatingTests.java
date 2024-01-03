@@ -77,6 +77,7 @@ public class RatingTests {
         libraryUserDao.addLibraryUser(user);
         ratingDao.addRating(rating);
         Rating ratingToGet1 = ratingDao.getRating(book.getId(), user.getId());
+        assertNotNull(ratingToGet1);
         assertEquals(rating.getId(), ratingToGet1.getId());
         assertEquals(rating.getComment(), ratingToGet1.getComment());
         assertEquals(rating.getStars(), ratingToGet1.getStars());
@@ -84,6 +85,7 @@ public class RatingTests {
         assertEquals(rating.getUserId(), ratingToGet1.getUserId());
         ratingDao.addRating(rating2);
         Rating ratingToGet2 = ratingDao.getRating(book.getId(), user.getId());
+        assertNotNull(ratingToGet2);
         assertEquals(rating2.getId(), ratingToGet2.getId());
         assertEquals(rating2.getComment(), ratingToGet2.getComment());
         assertEquals(rating2.getStars(), ratingToGet2.getStars());
@@ -92,16 +94,18 @@ public class RatingTests {
 
     }
 
-//    @Test
-//    void testDeleteBook() {
-//        Book book = new Book( "A.Mickiewicz", 11, "Dziady");
-//        assertNotNull(book);
-//        bookDao.addBook(book);
-//        bookDao.deleteBook(book);
-//        Book check = bookDao.getBookById(book.getId());
-//        assertNull(check);
-//    }
-//
+    @Test
+    void testDeleteRating() {
+        Book book = new Book( "A.Mickiewicz", "Dziady" );
+        LibraryUser user = new LibraryUser("driller", "driller@drg.com");
+        Rating rating = new Rating(5, "i should be deleted", book.getId(), user.getId());
+        assertNotNull(rating);
+        ratingDao.addRating(rating);
+        ratingDao.deleteRating(rating.getBookId(), rating.getUserId());
+        Rating check = ratingDao.getRating(rating.getBookId(), rating.getUserId());
+        assertNull(check);
+    }
+
     @Test
     void testRatingByUserORBook() {
         Book book1 = new Book( "A.Mickiewicz", "Dziady" );
@@ -125,24 +129,19 @@ public class RatingTests {
         ratingDao.addRating(rating3);
 
         List<Rating> ratingsBook1 = ratingDao.getRatingsByBookId(book1.getId());
+        assertNotNull(ratingsBook1);
         assertTrue(ratingsBook1.size() >= 1);
         List<Rating> ratingsBook2 = ratingDao.getRatingsByBookId(book1.getId());
-        assertTrue(ratingsBook1.size() >= 1);
-    }
-//
-//    @Test
-//    void testUpdateBook() {
-//        Book book = new Book("A.Programmer", 2, "Programming in Java");
-//        bookDao.addBook(book);
-//        Book bookGet1 = bookDao.getBookById(book.getId());
-//        assertEquals(bookGet1.getTitle(), "Programming in Java");
-//        Book updatedBook = new Book(book.getId(), "A.Programmer", 3, "Programming in JavaScript");
-//        bookDao.updateBook(updatedBook);
-//        Book bookGet2 = bookDao.getBookById(book.getId());
-//        assertEquals(bookGet2.getTitle(), "Programming in JavaScript");
-//    }
-//
+        assertNotNull(ratingsBook2);
+        assertTrue(ratingsBook2.size() >= 1);
 
+        List<Rating> ratingsUser1 = ratingDao.getRatingsByUserId(user1.getId());
+        assertNotNull(ratingsUser1);
+        assertTrue(ratingsUser1.size() >= 1);
+        List<Rating> ratingsUser2 = ratingDao.getRatingsByUserId(user2.getId());
+        assertNotNull(ratingsUser2);
+        assertTrue(ratingsUser2.size() >= 2);
+    }
 
     @AfterAll
     static void closeCassandra() {

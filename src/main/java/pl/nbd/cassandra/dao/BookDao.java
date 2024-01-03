@@ -23,6 +23,7 @@ public interface BookDao {
     void deleteBook(Book book);
 
 
+    @StatementAttributes(consistencyLevel = "QUORUM")
     @QueryProvider(providerClass = BookQueryProvider.class, entityHelpers = {Book.class})
     void updateBook(Book updatedBook);
 
