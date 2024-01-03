@@ -116,22 +116,22 @@ public class CassandraRepo {
         SimpleStatement createRatingByUserTable =
                 SchemaBuilder.createTable(CqlIdentifier.fromCql(CassandraRepo.TABLE_RATING_BY_USER))
                         .ifNotExists()
-                        .withPartitionKey(CqlIdentifier.fromCql("user_id"), DataTypes.UUID)
+                        .withPartitionKey(CqlIdentifier.fromCql("id"), DataTypes.UUID)
+                        .withClusteringColumn(CqlIdentifier.fromCql("user_id"), DataTypes.UUID)
                         .withColumn(CqlIdentifier.fromCql("book_id"), DataTypes.UUID)
-                        .withColumn(CqlIdentifier.fromCql("id"), DataTypes.UUID)
                         .withColumn(CqlIdentifier.fromCql("stars"), DataTypes.INT)
                         .withColumn(CqlIdentifier.fromCql("comment"), DataTypes.TEXT)
                         .build();
         session.execute(createRatingByUserTable);
         System.out.println("Added rating by user table");
     }
-    public  void addRatingByBookTable(){
+    public void addRatingByBookTable(){
         SimpleStatement createRatingByBookTable =
                 SchemaBuilder.createTable(CqlIdentifier.fromCql(CassandraRepo.TABLE_RATING_BY_BOOK))
                         .ifNotExists()
-                        .withPartitionKey(CqlIdentifier.fromCql("book_id"), DataTypes.UUID)
+                        .withPartitionKey(CqlIdentifier.fromCql("id"), DataTypes.UUID)
+                        .withClusteringColumn(CqlIdentifier.fromCql("book_id"), DataTypes.UUID)
                         .withColumn(CqlIdentifier.fromCql("user_id"), DataTypes.UUID)
-                        .withColumn(CqlIdentifier.fromCql("id"), DataTypes.UUID)
                         .withColumn(CqlIdentifier.fromCql("stars"), DataTypes.INT)
                         .withColumn(CqlIdentifier.fromCql("comment"), DataTypes.TEXT)
                         .build();
