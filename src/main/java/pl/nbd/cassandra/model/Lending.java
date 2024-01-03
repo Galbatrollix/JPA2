@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.UUID;
 
 public class Lending {
-
-
     private UUID id;
     private Date beginDate;
 
@@ -17,13 +15,28 @@ public class Lending {
     private UUID userId;
     private UUID bookId;
 
+    public Lending(UUID id, Date beginDate, Date expectedEndDate, Date closeDate, UUID userId, UUID bookId) {
+        this.id = id;
+        this.beginDate = beginDate;
+        this.expectedEndDate = expectedEndDate;
+        this.closeDate = closeDate;
+        this.userId = userId;
+        this.bookId = bookId;
+    }
+
+    public Lending(Date beginDate, Date expectedEndDate, Date closeDate, UUID userId, UUID bookId) {
+        this.id = UUID.randomUUID();
+        this.beginDate = beginDate;
+        this.expectedEndDate = expectedEndDate;
+        this.closeDate = closeDate;
+        this.userId = userId;
+        this.bookId = bookId;
+    }
+
     public UUID getId() {
         return id;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     public Date getBeginDate() {
         return beginDate;

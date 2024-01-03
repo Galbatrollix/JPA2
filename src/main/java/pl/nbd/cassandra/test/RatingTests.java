@@ -107,7 +107,7 @@ public class RatingTests {
     }
 
     @Test
-    void testRatingByUserORBook() {
+    void testGetRatingByUserOrBook() {
         Book book1 = new Book( "A.Mickiewicz", "Dziady" );
         Book book2 = new Book( "R.Riordan", "Percy Jackson" );
         Book book3 = new Book( "J.K.Rowling", "Harry Potter" );
