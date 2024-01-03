@@ -1,17 +1,22 @@
 package pl.nbd.cassandra.query_providers;
 
 import com.datastax.oss.driver.api.core.CqlSession;
-import com.datastax.oss.driver.api.core.cql.BatchType;
+import com.datastax.oss.driver.api.core.PagingIterable;
+import com.datastax.oss.driver.api.core.cql.*;
 import com.datastax.oss.driver.api.mapper.MapperContext;
 import com.datastax.oss.driver.api.mapper.entity.EntityHelper;
+import com.datastax.oss.driver.api.querybuilder.relation.Relation;
 import pl.nbd.cassandra.model.Book;
 import com.datastax.oss.driver.api.core.CqlIdentifier;
 import com.datastax.oss.driver.api.core.CqlSession;
-import com.datastax.oss.driver.api.core.cql.BatchStatement;
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder;
 import com.datastax.oss.driver.api.querybuilder.insert.RegularInsert;
 import pl.nbd.cassandra.model.Rating;
 import pl.nbd.cassandra.repositories.CassandraRepo;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import static com.datastax.oss.driver.api.querybuilder.QueryBuilder.literal;
 
@@ -19,6 +24,8 @@ public class RatingQueryProvider {
 
     private final CqlSession session;
     private EntityHelper<Rating> ratingEntityHelper;
+
+
 
     public RatingQueryProvider(MapperContext context, EntityHelper<Rating> ratingEntityHelper) {
         this.session = context.getSession();
@@ -44,5 +51,29 @@ public class RatingQueryProvider {
                 .build();
 
         session.execute(batchStatement);
+    }
+
+    private Rating ratingFromRow(Row row) {
+        return new Rating(
+                row.getUuid("id"),
+                row.getInt("stars"),
+                row.getString("comment"),
+                row.getUuid("book_id"),
+                row.getUuid("user_id")
+        );
+    }
+
+//    public Rating getRating(UUID bookId, UUID userId) {
+//
+//    }
+    public List<Rating> getRatingsByBookId(UUID bookId) {
+        SimpleStatement statement = QueryBuilder.selectFrom(CassandraRepo.TABLE_RATING_BY_BOOK)
+                .all()
+                .where(Relation.column("book_id").isEqualTo(literal(bookId)))
+                .build();
+        List<Row> resultRows = session.execute(statement).all();
+        List<Rating> results = new ArrayList<Rating>();
+        resultRows.forEach(row -> results.add(ratingFromRow(row)));
+        return results;
     }
 }

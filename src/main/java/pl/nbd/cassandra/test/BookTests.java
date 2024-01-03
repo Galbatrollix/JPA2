@@ -34,6 +34,7 @@ public class BookTests {
         Book book = new Book( "A.Mickiewicz", "Dziady" );
         assertNotNull(book);
         bookDao.addBook(book);
+        bookDao.addBook(book);
         Book bookToGet = bookDao.getBookById(book.getId());
         assertNotNull(bookToGet);
         assertEquals(book.getId(), bookToGet.getId());

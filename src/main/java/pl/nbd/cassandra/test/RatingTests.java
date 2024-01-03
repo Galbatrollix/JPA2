@@ -61,6 +61,27 @@ public class RatingTests {
 //        assertEquals(book.getAuthor(), bookToGet.getAuthor());
     }
 
+    @Test
+    void testReplacingRating() {
+        Book book = new Book( "A.Mickiewicz", "Dziady" );
+        LibraryUser user = new LibraryUser("driller", "driller@drg.com");
+        Rating rating = new Rating(5, "good book", book.getId(), user.getId());
+        Rating rating2 = new Rating(2, "meh", book.getId(), user.getId());
+        assertNotNull(rating);
+        bookDao.addBook(book);
+        libraryUserDao.addLibraryUser(user);
+        ratingDao.addRating(rating);
+        ratingDao.addRating(rating2);
+//        Book bookToGet = bookDao.getBookById(book.getId());
+//        book.debugPrint();
+//        bookToGet.debugPrint();
+//        assertNotNull(bookToGet);
+//        assertEquals(book.getId(), bookToGet.getId());
+//        assertEquals(book.getTitle(), bookToGet.getTitle());
+//        assertEquals(book.getQuantity(), bookToGet.getQuantity());
+//        assertEquals(book.getAuthor(), bookToGet.getAuthor());
+    }
+
 //    @Test
 //    void testDeleteBook() {
 //        Book book = new Book( "A.Mickiewicz", 11, "Dziady");

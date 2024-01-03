@@ -87,7 +87,7 @@ public class CassandraRepo {
                 SchemaBuilder.createTable(CqlIdentifier.fromCql(CassandraRepo.TABLE_LENDING_BY_USER))
                         .ifNotExists()
                         .withPartitionKey(CqlIdentifier.fromCql("user_id"), DataTypes.UUID)
-                        .withColumn(CqlIdentifier.fromCql("book_id"), DataTypes.UUID)
+                        .withClusteringColumn(CqlIdentifier.fromCql("book_id"), DataTypes.UUID)
                         .withColumn(CqlIdentifier.fromCql("id"), DataTypes.UUID)
                         .withColumn(CqlIdentifier.fromCql("begin_date"), DataTypes.DATE)
                         .withColumn(CqlIdentifier.fromCql("expected_end_date"), DataTypes.DATE)
@@ -101,7 +101,7 @@ public class CassandraRepo {
                 SchemaBuilder.createTable(CqlIdentifier.fromCql(CassandraRepo.TABLE_LENDING_BY_BOOK))
                         .ifNotExists()
                         .withPartitionKey(CqlIdentifier.fromCql("book_id"), DataTypes.UUID)
-                        .withColumn(CqlIdentifier.fromCql("user_id"), DataTypes.UUID)
+                        .withClusteringColumn(CqlIdentifier.fromCql("user_id"), DataTypes.UUID)
                         .withColumn(CqlIdentifier.fromCql("id"), DataTypes.UUID)
                         .withColumn(CqlIdentifier.fromCql("begin_date"), DataTypes.DATE)
                         .withColumn(CqlIdentifier.fromCql("expected_end_date"), DataTypes.DATE)
@@ -116,8 +116,9 @@ public class CassandraRepo {
                 SchemaBuilder.createTable(CqlIdentifier.fromCql(CassandraRepo.TABLE_RATING_BY_USER))
                         .ifNotExists()
                         .withPartitionKey(CqlIdentifier.fromCql("user_id"), DataTypes.UUID)
+                        .withClusteringColumn(CqlIdentifier.fromCql("book_id"), DataTypes.UUID)
                         .withColumn(CqlIdentifier.fromCql("id"), DataTypes.UUID)
-                        .withColumn(CqlIdentifier.fromCql("book_id"), DataTypes.UUID)
+
                         .withColumn(CqlIdentifier.fromCql("stars"), DataTypes.INT)
                         .withColumn(CqlIdentifier.fromCql("comment"), DataTypes.TEXT)
                         .build();
@@ -129,8 +130,8 @@ public class CassandraRepo {
                 SchemaBuilder.createTable(CqlIdentifier.fromCql(CassandraRepo.TABLE_RATING_BY_BOOK))
                         .ifNotExists()
                         .withPartitionKey(CqlIdentifier.fromCql("book_id"), DataTypes.UUID)
+                        .withClusteringColumn(CqlIdentifier.fromCql("user_id"), DataTypes.UUID)
                         .withColumn(CqlIdentifier.fromCql("id"), DataTypes.UUID)
-                        .withColumn(CqlIdentifier.fromCql("user_id"), DataTypes.UUID)
                         .withColumn(CqlIdentifier.fromCql("stars"), DataTypes.INT)
                         .withColumn(CqlIdentifier.fromCql("comment"), DataTypes.TEXT)
                         .build();
