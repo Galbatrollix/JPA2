@@ -71,7 +71,7 @@ public class RatingQueryProvider {
 
     public Rating getRating(UUID bookId, UUID userId) {
         String table = Math.random() < 0.5 ? CassandraRepo.TABLE_RATING_BY_USER : CassandraRepo.TABLE_RATING_BY_BOOK;
-        Statement statement = QueryBuilder.selectFrom(table)
+        SimpleStatement statement = QueryBuilder.selectFrom(table)
                 .all()
                 .where(Relation.column("book_id").isEqualTo(literal(bookId)))
                 .where(Relation.column("user_id").isEqualTo(literal(userId)))

@@ -11,12 +11,15 @@ import com.datastax.oss.driver.api.querybuilder.relation.Relation;
 import pl.nbd.cassandra.model.Lending;
 import pl.nbd.cassandra.repositories.CassandraRepo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static com.datastax.oss.driver.api.querybuilder.QueryBuilder.currentTimestamp;
 import static com.datastax.oss.driver.api.querybuilder.QueryBuilder.literal;
 
 public class LendingQueryProvider {
@@ -29,6 +32,13 @@ public class LendingQueryProvider {
         this.session = context.getSession();
         this.ratingEntityHelper = ratingEntityHelper;
     }
+
+    private String parseDate(Date date) {
+       SimpleDateFormat x = new SimpleDateFormat("yyyy-MM-dd");
+       return x.format(date);
+    }
+
+
     public void addLending(Lending lending){
 
 
@@ -36,17 +46,18 @@ public class LendingQueryProvider {
                 .value(CqlIdentifier.fromCql("book_id"), literal(lending.getBookId()))
                 .value(CqlIdentifier.fromCql("user_id"), literal(lending.getUserId()))
                 .value(CqlIdentifier.fromCql("id"), literal(lending.getId()))
-                .value(CqlIdentifier.fromCql("begin_date"), literal(lending.getBeginDate()))
-                .value(CqlIdentifier.fromCql("expected_end_date"), literal(lending.getExpectedEndDate()))
-                .value(CqlIdentifier.fromCql("close_date"), literal(lending.getCloseDate()));
+                .value(CqlIdentifier.fromCql("begin_date"), literal(parseDate(lending.getBeginDate())))
+                .value(CqlIdentifier.fromCql("expected_end_date"), literal(parseDate(lending.getExpectedEndDate())))
+                .value(CqlIdentifier.fromCql("close_date"), literal(parseDate(lending.getCloseDate())));
+
 
         RegularInsert insert2 = QueryBuilder.insertInto(CassandraRepo.TABLE_LENDING_BY_USER)
                 .value(CqlIdentifier.fromCql("user_id"), literal(lending.getUserId()))
                 .value(CqlIdentifier.fromCql("book_id"), literal(lending.getBookId()))
                 .value(CqlIdentifier.fromCql("id"), literal(lending.getId()))
-                .value(CqlIdentifier.fromCql("begin_date"), literal(lending.getBeginDate()))
-                .value(CqlIdentifier.fromCql("expected_end_date"), literal(lending.getExpectedEndDate()))
-                .value(CqlIdentifier.fromCql("close_date"), literal(lending.getCloseDate()));
+                .value(CqlIdentifier.fromCql("begin_date"), literal(parseDate(lending.getBeginDate())))
+                .value(CqlIdentifier.fromCql("expected_end_date"), literal(parseDate(lending.getExpectedEndDate())))
+                .value(CqlIdentifier.fromCql("close_date"), literal(parseDate(lending.getCloseDate())));
 
         BatchStatement batchStatement = BatchStatement.builder(BatchType.LOGGED).
                 addStatement(insert.build()).addStatement(insert2.build())
@@ -79,16 +90,19 @@ public class LendingQueryProvider {
     }
 
     public Lending getLending(UUID bookId, UUID userId) {
-        String table = Math.random() < 0.5 ? CassandraRepo.TABLE_LENDING_BY_USER : CassandraRepo.TABLE_LENDING_BY_BOOK;
-        Statement statement = QueryBuilder.selectFrom(table)
+        System.out.println(bookId);
+        System.out.println(userId);
+        //String table = Math.random() < 0.5 ? CassandraRepo.TABLE_LENDING_BY_USER : CassandraRepo.TABLE_LENDING_BY_BOOK;
+        SimpleStatement statement = QueryBuilder.selectFrom(CassandraRepo.TABLE_LENDING_BY_USER)
                 .all()
-                .where(Relation.column("book_id").isEqualTo(literal(bookId)))
                 .where(Relation.column("user_id").isEqualTo(literal(userId)))
+                .where(Relation.column("book_id").isEqualTo(literal(bookId)))
                 .build();
+        System.out.println(statement.getQuery());
 
         Row result_row = session.execute(statement).one();
+        System.out.println(result_row);
         return ratingFromRow(result_row);
-
     }
     public List<Lending> getLendingsByBookId(UUID bookId) {
         SimpleStatement statement = QueryBuilder.selectFrom(CassandraRepo.TABLE_RATING_BY_BOOK)
