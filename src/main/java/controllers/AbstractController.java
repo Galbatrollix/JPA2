@@ -1,0 +1,11 @@
+package controllers;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Persistence;
+
+public abstract class AbstractController {
+    public static EntityManager em = Persistence.createEntityManagerFactory(
+            "BaseController").createEntityManager();
+
+}
+
