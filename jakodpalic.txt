@@ -8,6 +8,18 @@
 2. Odpal services w docker-compose.yml
 
 
+
+
+JPA dla KAFKI:
+potrzebujemy 2 JPA
+w docekrcompose tworza nam sie 2 nody dla JPA
+trzba dodac nbddb1 i nbddb2 databases w pgAdmin
+zaleznie ktorego uzywany (czy nbddb1 dla producenta czy nbddb2 dla konsumera) trzeba odpowiednio usaiwc persistence.xml
+  <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/nbddb1"/>
+  lub
+   <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/nbddb2"/>
+
+
 !!EDYTUJ PLIK HOSTS
 1. Odpal Notatnik jako administrator.
 2. Z notatnika wybierz Plik > Otworz
