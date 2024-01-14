@@ -53,12 +53,14 @@ mongosh -port 27017 --username admin --password adminpassword
 rs.status()
 
 #dla kafki (w terminalu dowonlego noda)
-kafka-topics.sh --create --topic testtopic --partitions 5 --replication-factor 3 --bootstrap-server kafka1:19192
-kafka-topics.sh --describe --topic testtopic --bootstrap-server kafka1:19192
-kafka-console-producer.sh --topic testtopic --bootstrap-server kafka1:19192
+kafka-topics.sh --create --topic library_topic --partitions 5 --replication-factor 3 --bootstrap-server kafka1:19192
+kafka-topics.sh --describe --topic library_topic --bootstrap-server kafka1:19192
+kafka-console-producer.sh --topic library_topic --bootstrap-server kafka1:19192
 //^ wysyalnie z producenta
-kafka-console-consumer.sh --topic testtopic --from-beginning --bootstrap-server kafka2:19292
+kafka-console-consumer.sh --topic library_topic --from-beginning --bootstrap-server kafka2:19292
 //^ odczyt z consumera
+kafka-consumer-groups.sh --bootstrap-server kafka3:19392 --describe --group library_consumers
+//^ sprawdzenie consumer group "b'library_consumers'"
 
 
 

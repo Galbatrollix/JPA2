@@ -1,6 +1,7 @@
 package pl.comp.prog;
 
 import controllers.*;
+import kafka.KafkaRepo;
 import model.Book;
 import model.LibraryUser;
 import model.Rating;
@@ -67,13 +68,21 @@ public class Main {
 
 
     public static void main(String[] args) throws ClassNotFoundException {
-        createExampleBooks();
-        createExampleUsers();
-        createExampleRatings();
+//        createExampleBooks();
+//        createExampleUsers();
+//        createExampleRatings();
+//
+//        createExampleCatalog();
+//
+//        createExampleBookEvents();
 
-        createExampleCatalog();
-
-        createExampleBookEvents();
-
+        try {
+            KafkaRepo kafkaRepo = new KafkaRepo();
+            kafkaRepo.initConsumer();
+            kafkaRepo.createTopic();
+            kafkaRepo.receiveLendingsMessages();
+        }catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }
