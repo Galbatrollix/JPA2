@@ -1,6 +1,6 @@
 package kafka;
 
 public class KafkaRepo {
-    //todo kafka producer stuff
+    //this will be consumer
 
 }
