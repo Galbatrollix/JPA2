@@ -60,6 +60,15 @@ public class KafkaRepo {
         }
     }
 
+    private Long[] parseMessageValue(String value) {
+        String[] tokens = value.split(":");
+
+        Long[] result = new Long[2];
+        result[0] = Long.parseLong(tokens[0]);
+        result[1] = Long.parseLong(tokens[1]);
+
+        return result;
+    }
 
     public void receiveLendingsMessages() {
         int messagesReceived = 0;
@@ -73,8 +82,19 @@ public class KafkaRepo {
                 System.out.println(result);
                 System.out.println(record.key() + " " + record.value());
                 offsets.put(record.partition(), record.offset());
-                //TODO implemet this
-               // BookEventQueueController.addLendingTransaction(userId, bookId);
+
+                //This is written by alejandro, not tested yet
+                Long[] results = parseMessageValue(record.value());
+                long userId = results[0];
+                long bookId = results[1];
+
+                try{
+                    BookEventQueueController.addLendingTransaction(userId, bookId);
+
+                }catch (Exception e){
+
+                }
+
                 messagesReceived++;
             }
         }
